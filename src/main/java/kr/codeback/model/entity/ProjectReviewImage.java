@@ -22,7 +22,7 @@ public class ProjectReviewImage {
 	@Id
 	private UUID id;
 
-	@Column(name = "file_name",nullable = false)
+	@Column(name = "file_name", nullable = false)
 	private String fileName;
 
 	@Column(name = "url", nullable = false)

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,7 +44,8 @@ public class CodeReview {
 	private CodeLanguageCategory codeLanguageCategory;
 
 	@Builder
-	private CodeReview(UUID id, Member member, String title, String content, CodeLanguageCategory codeLanguageCategory) {
+	private CodeReview(UUID id, Member member, String title, String content,
+		CodeLanguageCategory codeLanguageCategory) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
