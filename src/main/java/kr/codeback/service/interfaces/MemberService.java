@@ -1,4 +1,4 @@
-package kr.codeback.service;
+package kr.codeback.service.interfaces;
 
 import java.util.ArrayList;
 import java.util.Optional;
