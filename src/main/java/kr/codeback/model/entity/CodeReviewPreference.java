@@ -17,33 +17,33 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "NOTIFICATION")
+@Table(name = "CODE_REVIEW_PREFERENCE")
 @NoArgsConstructor
 @Getter
-public class Notification {
+public class CodeReviewPreference {
 
 	@Id
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "receiver_email", nullable = false)
+	@JoinColumn(name = "sender_email", nullable = false)
 	private Member member;
 
 	@Column(name = "entity_id", nullable = false)
-	private UUID entityID;
+	private String entityID;
 
-	@Column(name = "is_read", columnDefinition = "TINYINT(1)")
-	private boolean isRead;
+	@Column(name = "is_like", columnDefinition = "TINYINT(1)")
+	private boolean isLike;
 
 	@Column(name = "create_date", updatable = false)
 	@CreationTimestamp
 	private Timestamp createDate;
 
 	@Builder
-	public Notification(UUID id, Member member, UUID entityID, boolean isRead) {
+	public CodeReviewPreference(UUID id, Member member, String entityID, boolean isLike) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;
-		this.isRead = isRead;
+		this.isLike = isLike;
 	}
 }

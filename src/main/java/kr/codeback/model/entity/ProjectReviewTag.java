@@ -1,5 +1,7 @@
 package kr.codeback.model.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,26 +14,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "MEMBER")
+@Table(name = "PROJECT_REVIEW_TAG")
 @NoArgsConstructor
 @Getter
-public class Member {
+public class ProjectReviewTag {
 
 	@Id
-	private String email;
-
-	@Column(name = "nickname", nullable = false)
-	private String nickname;
+	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "authority_id", nullable = false)
-	private Authority authority;
+	@JoinColumn(name = "project_review_id")
+	private ProjectReview projectReview;
+
+	@Column(name = "tag")
+	private String tag;
 
 	@Builder
-	private Member(String email, String nickname, Authority authority) {
-		this.email = email;
-		this.nickname = nickname;
-		this.authority = authority;
+	public ProjectReviewTag(UUID id, ProjectReview projectReview, String tag) {
+		this.id = id;
+		this.projectReview = projectReview;
+		this.tag = tag;
 	}
-
 }

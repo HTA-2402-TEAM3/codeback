@@ -17,33 +17,41 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "NOTIFICATION")
+@Table(name = "CODE_REVIEW_COMMENT")
 @NoArgsConstructor
 @Getter
-public class Notification {
+public class CodeReviewComment {
 
 	@Id
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "receiver_email", nullable = false)
+	@JoinColumn(name = "email", nullable = false)
 	private Member member;
 
-	@Column(name = "entity_id", nullable = false)
-	private UUID entityID;
-
-	@Column(name = "is_read", columnDefinition = "TINYINT(1)")
-	private boolean isRead;
+	@Column(name = "comment", nullable = false)
+	private String comment;
 
 	@Column(name = "create_date", updatable = false)
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "code_review_id", nullable = false)
+	private CodeReview codeReview;
+
+	// TODO : 추후 양방향 맵핑 고려
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "base_comment_id")
+	private CodeReviewComment baseComment;
+
 	@Builder
-	public Notification(UUID id, Member member, UUID entityID, boolean isRead) {
+	private CodeReviewComment(UUID id, Member member, String comment, CodeReview codeReview,
+		CodeReviewComment baseComment) {
 		this.id = id;
 		this.member = member;
-		this.entityID = entityID;
-		this.isRead = isRead;
+		this.comment = comment;
+		this.codeReview = codeReview;
+		this.baseComment = baseComment;
 	}
 }

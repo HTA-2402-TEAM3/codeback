@@ -17,33 +17,39 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "NOTIFICATION")
+@Table(name = "CODE_REVIEW")
 @NoArgsConstructor
 @Getter
-public class Notification {
+public class CodeReview {
 
 	@Id
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "receiver_email", nullable = false)
+	@JoinColumn(name = "email", nullable = false)
 	private Member member;
 
-	@Column(name = "entity_id", nullable = false)
-	private UUID entityID;
+	@Column(name = "title", nullable = false)
+	private String title;
 
-	@Column(name = "is_read", columnDefinition = "TINYINT(1)")
-	private boolean isRead;
+	@Column(name = "content", nullable = false)
+	private String content;
 
 	@Column(name = "create_date", updatable = false)
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "language_id", nullable = false)
+	private CodeLanguageCategory codeLanguageCategory;
+
 	@Builder
-	public Notification(UUID id, Member member, UUID entityID, boolean isRead) {
+	private CodeReview(UUID id, Member member, String title, String content,
+		CodeLanguageCategory codeLanguageCategory) {
 		this.id = id;
 		this.member = member;
-		this.entityID = entityID;
-		this.isRead = isRead;
+		this.title = title;
+		this.content = content;
+		this.codeLanguageCategory = codeLanguageCategory;
 	}
 }
