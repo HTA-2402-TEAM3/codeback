@@ -32,6 +32,9 @@ public class Notification {
 	@Column(name = "entity_id", nullable = false)
 	private UUID entityID;
 
+	@Column(name = "message", nullable = false)
+	private String message;
+
 	@Column(name = "is_read", columnDefinition = "TINYINT(1)")
 	private boolean isRead;
 
@@ -40,10 +43,11 @@ public class Notification {
 	private Timestamp createDate;
 
 	@Builder
-	public Notification(UUID id, Member member, UUID entityID, boolean isRead) {
+	public Notification(UUID id, Member member, UUID entityID, String message, boolean isRead) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;
+		this.message = message;
 		this.isRead = isRead;
 	}
 }

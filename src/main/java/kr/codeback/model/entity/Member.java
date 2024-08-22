@@ -20,7 +20,7 @@ public class Member {
 	@Id
 	private String email;
 
-	@Column(name = "nickname", nullable = false)
+	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
 	@ManyToOne(fetch = FetchType.LAZY)
