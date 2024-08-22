@@ -324,6 +324,431 @@ public class BFSExample1 {
 }
 </code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
 
+INSERT INTO code_review (id, email, title, content, create_date, language_id)
+VALUES
+    (UUID(), 'jiwonpark@google.com', 'BFS를 활용한 그래프 탐색', '<h2>BFS 예제 11: 그래프 탐색</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample11 {
+    public void bfsGraphTraversal(List<List<Integer>> graph, int start) {
+        boolean[] visited = new boolean[graph.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+(UUID(), 'seungwookim@google.com', '최단 경로 탐색을 위한 BFS', '<h2>BFS 예제 12: 최단 경로 탐색</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample12 {
+    public int bfsShortestPath(int[][] graph, int start, int target) {
+        boolean[] visited = new boolean[graph.length];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{start, 0});
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int node = current[0];
+            int distance = current[1];
+
+            if (node == target) {
+                return distance;
+            }
+
+            for (int i = 0; i < graph[node].length; i++) {
+                if (graph[node][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(new int[]{i, distance + 1});
+                }
+            }
+        }
+        return -1; // target에 도달할 수 없는 경우
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
+(UUID(), 'seungwookim@google.com', 'BFS를 사용한 트리 순회', '<h2>BFS 예제 13: 트리 순회</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample13 {
+    static class TreeNode {
+        int val;
+        List<TreeNode> children;
+
+        TreeNode(int val) {
+            this.val = val;
+            this.children = new ArrayList<>();
+        }
+    }
+
+    public void bfsTreeTraversal(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.val + " ");
+            queue.addAll(node.children);
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+(UUID(), 'hayounglee@google.com', 'BFS로 미로 찾기', '<h2>BFS 예제 14: 미로 찾기</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample14 {
+    public boolean bfsMazeSolver(int[][] maze, int startX, int startY, int endX, int endY) {
+        int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startX, startY});
+
+        while (!queue.isEmpty()) {
+            int[] position = queue.poll();
+            int x = position[0], y = position[1];
+
+            if (x == endX && y == endY) {
+                return true;
+            }
+
+            for (int[] direction : directions) {
+                int newX = x + direction[0];
+                int newY = y + direction[1];
+                if (newX >= 0 && newY >= 0 && newX < maze.length && newY < maze[0].length && maze[newX][newY] == 0) {
+                    queue.add(new int[]{newX, newY});
+                    maze[newX][newY] = -1; // 방문 표시
+                }
+            }
+        }
+        return false;
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+(UUID(), 'hayounglee@google.com', 'BFS와 DFS를 결합하여 최적 경로 찾기', '<h2>BFS 예제 15: BFS와 DFS 결합</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample15 {
+    public void bfsDfsCombined(List<List<Integer>> graph, int start) {
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[graph.size()];
+
+        stack.push(start);
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            System.out.print(node + " ");
+
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+(UUID(), 'yunachoi@google.com', 'BFS로 사회 연결망 분석하기', '<h2>BFS 예제 16: 사회 연결망 분석</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample16 {
+    public void bfsSocialNetwork(List<List<Integer>> network, int person) {
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[network.size()];
+        queue.add(person);
+        visited[person] = true;
+
+        while (!queue.isEmpty()) {
+            int currentPerson = queue.poll();
+            System.out.println("Person " + currentPerson + " is connected to:");
+
+            for (int friend : network.get(currentPerson)) {
+                if (!visited[friend]) {
+                    visited[friend] = true;
+                    queue.add(friend);
+                    System.out.println("  - " + friend);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+(UUID(), 'yunachoi@google.com', 'BFS를 사용한 웹 크롤링', '<h2>BFS 예제 17: 웹 크롤링</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample17 {
+    public void bfsWebCrawling(Map<String, List<String>> webGraph, String startUrl) {
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        queue.add(startUrl);
+        visited.add(startUrl);
+
+        while (!queue.isEmpty()) {
+            String url = queue.poll();
+            System.out.println("Visiting: " + url);
+
+            for (String link : webGraph.getOrDefault(url, Collections.emptyList())) {
+                if (!visited.contains(link)) {
+                    visited.add(link);
+                    queue.add(link);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+(UUID(), 'sooyoungkim@daum.net', 'BFS를 통한 경로 복원', '<h2>BFS 예제 18: 경로 복원</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample18 {
+    public List<Integer> bfsRestorePath(List<List<Integer>> graph, int start, int end) {
+        boolean[] visited = new boolean[graph.size()];
+        int[] parent = new int[graph.size()];
+        Arrays.fill(parent, -1);
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            if (node == end) break;
+
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    parent[neighbor] = node;
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        List<Integer> path = new ArrayList<>();
+        for (int at = end; at != -1; at = parent[at]) {
+            path.add(at);
+        }
+        Collections.reverse(path);
+        return path;
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+(UUID(), 'jisoolim@codeback.kr', 'BFS를 활용한 그래프 탐색 예제', '<h2>BFS 예제 19: 그래프 탐색 예제</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample19 {
+    public void bfsExampleGraph(List<List<Integer>> graph, int start) {
+        boolean[] visited = new boolean[graph.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+(UUID(), 'jisoolim@codeback.kr', 'BFS를 사용한 무향 그래프 탐색', '<h2>BFS 예제 20: 무향 그래프 탐색</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample20 {
+    public void bfsUndirectedGraph(int[][] graph, int start) {
+        boolean[] visited = new boolean[graph.length];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+            for (int i = 0; i < graph[node].length; i++) {
+                if (graph[node][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
+
+-- 코드 리뷰 데이터 삽입
+INSERT INTO code_review (id, email, title, content, create_date, language_id)
+VALUES
+    (UUID(), 'jiwonpark@google.com', '자바의 옵셔널 사용법', '<h2>Java: Optional 사용법</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.Optional;
+
+public class OptionalExample {
+    public static void main(String[] args) {
+        Optional<String> optional = Optional.of("Hello");
+        optional.ifPresent(System.out::println);
+
+        String result = optional.orElse("Default Value");
+        System.out.println(result);
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+
+(UUID(), 'seungwookim@google.com', 'Python에서의 리스트 컴프리헨션', '<h2>Python: 리스트 컴프리헨션 사용 예제</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+# 리스트 컴프리헨션을 사용하여 짝수 필터링
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+even_numbers = [n for n in numbers if n % 2 == 0]
+print(even_numbers)
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
+
+(UUID(), 'hayounglee@google.com', 'JavaScript의 비동기 처리 방법', '<h2>JavaScript: 비동기 처리</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+function fetchData(url) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(`Data from ${url}`);
+        }, 1000);
+    });
+}
+
+fetchData("https://example.com")
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+
+(UUID(), 'yunachoi@google.com', 'C++에서의 스마트 포인터', '<h2>C++: 스마트 포인터 사용법</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+#include &lt;iostream&gt;
+#include &lt;memory&gt;
+
+class MyClass {
+public:
+    void sayHello() { std::cout &lt;&lt; "Hello from MyClass!" &lt;&lt; std::endl; }
+};
+
+int main() {
+    std::unique_ptr&lt;MyClass&gt; ptr = std::make_unique&lt;MyClass&gt;();
+    ptr->sayHello();
+    return 0;
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+
+(UUID(), 'sooyoungkim@daum.net', 'Ruby에서의 블록, 프로시저, 람다 차이', '<h2>Ruby: 블록, 프로시저, 람다 비교</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+# 블록 예제
+def block_example
+    yield if block_given?
+end
+
+block_example { puts "Hello from Block" }
+
+# 프로시저 예제
+proc_example = Proc.new { puts "Hello from Proc" }
+proc_example.call
+
+# 람다 예제
+lambda_example = lambda { puts "Hello from Lambda" }
+lambda_example.call
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+
+(UUID(), 'jisoolim@codeback.kr', 'Swift에서의 클로저 기본 사용법', '<h2>Swift: 클로저 사용법</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+let closureExample = { (name: String) -> String in
+    return "Hello, \\(name)"
+}
+
+let greeting = closureExample("World")
+print(greeting)
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+
+(UUID(), 'chaeunkang@github.com', 'Go에서의 고루틴 활용 예제', '<h2>Go: 고루틴 사용 예제</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func printMessage(msg string) {
+    for i := 0; i < 5; i++ {
+        fmt.Println(msg)
+        time.Sleep(time.Millisecond * 500)
+    }
+}
+
+func main() {
+    go printMessage("Hello")
+    printMessage("World")
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+
+(UUID(), 'seokjinjung@github.com', 'Kotlin의 확장 함수 활용하기', '<h2>Kotlin: 확장 함수 사용 예제</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+fun String.printWithPrefix(prefix: String) {
+    println("$prefix$this")
+}
+
+fun main() {
+    val message = "Hello, Kotlin!"
+    message.printWithPrefix("Greeting: ")
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+
+(UUID(), 'sangminlee@naver.com', 'Rust에서의 소유권과 빌림', '<h2>Rust: 소유권과 빌림</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+fn main() {
+    let s1 = String::from("hello");
+    let s2 = &s1; // 빌림
+    println!("s2: {}", s2);
+    println!("s1: {}", s1); // 소유권은 여전히 s1에 있음
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+
+(UUID(), 'minjicho@naver.com', 'TypeScript에서의 인터페이스 사용 예제', '<h2>TypeScript: 인터페이스 사용</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+interface User {
+    name: string;
+    age: number;
+}
+
+function greet(user: User): string {
+    return `Hello, \\(user.name). You are \\(user.age) years old.`;
+}
+
+const user = { name: "Alice", age: 30 };
+console.log(greet(user));
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
+
 
 
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, base_comment_id, email)
