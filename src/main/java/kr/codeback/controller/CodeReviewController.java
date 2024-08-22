@@ -36,7 +36,7 @@ public class CodeReviewController {
 			.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
 			.build());
 
-		return "view-code";
+		return "/view/view-code";
 	}
 
 }

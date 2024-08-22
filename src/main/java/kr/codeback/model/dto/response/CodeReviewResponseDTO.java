@@ -3,10 +3,11 @@ package kr.codeback.model.dto.response;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.Member;
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class CodeReviewResponseDTO {
 
 	private final UUID id;
