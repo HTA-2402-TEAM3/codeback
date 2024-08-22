@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+import kr.codeback.model.dto.response.CodeReviewResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +27,16 @@ public class CodeReviewController {
 
 		CodeReview codeReview = codeReviewService.findById(id);
 
-		System.out.println(codeReview.getId());
-		System.out.println(codeReview.getMember().getNickname());
-		System.out.println(codeReview.getTitle());
-		System.out.println(codeReview.getContent());
-		System.out.println(codeReview.getCreateDate());
-		System.out.println(codeReview.getCodeLanguageCategory().getLanguageName());
+		model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
+			.id(codeReview.getId())
+			.member(codeReview.getMember())
+			.title(codeReview.getTitle())
+			.content(codeReview.getContent())
+			.createDate(codeReview.getCreateDate())
+			.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
+			.build());
 
-
-
-		model.addAttribute("codeReview", codeReview);
-
-		return "review";
+		return "view-code";
 	}
 
 }
