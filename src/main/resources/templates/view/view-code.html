@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Generic - Projection by TEMPLATED</title>
+    <meta charset="utf-8" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css" />
+
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+</head>
+  <body class="subpage">
+    <header id="header">
+      <div class="inner">
+        <a href="../index.html" class="logo"
+          ><strong>Projection</strong> by TEMPLATED</a
+        >
+        <nav id="nav">
+          <a class="login-btn">
+            <button href="#" class="button special">Login</button>
+          </a>
+        </nav>
+        <a href="#navPanel" class="navPanelToggle"
+          ><span class="fa fa-bars"></span
+        ></a>
+      </div>
+    </header>
+    <section id="main" class="wrapper">
+        <div class="inner">
+          <header class="align-center">
+            <h2>살려주세요ㅠㅠ</h2>
+            <div class="row" id="article-info">
+              <div class="user-info">
+                  <img src="../../static/images/pic02.jpg" alt="User Image" class="user-image" /> <!-- 이미지 추가 -->
+                  <h4 class="username">keyy1315</h4>
+              </div>
+              <div class="row">
+              <h4 style="margin: 0;">2024.08.21</h4>
+              <a class="icon fa-thumbs-up">
+                  <span class="label">thumbsUp</span>
+                  <span class="count">5</span>
+              </a>
+            </div>
+          </div>
+            <hr class="major" />
+          </header>
+          <div class="question-content">
+          <p>           
+            제가 코드를 좀 짜봤는데 진짜 오류만 미친듯이 내뱉고 뭐가 문제인지 잘 모르겠어요...
+            챗지피티한테도 물어봣는데 모르겟대요 진짜 짜증나서 미쳐버릴 것 같아요 ㅠㅠ 살려주세요
+          </p>
+          <pre><code>
+            i = 0;
+
+            while (!deck.isInOrder()) {
+                print 'Iteration ' + i;
+                deck.shuffle();
+                i++;
+            }
+            
+            print 'It took ' + i + ' iterations to sort the deck.';
+            </code></pre>
+        </div>
+        <div class="button-container">
+            <button class="button special disabled">#java</button>
+
+            </div>
+        <hr class="major" />
+
+
+        <div id="editor"></div>
+        <button class="button special" id="submit">submit</button>
+
+        <hr class="major" />
+
+<!-- 에디터 js -->
+<script>
+        const Editor = toastui.Editor;
+
+        const editor = new Editor({
+          el: document.querySelector('#editor'),
+          height: '500px',
+          initialEditType: 'markdown',
+          previewStyle: 'vertical'
+        }); 
+
+          document.getElementById('submit').addEventListener('click',() => {
+            const content =editor.getHTML();
+            console.log(content);
+          })
+</script>
+
+        <h5>2 comments</h5>
+        <div id="comment-container1">
+          <ul>
+            <li>
+              <div class="image round left">
+              <img src="images/pic01.jpg" alt="Pic 01"/>
+              </div>
+              <div>
+                <h4 style="margin: 0;">lovelina1315</h4>
+                 2024.08.22
+              </div>
+            </li>
+            <li>
+              <a href="#" class="icon fa-thumbs-up">
+                <span class="label">thumbsUp</span>
+                <span class="count">0</span>
+              </a>
+              </li>
+            </ul>
+            <div id="comment1">
+        <p>
+          아 진짜
+        </p>
+        <pre><code>
+          while(deck.isInOrder()) {
+            print 'Iter ' ++;
+          }
+        </code></pre>
+        <p>
+          마크다운 어캐하냐....
+        </p>
+              </div>
+        </div>
+
+        <hr />
+
+        <div id="comment-container2">
+          <ul>
+            <li>
+              <div class="image round left">
+              <img src="images/pic01.jpg" alt="Pic 01"/>
+              </div>
+              <div>
+                <h4 style="margin: 0;">keyy1315</h4>
+                 2024.08.22
+              </div>
+            </li>
+            <li>
+              <a href="#" class="icon fa-thumbs-up">
+                <span class="label">thumbsUp</span>
+                <span class="count">5</span>
+              </a>
+              </li>
+            </ul>
+            <div id="comment2">
+             <p>
+                <h2>h2 tag</h2>
+                <h3>h3 tag</h3>
+                <h4>h4 tag</h4>
+                <h5>h5 tag</h5>
+                </p>
+              </div>
+        </div>
+  </body>
+</html>
