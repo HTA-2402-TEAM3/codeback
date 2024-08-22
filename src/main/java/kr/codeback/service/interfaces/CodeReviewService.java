@@ -1,7 +1,7 @@
 package kr.codeback.service.interfaces;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.UUID;
 
 import kr.codeback.model.entity.CodeReview;
 
@@ -11,7 +11,7 @@ public interface CodeReviewService {
 	ArrayList<CodeReview> findCodeReviewAll();
 
 	// ID로 게시물 조회
-	Optional<CodeReview> findCodeReviewById(String id);
+	CodeReview findById(UUID id);
 
 	// 작성자 이름으로 게시물 조회
 	ArrayList<CodeReview> findCodeReviewByAuthor(String author);

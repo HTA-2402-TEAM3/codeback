@@ -1,6 +1,7 @@
 package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +34,7 @@ public class CodeReview {
 	@Column(name = "title", nullable = false)
 	private String title;
 
-	@Column(name = "content", nullable = false)
+	@Column(name = "content", nullable = false, length = 3000)
 	private String content;
 
 	@Column(name = "create_date", updatable = false)
@@ -42,6 +44,9 @@ public class CodeReview {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "language_id", nullable = false)
 	private CodeLanguageCategory codeLanguageCategory;
+
+	@OneToMany(mappedBy = "codeReview")
+	private List<CodeReviewComment> comments;
 
 	@Builder
 	private CodeReview(UUID id, Member member, String title, String content,

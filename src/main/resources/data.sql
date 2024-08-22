@@ -1,234 +1,450 @@
-START TRANSACTION;
-
-
--- 권한 데이터가 없을 경우에만 삽입
 INSERT INTO authority (id, name)
-SELECT UUID(), 'USER'
-WHERE NOT EXISTS (SELECT 1 FROM authority WHERE name = 'USER');
+VALUES (UUID(), 'ROLE_USER'),
+       (UUID(), 'ROLE_ADMIN');
 
-INSERT INTO authority (id, name)
-SELECT UUID(), 'ADMIN'
-WHERE NOT EXISTS (SELECT 1 FROM authority WHERE name = 'ADMIN');
-
-
--- 프로그래밍 언어 데이터가 없을 경우에만 삽입
 INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Java'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Java');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Python'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Python');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'JavaScript'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'JavaScript');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'C++'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'C++');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Ruby'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Ruby');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Swift'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Swift');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Go'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Go');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Kotlin'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Kotlin');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'Rust'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'Rust');
-INSERT INTO code_language_category (id, language_name)
-SELECT UUID(),
-       'TypeScript'
-WHERE NOT EXISTS (SELECT 1 FROM code_language_category WHERE language_name = 'TypeScript');
-
-
--- 회원 데이터가 없을 경우에만 삽입
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'alice@google.com', 'Alice#google', (SELECT id FROM authority WHERE name = 'USER' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'alice@google.com');
+VALUES (UUID(), 'Java'),
+       (UUID(), 'Python'),
+       (UUID(), 'JavaScript'),
+       (UUID(), 'C++'),
+       (UUID(), 'Ruby'),
+       (UUID(), 'Swift'),
+       (UUID(), 'Go'),
+       (UUID(), 'Kotlin'),
+       (UUID(), 'Rust'),
+       (UUID(), 'TypeScript');
 
 INSERT INTO member (email, nickname, authority_id)
-SELECT 'bob@google.com', 'Bob#google', (SELECT id FROM authority WHERE name = 'USER' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'bob@google.com');
-
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'jackson@github.com', 'Jackson#github', (SELECT id FROM authority WHERE name = 'USER' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'jackson@github.com');
-
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'lina@github.com', 'Lina#github', (SELECT id FROM authority WHERE name = 'USER' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'lina@github.com');
-
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'percy@github.com', 'Percy#github', (SELECT id FROM authority WHERE name = 'USER' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'percy@github.com');
-
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'frod@github.com', 'Frod#github', (SELECT id FROM authority WHERE name = 'ADMIN' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'frod@github.com');
-
-INSERT INTO member (email, nickname, authority_id)
-SELECT 'sungho@github.com', 'Sungho#github', (SELECT id FROM authority WHERE name = 'ADMIN' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM member WHERE email = 'sungho@github.com');
-
--- 계속해서 나머지 회원들을 추가합니다...
-
-
--- 코드 리뷰 데이터 삽입
-INSERT INTO code_review (id, email, title, content, create_date, language_id)
-SELECT UUID(),
-       'jackson@github.com',
-       'Exploring Java Streams',
-       'A deep dive into Java Streams API.',
-       NOW(),
-       (SELECT id FROM code_language_category WHERE language_name = 'Java' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM code_review WHERE title = 'Exploring Java Streams');
+VALUES ('jiwonpark@google.com', '박지원', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('seungwookim@google.com', '김승우', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('hayounglee@google.com', '이하영', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('yunachoi@google.com', '최유나', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('sooyoungkim@daum.net', '김수영', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('jisoolim@codeback.kr', '임지수', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('chaeunkang@github.com', '강채은', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('seokjinjung@github.com', '정석진', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('sangminlee@naver.com', '이상민', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+       ('minjicho@naver.com', '조민지', (SELECT id FROM authority LIMIT 1 OFFSET 0));
 
 INSERT INTO code_review (id, email, title, content, create_date, language_id)
-SELECT UUID(),
-       'lina@github.com',
-       'Python for Data Science',
-       'Understanding Python libraries for data science.',
-       NOW(),
-       (SELECT id FROM code_language_category WHERE language_name = 'Python' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM code_review WHERE title = 'Python for Data Science');
+VALUES (UUID(), 'jiwonpark@google.com', '자바 경로탐색 질문입니다.', '<h2>BFS 예제 1: 경로 탐색</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
 
-INSERT INTO code_review (id, email, title, content, create_date, language_id)
-SELECT UUID(),
-       'percy@github.com',
-       'Python for Data Science',
-       'Understanding Python libraries for data science.',
-       NOW(),
-       (SELECT id FROM code_language_category WHERE language_name = 'Python' LIMIT 1)
-WHERE NOT EXISTS (SELECT 1 FROM code_review WHERE title = 'Python for Data Science');
--- 계속해서 나머지 코드 리뷰들을 추가합니다...
+public class BFSExample10 {
+    public List<Integer> bfsPath(List<List<Integer>> graph, int start, int end) {
+        boolean[] visited = new boolean[graph.size()];
+        Map<Integer, Integer> parentMap = new HashMap<>();
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            if (node == end) {
+                return constructPath(parentMap, start, end);
+            }
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    parentMap.put(neighbor, node);
+                    queue.add(neighbor);
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Integer> constructPath(Map<Integer, Integer> parentMap, int start, int end) {
+        List<Integer> path = new LinkedList<>();
+        for (Integer at = end; at != null; at = parentMap.get(at)) {
+            path.add(at);
+        }
+        Collections.reverse(path);
+        return path;
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+       (UUID(), 'seungwookim@google.com', '반복적인 채우기 전략 질문입니다.', '<h2>BFS 예제 2: 반복적인 채우기 전략</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample9 {
+    public void bfsFloodFill(int[][] grid, int startX, int startY, int newColor) {
+        int oldColor = grid[startX][startY];
+        if (oldColor == newColor) return;
+
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startX, startY});
+
+        while (!queue.isEmpty()) {
+            int[] pixel = queue.poll();
+            int x = pixel[0], y = pixel[1];
+
+            if (grid[x][y] == oldColor) {
+                grid[x][y] = newColor;
+                if (x > 0) queue.add(new int[]{x - 1, y});
+                if (y > 0) queue.add(new int[]{x, y - 1});
+                if (x < grid.length - 1) queue.add(new int[]{x + 1, y});
+                if (y < grid[0].length - 1) queue.add(new int[]{x, y + 1});
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
+       (UUID(), 'hayounglee@google.com', '그래프 뎁스 검사 질문', '<h2>BFS 예제 3: 그래프 깊이 검사</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample8 {
+    public void bfsDepthCheck(List<List<Integer>> graph, int start) {
+        boolean[] visited = new boolean[graph.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+        visited[start] = true;
+        int depth = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                int node = queue.poll();
+                System.out.print(node + " ");
+                for (int neighbor : graph.get(node)) {
+                    if (!visited[neighbor]) {
+                        visited[neighbor] = true;
+                        queue.add(neighbor);
+                    }
+                }
+            }
+            depth++;
+        }
+        System.out.println("\nMax Depth: " + depth);
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+       (UUID(), 'yunachoi@google.com', '최단 경로를 위한 BFS 질문', '<h2>BFS 예제 4: 최단 경로를 위한 BFS</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample7 {
+    static class Node {
+        int val;
+        int distance;
+
+        Node(int val, int distance) {
+            this.val = val;
+            this.distance = distance;
+        }
+    }
+
+    public void bfsShortestPath(List<List<Integer>> graph, int start) {
+        boolean[] visited = new boolean[graph.size()];
+        Queue<Node> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(new Node(start, 0));
+
+        while (!queue.isEmpty()) {
+            Node node = queue.poll();
+            System.out.println("Node: " + node.val + ", Distance: " + node.distance);
+
+            for (int neighbor : graph.get(node.val)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(new Node(neighbor, node.distance + 1));
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+       (UUID(), 'sooyoungkim@daum.net', '그래프 순회 헬프요 ㅠㅠ', '<h2>BFS 예제 5: 그래프 순회</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample6 {
+    public void bfsTraverse(List<List<Integer>> graph) {
+        boolean[] visited = new boolean[graph.size()];
+        for (int i = 0; i < graph.size(); i++) {
+            if (!visited[i]) {
+                bfs(i, graph, visited);
+            }
+        }
+    }
+
+    private void bfs(int start, List<List<Integer>> graph, boolean[] visited) {
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+       (UUID(), 'jisoolim@codeback.kr', '트리 구조 질문이 있습니다', '<h2>BFS 예제 6: 트리 구조의 BFS 구현</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample5 {
+    static class TreeNode {
+        int val;
+        List<TreeNode> children;
+
+        TreeNode(int val) {
+            this.val = val;
+            this.children = new ArrayList<>();
+        }
+    }
+
+    public void bfs(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.val + " ");
+            queue.addAll(node.children);
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+       (UUID(), 'chaeunkang@github.com', '최단 경로를 찾는 방법', '<h2>BFS 예제 7: 최단 경로 찾기</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample4 {
+    public void bfsShortestPath(List<List<Integer>> graph, int start) {
+        int[] distance = new int[graph.size()];
+        Arrays.fill(distance, -1);
+        distance[start] = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+
+            for (int neighbor : graph.get(node)) {
+                if (distance[neighbor] == -1) {
+                    distance[neighbor] = distance[node] + 1;
+                    queue.add(neighbor);
+                }
+            }
+        }
+
+        System.out.println(Arrays.toString(distance));
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+       (UUID(), 'seokjinjung@github.com', '깊이 우선 탐색이랑 결합하는 법', '<h2>BFS 예제 3: 깊이 우선 탐색과 결합</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample3 {
+    public void bfsWithDFS(int[][] graph, int start) {
+        Stack<Integer> stack = new Stack<>();
+        Queue<Integer> queue = new LinkedList<>();
+        boolean[] visited = new boolean[graph.length];
+
+        stack.push(start);
+        while (!stack.isEmpty()) {
+            int node = stack.pop();
+            System.out.print(node + " ");
+
+            for (int i = 0; i < graph[node].length; i++) {
+                if (graph[node][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            System.out.print(queue.poll() + " ");
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+       (UUID(), 'sangminlee@naver.com', '1:1 파이썬 초보만', '<h2>BFS 예제 9: 배열 기반의 BFS 구현</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample2 {
+    public void bfs(int[][] graph, int start) {
+        boolean[] visited = new boolean[graph.length];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+
+            for (int i = 0; i < graph[node].length; i++) {
+                if (graph[node][i] == 1 && !visited[i]) {
+                    visited[i] = true;
+                    queue.add(i);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+       (UUID(), 'minjicho@naver.com', 'BFS 인접 리스트 질문입니다.', '<h2>BFS 예제 10: 인접 리스트 기반의 BFS 구현</h2>
+<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+import java.util.*;
+
+public class BFSExample1 {
+    public void bfs(int start, List<List<Integer>> graph) {
+        boolean[] visited = new boolean[graph.size()];
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }
+}
+</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
 
 
--- 코드 리뷰 댓글 데이터 삽입
+
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, base_comment_id, email)
-SELECT UUID(),
-       'This is a great article on Java Streams!',
-       NOW(),
-       (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1),
-       NULL,
-       'alice@google.com'
-WHERE NOT EXISTS (SELECT 1
-                  FROM code_review_comment
-                  WHERE comment = 'This is a great article on Java Streams!'
-                    AND code_review_id = (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1));
+VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 0), NULL, 'yunachoi@google.com'),
+       (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
-INSERT INTO code_review_comment (id, comment, create_date, code_review_id, base_comment_id, email)
-SELECT UUID(),
-       'Very useful tips, thanks!',
-       NOW(),
-       (SELECT id FROM code_review WHERE title = 'Python for Data Science' LIMIT 1),
-       NULL,
-       'bob@google.com'
-WHERE NOT EXISTS (SELECT 1
-                  FROM code_review_comment
-                  WHERE comment = 'Very useful tips, thanks!'
-                    AND code_review_id = (SELECT id FROM code_review WHERE title = 'Python for Data Science' LIMIT 1));
--- 계속해서 나머지 코드 리뷰 댓글들을 추가합니다...
+        boolean[] visited = new boolean[graph.size()];
+        Map<Integer, Integer> parentMap = new HashMap<>();
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
 
+</code></pre></div>
+이부분에서 다형성을 고려해야 할 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 1), null, 'jiwonpark@google.com'),
+       (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
--- 코드 리뷰 좋아요 데이터 삽입
-INSERT INTO code_review_preference ( id
-                                   , sender_email
-                                   , entity_id
-                                   , is_Like
-                                   , create_date)
-SELECT UUID()
-     , 'alice@google.com'
-     , (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1)
-     , 1
-     , NOW()
-WHERE NOT EXISTS (SELECT 1
-                  FROM code_review_preference
-                  WHERE sender_email = 'alice@google.com'
-                    AND entity_id = (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1))
-;
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
 
-INSERT INTO code_review_preference ( id
-                                   , sender_email
-                                   , entity_id
-                                   , is_Like
-                                   , create_date)
-SELECT UUID()
-     , 'bob@google.com'
-     , (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1)
-     , 1
-     , NOW()
-WHERE NOT EXISTS (SELECT 1
-                  FROM code_review_preference
-                  WHERE sender_email = 'bob@google.com'
-                    AND entity_id = (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1))
-;
+</code></pre></div>이 부분은 왜 이렇게 쓰신걸까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 2), NULL,
+        'chaeunkang@github.com'),
+       (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
-INSERT INTO code_review_preference ( id
-                                   , sender_email
-                                   , entity_id
-                                   , is_Like
-                                   , create_date)
-SELECT UUID()
-     , 'percy@github.com'
-     , (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1)
-     , 1
-     , NOW()
-WHERE NOT EXISTS (SELECT 1
-                  FROM code_review_preference
-                  WHERE sender_email = 'percy@github.com'
-                    AND entity_id = (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1))
-;
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
 
--- 댓글에 대한 알림
-INSERT INTO notification (id, receiver_email, entity_id, message, is_read, create_date)
-SELECT UUID(),
-       'jackson@github.com',
-       (SELECT id FROM code_review_comment WHERE comment = 'This is a great article on Java Streams!' LIMIT 1),
-       'Alice#google 님이 Exploring Java Streams 게시글에 답변을 남겼습니다.',
-       0,
-       NOW()
-WHERE NOT EXISTS (SELECT 1
-                  FROM notification
-                  WHERE receiver_email = 'jackson@github.com'
-                    AND entity_id = (SELECT id
-                                     FROM code_review_comment
-                                     WHERE comment = 'This is a great article on Java Streams!'
-                                     LIMIT 1));
+</code></pre></div>반복문이 너무 깊습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 3), NULL,
+        'seokjinjung@github.com'),
+       (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
--- 좋아요에 대한 알림
-INSERT INTO notification (id, receiver_email, entity_id, message, is_read, create_date)
-SELECT UUID(),
-       'jackson@github.com',
-       (SELECT id
-        FROM code_review_preference
-        WHERE sender_email = 'bob@google.com'
-          AND entity_id = (SELECT id FROM code_review WHERE title = 'Exploring Java Streams' LIMIT 1)),
-       'bob#google 님이 Exploring Java Streams 게시글에 좋아요를 눌렀습니다.',
-       0,
-       NOW()
-WHERE NOT EXISTS (SELECT 1
-                  FROM notification
-                  WHERE receiver_email = 'jackson@github.com'
-                    AND entity_id = (SELECT id
-                                     FROM code_review_preference
-                                     WHERE sender_email = 'bob@google.com'
-                                       AND entity_id = (SELECT id
-                                                        FROM code_review
-                                                        WHERE title = 'Exploring Java Streams'
-                                                        LIMIT 1)));
+        boolean[] visited = new boolean[graph.size()];
+        for (int i = 0; i < graph.size(); i++) {
+            if (!visited[i]) {
+                bfs(i, graph, visited);
+            }
+        }
+
+</code></pre></div>이런 방법으로 하면 좋을 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 4), NULL,
+        'sangminlee@naver.com'),
+       (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
+
+        boolean[] visited = new boolean[graph.size()];
+        for (int i = 0; i < graph.size(); i++) {
+            if (!visited[i]) {
+                bfs(i, graph, visited);
+            }
+        }
+
+</code></pre></div>이건 어떨까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 5), NULL, 'minjicho@naver.com'),
+       (UUID(), 'private void bfs(int start, List<List<Integer>> graph, boolean[] visited) {
+        Queue<Integer> queue = new LinkedList<>();
+        visited[start] = true;
+        queue.add(start);
+
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");
+
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    queue.add(neighbor);
+                }
+            }
+        }
+    }요거는 어떨까요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 6), NULL, 'hayounglee@google.com'),
+       (UUID(), 'public void bfsTraverse(List<List<Integer>> graph) {
+        boolean[] visited = new boolean[graph.size()];
+        for (int i = 0; i < graph.size(); i++) {
+            if (!visited[i]) {
+                bfs(i, graph, visited);
+            }
+        }
+    }너무 힘들어요..', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 7), NULL, 'seungwookim@google.com'),
+       (UUID(), ' static class TreeNode {
+        int val;
+        List<TreeNode> children;
+
+        TreeNode(int val) {
+            this.val = val;
+            this.children = new ArrayList<>();
+        }
+    }덕분에 트리 노드를 구경했습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 8), NULL, 'jisoolim@codeback.kr'),
+       (UUID(), 'public void bfs(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.val + " ");
+            queue.addAll(node.children);
+        }
+    }저도요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 9), NULL, 'seokjinjung@github.com');
 
 
-commit;
+INSERT INTO code_review_preference (id, sender_email, entity_id, is_Like, create_date)
+VALUES (UUID(), 'chaeunkang@github.com', (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1, NOW()),
+       (UUID(), 'sooyoungkim@daum.net', (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1, NOW()),
+       (UUID(), 'sooyoungkim@daum.net', (SELECT id FROM code_review LIMIT 1 OFFSET 2), 1, NOW()),
+       (UUID(), 'minjicho@naver.com', (SELECT id FROM code_review LIMIT 1 OFFSET 3), 1, NOW()),
+       (UUID(), 'yunachoi@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 4), 1, NOW()),
+       (UUID(), 'yunachoi@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 5), 1, NOW()),
+       (UUID(), 'hayounglee@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 6), 1, NOW()),
+       (UUID(), 'hayounglee@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 7), 1, NOW()),
+       (UUID(), 'seungwookim@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 8), 1, NOW()),
+       (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 9), 1, NOW());
+
+
+INSERT INTO notification (id, receiver_email, entity_id, is_read, create_date)
+VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 1), 0, NOW()),
+       (UUID(), 'seungwookim@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 2), 0, NOW()),
+       (UUID(), 'hayounglee@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 3), 0, NOW()),
+       (UUID(), 'yunachoi@google.com', (SELECT id FROM code_review LIMIT 1 OFFSET 4), 0, NOW()),
+       (UUID(), 'sooyoungkim@daum.net', (SELECT id FROM code_review LIMIT 1 OFFSET 5), 0, NOW()),
+       (UUID(), 'jisoolim@codeback.kr', (SELECT id FROM code_review LIMIT 1 OFFSET 6), 0, NOW()),
+       (UUID(), 'chaeunkang@github.com', (SELECT id FROM code_review LIMIT 1 OFFSET 7), 0, NOW()),
+       (UUID(), 'seokjinjung@github.com', (SELECT id FROM code_review LIMIT 1 OFFSET 8), 0, NOW()),
+       (UUID(), 'sangminlee@naver.com', (SELECT id FROM code_review LIMIT 1 OFFSET 9), 0, NOW()),
+       (UUID(), 'minjicho@naver.com', (SELECT id FROM code_review LIMIT 1 OFFSET 0), 0, NOW());

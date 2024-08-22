@@ -2,22 +2,35 @@ package kr.codeback.service.impl;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import kr.codeback.model.entity.CodeReview;
+import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.service.interfaces.CodeReviewService;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CodeReviewServiceImpl implements CodeReviewService {
+
+	private final CodeReviewRepository codeReviewRepository;
+
 	@Override
 	public ArrayList<CodeReview> findCodeReviewAll() {
 		return null;
 	}
 
 	@Override
-	public Optional<CodeReview> findCodeReviewById(String id) {
-		return Optional.empty();
+	public CodeReview findById(UUID id) {
+
+		Optional<CodeReview> optionalCodeReview = codeReviewRepository.findById(id);
+
+		return optionalCodeReview.orElseThrow(
+			() -> new IllegalArgumentException("No code review found with id: " + id)
+		);
+
 	}
 
 	@Override

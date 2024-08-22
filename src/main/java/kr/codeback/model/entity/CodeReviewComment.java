@@ -29,7 +29,7 @@ public class CodeReviewComment {
 	@JoinColumn(name = "email", nullable = false)
 	private Member member;
 
-	@Column(name = "comment", nullable = false)
+	@Column(name = "comment", nullable = false, length = 2000)
 	private String comment;
 
 	@Column(name = "create_date", updatable = false)
