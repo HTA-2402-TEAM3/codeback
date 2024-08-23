@@ -2401,6 +2401,7 @@ input[type="radio"] + label:before {
   margin-left: 5px; /* 아이콘 간격 조정 */
 }
 
+
 #article-info:hover .icon,
 #article-info:hover .count {
   color: #ff0000; /* 마우스를 올렸을 때 텍스트와 아이콘 색상 변경 */
