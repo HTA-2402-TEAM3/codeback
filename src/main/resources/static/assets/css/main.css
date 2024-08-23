@@ -2428,6 +2428,8 @@ input[type="radio"] + label:before {
   margin: 0; /* 기본 마진 제거 */
 }
 
+
+
 #article-info .icon {
   font-size: 24px; /* 아이콘 크기 조정 */
   color: gray; /* 기본 색상 회색 */
@@ -2557,7 +2559,7 @@ input[type="radio"] + label:before {
 .box-container {
   margin: 80px;
   .button.special.icon {
-    padding: 0px 10px 0px 10px;
+    padding: 0 10px 0 10px;
   }
 }
 
