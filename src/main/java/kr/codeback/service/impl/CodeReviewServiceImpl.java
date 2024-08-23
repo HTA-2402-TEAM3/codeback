@@ -1,9 +1,15 @@
 package kr.codeback.service.impl;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.dto.DTOSample;
+import kr.codeback.model.dto.response.CodeReviewResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import kr.codeback.model.entity.CodeReview;
@@ -18,8 +24,21 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	private final CodeReviewRepository codeReviewRepository;
 
 	@Override
-	public ArrayList<CodeReview> findCodeReviewAll() {
-		return null;
+	public List<CodeReviewResponseDTO> findCodeReviewAll(int pageNum, int pageSize, String sort) {
+		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+		Page<CodeReviewResponseDTO> dtoSamples = codeReviewRepository.findAll(pageable)
+				.map((CodeReview codeReview) -> CodeReviewResponseDTO.builder()
+						.id(codeReview.getId())
+						.member(codeReview.getMember())
+						.title(codeReview.getTitle())
+						.content(codeReview.getContent())
+						.createDate(codeReview.getCreateDate())
+						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
+						.codeReviewComments(codeReview.getComments())
+						.build()
+				);
+
+		return dtoSamples.getContent();
 	}
 
 	@Override
@@ -34,12 +53,12 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public ArrayList<CodeReview> findCodeReviewByAuthor(String author) {
+	public List<CodeReview> findCodeReviewByAuthor(String author) {
 		return null;
 	}
 
 	@Override
-	public ArrayList<CodeReview> findCodeReviewByTitle(String title) {
+	public List<CodeReview> findCodeReviewByTitle(String title) {
 		return null;
 	}
 
