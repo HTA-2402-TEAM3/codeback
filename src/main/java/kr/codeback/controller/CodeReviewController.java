@@ -37,7 +37,7 @@ public class CodeReviewController {
 			.codeReviewComments(codeReview.getComments())
 			.build());
 
-		return "/view/view-code";
+		return "view/view-code";
 	}
 
 }
