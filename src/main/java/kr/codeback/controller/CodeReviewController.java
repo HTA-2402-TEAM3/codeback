@@ -2,6 +2,7 @@ package kr.codeback.controller;
 
 import java.util.UUID;
 
+import kr.codeback.model.dto.response.CodeReviewResponseDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
