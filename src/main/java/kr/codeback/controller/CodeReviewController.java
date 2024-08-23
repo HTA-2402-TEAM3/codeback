@@ -18,27 +18,24 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CodeReviewController {
 
-	private final CodeReviewService codeReviewService;
+    private final CodeReviewService codeReviewService;
 
-	@GetMapping("/review/{id}")
-	public String checkDetail(@PathVariable(name = "id") String inputID, Model model) {
+    	@GetMapping("/review/{id}")
+    public String checkDetail(@PathVariable(name = "id") String inputID, Model model) {
 
-		UUID id = UUID.fromString(inputID);
+        UUID id = UUID.fromString(inputID);
 
-		CodeReview codeReview = codeReviewService.findById(id);
+        CodeReview codeReview = codeReviewService.findById(id);
 
-		System.out.println(codeReview.getId());
-		System.out.println(codeReview.getMember().getNickname());
-		System.out.println(codeReview.getTitle());
-		System.out.println(codeReview.getContent());
-		System.out.println(codeReview.getCreateDate());
-		System.out.println(codeReview.getCodeLanguageCategory().getLanguageName());
+        System.out.println(codeReview.getId());
+        System.out.println(codeReview.getMember().getNickname());
+        System.out.println(codeReview.getTitle());
+        System.out.println(codeReview.getContent());
+        System.out.println(codeReview.getCreateDate());
+        System.out.println(codeReview.getCodeLanguageCategory().getLanguageName());
 
+        model.addAttribute("codeReview", codeReview);
 
-
-		model.addAttribute("codeReview", codeReview);
-
-		return "review";
-	}
-
+        return "view/view-code";
+    }
 }
