@@ -38,10 +38,10 @@
             <h2 th:text="${codeReview.title}"></h2>
             <div class="row" id="article-info">
                 <div class="user-info">
-                    <h4 th:text="${codeReview.writer}"></h4>
+                    <h4 th:text="${codeReview.member.getNickname()}"></h4>
                 </div>
                 <div class="row">
-                    <h4 th:text="${#temporals.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
+                    <h4 th:text="${codeReview.createDate}" style="margin: 0;"></h4>
                     <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
                         <span class="count">5</span>
@@ -51,10 +51,10 @@
             <hr class="major"/>
         </header>
         <div class="question-content">
-            <p th:text="${codeReview.content}"></p>
+            <p th:utext="${codeReview.content}"></p>
         </div>
         <div class="button-container">
-            <button class="button special disabled">#java</button>
+            <button class="button special disabled" th:text="${codeReview.codeLanguageName}"></button>
 
         </div>
         <hr class="major"/>
@@ -84,26 +84,26 @@
 
         <h5>2 comments</h5>
         <div id="comment-container">
-            <div th:each="comments : ${comments}">
-                <hr/>
-                <ul>
-                    <li>
-                        <div>
-                            <h4 th:text="${comments.comment_writer}" style="margin: 0;"></h4>
-                            <p th:text="${#temporals.format(comments.comment_createDate, 'yyyy.MM.dd')}"></p>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="icon fa-thumbs-up">
-                            <span class="label">thumbsUp</span>
-                            <span class="count">0</span>
-                        </a>
-                    </li>
-                </ul>
-                <div id="comment1">
-                    <p th:text="${comments.comment_content}"/>
-                </div>
-            </div>
+<!--            <div th:each="comments : ${comments}">-->
+<!--                <hr/>-->
+<!--                <ul>-->
+<!--                    <li>-->
+<!--                        <div>-->
+<!--                            <h4 th:text="${comments.comment_writer}" style="margin: 0;"></h4>-->
+<!--                            <p th:text="${#temporals.format(comments.comment_createDate, 'yyyy.MM.dd')}"></p>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                    <li>-->
+<!--                        <a href="#" class="icon fa-thumbs-up">-->
+<!--                            <span class="label">thumbsUp</span>-->
+<!--                            <span class="count">0</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--                <div id="comment1">-->
+<!--                    <p th:text="${comments.comment_content}"/>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 </section>
