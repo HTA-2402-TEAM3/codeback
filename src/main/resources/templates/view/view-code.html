@@ -38,10 +38,10 @@
             <h2 th:text="${codeReview.title}"></h2>
             <div class="row" id="article-info">
                 <div class="user-info">
-                    <h4 th:text="${codeReview.writer}"></h4>
+                    <h4 th:text="${codeReview.member.nickname}"></h4>
                 </div>
                 <div class="row">
-                    <h4 th:text="${#temporals.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
+                    <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                     <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
                         <span class="count">5</span>
@@ -51,7 +51,7 @@
             <hr class="major"/>
         </header>
         <div class="question-content">
-            <p th:text="${codeReview.content}"></p>
+            <p th:utext="${codeReview.content}"></p>
         </div>
         <div class="button-container">
             <button class="button special disabled">#java</button>
@@ -82,15 +82,15 @@
 
         <hr class="major"/>
 
-        <h5>2 comments</h5>
+        <h5 th:text = "${codeReview.codeReviewComments.size()} + comments">comments size</h5>
         <div id="comment-container">
-            <div th:each="comments : ${comments}">
+            <div th:each="comments : ${codeReview.codeReviewComments}">
                 <hr/>
                 <ul>
                     <li>
                         <div>
-                            <h4 th:text="${comments.comment_writer}" style="margin: 0;"></h4>
-                            <p th:text="${#temporals.format(comments.comment_createDate, 'yyyy.MM.dd')}"></p>
+                            <h4 th:text="${comments.member.nickname}" style="margin: 0;"></h4>
+                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
                         </div>
                     </li>
                     <li>
@@ -101,7 +101,7 @@
                     </li>
                 </ul>
                 <div id="comment1">
-                    <p th:text="${comments.comment_content}"/>
+                    <p th:utext="${comments.comment}"/>
                 </div>
             </div>
         </div>
