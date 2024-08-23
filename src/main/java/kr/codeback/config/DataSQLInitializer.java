@@ -1,23 +1,21 @@
 package kr.codeback.config;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
+import javax.sql.DataSource;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
-
-/*
-    application.yml 의 ddl-auto = create 인 경우에만 (테이블 새로 생성시에만) data.sql 실행
- */
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 @Component
 public class DataSQLInitializer {
 
-	@Value("${spring.jpa.hibernate.ddl-auto}")
-	private String ddlAuto;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	private final DataSource dataSource;
 
@@ -25,13 +23,16 @@ public class DataSQLInitializer {
 		this.dataSource = dataSource;
 	}
 
-	@Bean
-	public ApplicationRunner initializeData() {
-		return args -> {
-			if ("create".equals(ddlAuto)) {
-				ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(new ClassPathResource("data.sql"));
-				resourceDatabasePopulator.execute(dataSource);
-			}
-		};
+	@PostConstruct
+	public void init() {
+		// 더미 데이터 삽입 체크
+		String checkIfExistsSql = "SELECT COUNT(*) FROM member";
+		Integer count = jdbcTemplate.queryForObject(checkIfExistsSql, Integer.class);
+
+		if (count != null && count == 0) {
+			ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(new ClassPathResource("data.sql"));
+			resourceDatabasePopulator.execute(dataSource);
+		}
 	}
+
 }
