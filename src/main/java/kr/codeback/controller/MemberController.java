@@ -2,6 +2,7 @@ package kr.codeback.controller;
 
 import java.util.UUID;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.util.CookieUtil;
 import kr.codeback.util.JwtUtil;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codeback.model.entity.Authority;
@@ -19,6 +19,8 @@ import kr.codeback.model.entity.Member;
 import kr.codeback.service.impl.AuthorityServiceImpl;
 import kr.codeback.service.impl.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
+
+import static kr.codeback.util.CookieUtil.getCookieValue;
 
 @Controller
 @RequiredArgsConstructor
@@ -48,6 +50,15 @@ public class MemberController {
 		model.addAttribute("username", principal.getAttribute("login")); // GitHub username
 		model.addAttribute("email", principal.getAttribute("email")); // GitHub email
 		return "user"; // user.html를 반환
+	}
+
+	//수정이 필요합니다...
+	@GetMapping("/user/test")
+	public String readCookie(Model model,HttpServletRequest request) {
+		String cookieValue = getCookieValue(request, "jwtToken");
+		model.addAttribute("username", "test setting"); // GitHub username
+		model.addAttribute("email", ("email")); // GitHub email
+		return "user";
 	}
 
 

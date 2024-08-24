@@ -51,4 +51,17 @@ public class JwtUtil {
         final String extractedEmail = extractEmail(token);
         return (extractedEmail.equals(email) && !isTokenExpired(token));
     }
+
+    public Claims decodeJwt(String token) {
+        try {
+            // JWT를 복호화하여 Claims 객체로 반환
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            // 복호화 실패 시 예외 처리
+            throw new RuntimeException("JWT decoding failed", e);
+        }
+    }
 }
