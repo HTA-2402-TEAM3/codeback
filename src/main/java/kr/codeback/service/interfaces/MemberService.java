@@ -1,10 +1,8 @@
 package kr.codeback.service.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 
@@ -30,4 +28,8 @@ public interface MemberService {
 
 	//관리자 계정으로 멤버 찾는 메서드
 	MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize);
+
+	//관리자 계정으로 회원 삭제
+	void deleteByEmailUnderAdmin(Member adminMember, String deleteEmail);
+
 }

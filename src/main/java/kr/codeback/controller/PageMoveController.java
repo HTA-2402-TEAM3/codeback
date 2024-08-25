@@ -14,7 +14,7 @@ public class PageMoveController {
 
 		model.addAttribute("initialMembers", new ArrayList<>());
 
-		return "/view/members";
+		return "/view/admin/members";
 	}
 
 }

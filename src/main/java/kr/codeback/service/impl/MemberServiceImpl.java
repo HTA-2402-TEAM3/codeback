@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
@@ -89,6 +90,20 @@ public class MemberServiceImpl implements MemberService {
 			.totalElements(pageMemberResponseDTO.getTotalElements())
 			.totalPages(pageMemberResponseDTO.getTotalPages())
 			.build();
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEmailUnderAdmin(Member adminMember, String deleteEmail) {
+
+		if (!adminMember.isAdmin()) {
+			throw new WrongAuthorityException(
+				ErrorCode.WRONG_AUTHORITY.getStatus(),
+				ErrorCode.WRONG_AUTHORITY.getMessage()
+			);
+		}
+
+		memberRepository.deleteById(deleteEmail);
 	}
 
 }
