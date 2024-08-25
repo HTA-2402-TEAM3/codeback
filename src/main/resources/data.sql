@@ -24,7 +24,29 @@ VALUES ('jiwonpark@google.com', '박지원', (SELECT id FROM authority LIMIT 1 O
        ('chaeunkang@github.com', '강채은', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
        ('seokjinjung@github.com', '정석진', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
        ('sangminlee@naver.com', '이상민', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
-       ('minjicho@naver.com', '조민지', (SELECT id FROM authority LIMIT 1 OFFSET 0));
+       ('minjicho@naver.com', '조민지', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('joosung@google.com', '박주성', (SELECT id FROM authority LIMIT 1 OFFSET 1)),
+        ('park.minseo@gmail.com', '박민서', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('lee.jihoon@naver.com', '이지훈', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('kim.yuna@daum.net', '김유나', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('choi.seunghyun@yahoo.com', '최승현', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('jung.daehyun@kakao.com', '정대현', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('kang.sora@gmail.com', '강소라', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('hwang.minhyun@naver.com', '황민현', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('song.jieun@daum.net', '송지은', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('han.jimin@yahoo.com', '한지민', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('oh.sehun@kakao.com', '오세훈', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('yoon.bora@gmail.com', '윤보라', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('shin.donghyuk@naver.com', '신동혁', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('go.ara@daum.net', '고아라', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('jang.wooyoung@yahoo.com', '장우영', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('bae.joohyun@kakao.com', '배주현', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('nam.joohyuk@gmail.com', '남주혁', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('ahn.hyeji@naver.com', '안혜지', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('kwon.yuri@daum.net', '권유리', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('seo.inguk@yahoo.com', '서인국', (SELECT id FROM authority LIMIT 1 OFFSET 0)),
+        ('moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority LIMIT 1 OFFSET 0))
+;
 
 INSERT INTO code_review (id, email, title, content, create_date, language_id)
 VALUES (UUID(), 'jiwonpark@google.com', '자바 경로탐색 질문입니다.', '<h2>BFS 예제 1: 경로 탐색</h2>
@@ -325,8 +347,7 @@ public class BFSExample1 {
 </code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
 
 INSERT INTO code_review (id, email, title, content, create_date, language_id)
-VALUES
-    (UUID(), 'jiwonpark@google.com', 'BFS를 활용한 그래프 탐색', '<h2>BFS 예제 11: 그래프 탐색</h2>
+VALUES (UUID(), 'jiwonpark@google.com', 'BFS를 활용한 그래프 탐색', '<h2>BFS 예제 11: 그래프 탐색</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
 
@@ -606,8 +627,7 @@ public class BFSExample20 {
 
 -- 코드 리뷰 데이터 삽입
 INSERT INTO code_review (id, email, title, content, create_date, language_id)
-VALUES
-    (UUID(), 'jiwonpark@google.com', '자바의 옵셔널 사용법', '<h2>Java: Optional 사용법</h2>
+VALUES (UUID(), 'jiwonpark@google.com', '자바의 옵셔널 사용법', '<h2>Java: Optional 사용법</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.Optional;
 

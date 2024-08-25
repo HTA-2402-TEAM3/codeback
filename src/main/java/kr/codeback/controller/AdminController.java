@@ -26,7 +26,7 @@ public class AdminController {
 
 		// 쿠키로 이메일 가져오는 기능
 
-		Member adminMember = memberService.findByEmail("chaeunkang@github.com");
+		Member adminMember = memberService.findByEmail("joosung@google.com");
 		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(adminMember, pageNum,
 			pageSize);
 
