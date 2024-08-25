@@ -23,7 +23,7 @@ public class Member {
 	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authority_id", nullable = false)
 	private Authority authority;
 
@@ -32,6 +32,10 @@ public class Member {
 		this.email = email;
 		this.nickname = nickname;
 		this.authority = authority;
+	}
+
+	public boolean isAdmin() {
+		return authority.getName().equals("ROLE_ADMIN");
 	}
 
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 import kr.codeback.model.entity.Member;
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, UUID>{
+public interface MemberRepository extends JpaRepository<Member, String>{
 
 }
