@@ -1,7 +1,5 @@
 package kr.codeback.service.impl;
 
-import static org.hibernate.Hibernate.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.member.MemberNotFoundException;
+import kr.codeback.exception.member.WrongAuthorityException;
 import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
@@ -36,7 +36,10 @@ public class MemberServiceImpl implements MemberService {
 		Optional<Member> optionalMember = memberRepository.findById(email);
 
 		return optionalMember.orElseThrow(
-			() -> new EntityNotFoundException("존재하지 않는 회원입니다.")
+			() -> new MemberNotFoundException(
+				ErrorCode.NOT_EXIST_USER.getStatus(),
+				ErrorCode.NOT_EXIST_USER.getMessage()
+			)
 		);
 
 	}
@@ -65,18 +68,21 @@ public class MemberServiceImpl implements MemberService {
 	public MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize) {
 
 		if (!adminMember.isAdmin()) {
-			throw new IllegalStateException("권한이 없는 유저 입니다.");
+			throw new WrongAuthorityException(
+				ErrorCode.WRONG_AUTHORITY.getStatus(),
+				ErrorCode.WRONG_AUTHORITY.getMessage()
+			);
 		}
 
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Page<Member> pageMember = memberRepository.findAll(pageable);
 
-		Page<MemberResponseDTO> pageMemberResponseDTO = pageMember.map(member -> MemberResponseDTO.builder()
-			.email(member.getEmail())
-			.nickname(member.getNickname())
-			.authorityName(member.getAuthority().getName())
-			.build()
-		);
+		Page<MemberResponseDTO> pageMemberResponseDTO = memberRepository.findAll(pageable)
+			.map(member -> MemberResponseDTO.builder()
+				.email(member.getEmail())
+				.nickname(member.getNickname())
+				.authorityName(member.getAuthority().getName())
+				.build()
+			);
 
 		return MembersWithPageResponseDTO.builder()
 			.memberResponseDTOs(pageMemberResponseDTO.getContent())

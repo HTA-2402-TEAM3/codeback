@@ -11,7 +11,7 @@ public class MemberResponseDTO {
 	private final String authorityName;
 
 	@Builder
-	private MemberResponseDTO(String email, String nickname, String authorityName, int totalElements) {
+	private MemberResponseDTO(String email, String nickname, String authorityName) {
 		this.email = email;
 		this.nickname = nickname;
 		this.authorityName = authorityName;
