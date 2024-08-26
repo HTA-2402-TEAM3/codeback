@@ -1,12 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>User Info</title>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <script>
+        // 페이지가 로드될 때 사용자 정보를 가져오는 함수
+        window.onload = function() {
+            fetchUserInfo();
+        };
+
+        function fetchUserInfo() {
+            fetch(`/api/user/email`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok.');
+                    }
+                    return response.json(); // JSON 응답으로 변환
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    // JSON 데이터를 HTML에 표시
+                    document.getElementById('email').innerText = data.email;
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    document.body.innerHTML = "<p>No user data found. Please log in.</p>"; // 오류 메시지 표시
+                });
+        }
+    </script>
 </head>
 <body>
-<h1>User Info</h1>
-<p>Username: <span th:text="${username}"></span></p>
-<p>Email: <span th:text="${email}"></span></p>
+<h1>User Profile</h1>
+<p>Nickname: <span id="nickname"></span></p>
+<p>Email: <span id="email"></span></p>
+
 <a href="/">Log out</a>
 </body>
 </html>
