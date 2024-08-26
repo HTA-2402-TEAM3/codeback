@@ -27,7 +27,7 @@ public class CodeReview {
 	@Id
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "email", nullable = false)
 	private Member member;
 

@@ -12,4 +12,7 @@ public interface CodeReviewPreferenceService {
 	// 좋아요 제거
 	Boolean removePreference(String email, String entityId);
 
+	//이메일로 삭제 삭제
+	void deleteAllByEmail(String deleteEmail);
+
 }

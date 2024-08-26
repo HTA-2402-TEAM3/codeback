@@ -29,7 +29,10 @@ public interface MemberService {
 	//관리자 계정으로 멤버 찾는 메서드
 	MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize);
 
-	//관리자 계정으로 회원 삭제
-	void deleteByEmailUnderAdmin(Member adminMember, String deleteEmail);
+	// 이메일로 회원 삭제
+	void deleteByEmail(String deleteEmail);
+
+	// 관리자 계정 찾기
+	Member findAdminMemberByEmail(String email);
 
 }

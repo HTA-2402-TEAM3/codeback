@@ -13,6 +13,7 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
+import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -42,9 +43,10 @@ public class AdminController {
 
 		// 쿠키로 이메일 가져오는 기능
 
-		Member adminMember = memberService.findByEmail("joosung@google.com");
+		Member adminMember = memberService.findAdminMemberByEmail("joosung@google.com");
 
-		memberService.deleteByEmailUnderAdmin(adminMember, deleteEmail);
+		memberService.deleteByEmail(deleteEmail);
+
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new MessageResponseDTO(deleteEmail + SuccessMessage.DELETE.getMessage()));
 	}

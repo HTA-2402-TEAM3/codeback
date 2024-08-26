@@ -21,4 +21,8 @@ public interface CodeReviewService {
 
 	// 게시물 삭제 (JpaRepository의 delete() 메서드 제공)
 	Boolean deleteCodeReviewById(String id);
+
+	// 이메일로 삭제
+	void deleteAllByEmail(String deleteEmail);
+
 }

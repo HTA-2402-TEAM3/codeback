@@ -25,7 +25,7 @@ public class CodeReviewComment {
 	@Id
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "email", nullable = false)
 	private Member member;
 
@@ -36,12 +36,12 @@ public class CodeReviewComment {
 	@CreationTimestamp
 	private Timestamp createDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "code_review_id", nullable = false)
 	private CodeReview codeReview;
 
 	// TODO : 추후 양방향 맵핑 고려
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "base_comment_id")
 	private CodeReviewComment baseComment;
 

@@ -16,7 +16,10 @@ import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
+import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
+import kr.codeback.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,6 +27,10 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
+
+	private final CodeReviewService codeReviewService;
+	private final NotificationService notificationService;
+	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
 	public Boolean saveMember(Member member) {
@@ -68,13 +75,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize) {
 
-		if (!adminMember.isAdmin()) {
-			throw new WrongAuthorityException(
-				ErrorCode.WRONG_AUTHORITY.getStatus(),
-				ErrorCode.WRONG_AUTHORITY.getMessage()
-			);
-		}
-
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
 		Page<MemberResponseDTO> pageMemberResponseDTO = memberRepository.findAll(pageable)
@@ -94,16 +94,27 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public void deleteByEmailUnderAdmin(Member adminMember, String deleteEmail) {
+	public void deleteByEmail(String deleteEmail) {
 
-		if (!adminMember.isAdmin()) {
+		notificationService.deleteAllByEmail(deleteEmail);
+		codeReviewPreferenceService.deleteAllByEmail(deleteEmail);
+		codeReviewService.deleteAllByEmail(deleteEmail);
+		memberRepository.deleteById(deleteEmail);
+	}
+
+	@Override
+	public Member findAdminMemberByEmail(String email) {
+
+		Member member = findByEmail(email);
+
+		if (!member.isAdmin()) {
 			throw new WrongAuthorityException(
 				ErrorCode.WRONG_AUTHORITY.getStatus(),
 				ErrorCode.WRONG_AUTHORITY.getMessage()
 			);
 		}
 
-		memberRepository.deleteById(deleteEmail);
+		return member;
 	}
 
 }

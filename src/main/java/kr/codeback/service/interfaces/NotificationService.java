@@ -22,4 +22,8 @@ public interface NotificationService {
 
 	// 알림 삭제
 	Boolean deleteNotification(UUID notificationId);
+
+	// 이메일로 삭제
+	void deleteAllByEmail(String deleteEmail);
+
 }
