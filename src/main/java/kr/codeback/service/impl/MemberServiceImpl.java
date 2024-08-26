@@ -16,6 +16,7 @@ import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
+import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
@@ -28,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
 
+	private final CodeReviewCommentService codeReviewCommentService;
 	private final CodeReviewService codeReviewService;
 	private final NotificationService notificationService;
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
@@ -98,7 +100,10 @@ public class MemberServiceImpl implements MemberService {
 
 		notificationService.deleteAllByEmail(deleteEmail);
 		codeReviewPreferenceService.deleteAllByEmail(deleteEmail);
+
+		codeReviewCommentService.deleteAllByEmail(deleteEmail);
 		codeReviewService.deleteAllByEmail(deleteEmail);
+
 		memberRepository.deleteById(deleteEmail);
 	}
 

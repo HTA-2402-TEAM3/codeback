@@ -24,7 +24,6 @@ public interface CodeReviewCommentRepository extends JpaRepository<CodeReviewCom
 		select c from CodeReviewComment c
 		join fetch c.member
 		join fetch c.codeReview
-		join fetch c.baseComment
 		where c.member.email = :email
 		""")
 	void findByEmail(String email);

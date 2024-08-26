@@ -40,18 +40,11 @@ public class CodeReviewComment {
 	@JoinColumn(name = "code_review_id", nullable = false)
 	private CodeReview codeReview;
 
-	// TODO : 추후 양방향 맵핑 고려
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "base_comment_id")
-	private CodeReviewComment baseComment;
-
 	@Builder
-	private CodeReviewComment(UUID id, Member member, String comment, CodeReview codeReview,
-		CodeReviewComment baseComment) {
+	private CodeReviewComment(UUID id, Member member, String comment, CodeReview codeReview) {
 		this.id = id;
 		this.member = member;
 		this.comment = comment;
 		this.codeReview = codeReview;
-		this.baseComment = baseComment;
 	}
 }

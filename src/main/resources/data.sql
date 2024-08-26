@@ -771,8 +771,8 @@ console.log(greet(user));
 
 
 
-INSERT INTO code_review_comment (id, comment, create_date, code_review_id, base_comment_id, email)
-VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 0), NULL, 'yunachoi@google.com'),
+INSERT INTO code_review_comment (id, comment, create_date, code_review_id, email)
+VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 'yunachoi@google.com'),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -782,15 +782,14 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
         queue.add(start);
 
 </code></pre></div>
-이부분에서 다형성을 고려해야 할 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 1), null, 'jiwonpark@google.com'),
+이부분에서 다형성을 고려해야 할 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 'jiwonpark@google.com'),
        (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         while (!queue.isEmpty()) {
             int node = queue.poll();
             System.out.print(node + " ");
 
-</code></pre></div>이 부분은 왜 이렇게 쓰신걸까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 2), NULL,
-        'chaeunkang@github.com'),
+</code></pre></div>이 부분은 왜 이렇게 쓰신걸까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 2), 'chaeunkang@github.com'),
        (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
             for (int neighbor : graph.get(node)) {
@@ -800,8 +799,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
                 }
             }
 
-</code></pre></div>반복문이 너무 깊습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 3), NULL,
-        'seokjinjung@github.com'),
+</code></pre></div>반복문이 너무 깊습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 3), 'seokjinjung@github.com'),
        (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -811,8 +809,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
             }
         }
 
-</code></pre></div>이런 방법으로 하면 좋을 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 4), NULL,
-        'sangminlee@naver.com'),
+</code></pre></div>이런 방법으로 하면 좋을 거 같습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 4), 'sangminlee@naver.com'),
        (UUID(), '<div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -822,7 +819,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
             }
         }
 
-</code></pre></div>이건 어떨까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 5), NULL, 'minjicho@naver.com'),
+</code></pre></div>이건 어떨까요?', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 5), 'minjicho@naver.com'),
        (UUID(), 'private void bfs(int start, List<List<Integer>> graph, boolean[] visited) {
         Queue<Integer> queue = new LinkedList<>();
         visited[start] = true;
@@ -839,7 +836,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
                 }
             }
         }
-    }요거는 어떨까요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 6), NULL, 'hayounglee@google.com'),
+    }요거는 어떨까요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 6), 'hayounglee@google.com'),
        (UUID(), 'public void bfsTraverse(List<List<Integer>> graph) {
         boolean[] visited = new boolean[graph.size()];
         for (int i = 0; i < graph.size(); i++) {
@@ -847,7 +844,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
                 bfs(i, graph, visited);
             }
         }
-    }너무 힘들어요..', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 7), NULL, 'seungwookim@google.com'),
+    }너무 힘들어요..', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 7), 'seungwookim@google.com'),
        (UUID(), ' static class TreeNode {
         int val;
         List<TreeNode> children;
@@ -856,7 +853,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
             this.val = val;
             this.children = new ArrayList<>();
         }
-    }덕분에 트리 노드를 구경했습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 8), NULL, 'jisoolim@codeback.kr'),
+    }덕분에 트리 노드를 구경했습니다.', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 8), 'jisoolim@codeback.kr'),
        (UUID(), 'public void bfs(TreeNode root) {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
@@ -866,8 +863,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
             System.out.print(node.val + " ");
             queue.addAll(node.children);
         }
-    }저도요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 9), NULL, 'seokjinjung@github.com');
-
+    }저도요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 9), 'seokjinjung@github.com');
 
 INSERT INTO code_review_preference (id, sender_email, entity_id, is_Like, create_date)
 VALUES (UUID(), 'chaeunkang@github.com', (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1, NOW()),

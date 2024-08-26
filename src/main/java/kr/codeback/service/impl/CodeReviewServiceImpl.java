@@ -55,8 +55,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	@Override
 	@Transactional
 	public void deleteAllByEmail(String deleteEmail) {
-
-		codeReviewCommentService.deleteAllByEmail(deleteEmail);
 		codeReviewRepository.deleteAllByEmail(deleteEmail);
 	}
 }

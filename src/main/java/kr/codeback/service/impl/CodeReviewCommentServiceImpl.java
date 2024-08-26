@@ -19,13 +19,4 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 		codeReviewCommentRepository.deleteAllByEmail(deleteEmail);
 	}
 
-	@Override
-	public void findByEmail(String email) {
-		codeReviewCommentRepository.findByEmail(email);
-	}
-
-	@Override
-	public void deleteAllByBaseCommentID(String baseCommentID) {
-
-	}
 }
