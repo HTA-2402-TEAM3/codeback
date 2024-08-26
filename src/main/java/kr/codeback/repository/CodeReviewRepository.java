@@ -19,7 +19,7 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 		select cr from CodeReview cr
 		join fetch cr.member
 		join fetch cr.codeLanguageCategory
-		join fetch cr.comments
+		left join fetch cr.comments
 		where cr.id = :id
 		""")
 	Optional<CodeReview> findById(@NonNull UUID id);
