@@ -15,13 +15,13 @@ import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
-public class MemberApiController {
+public class MemberRestController {
 
 	private final JwtUtil jwtUtil;
 
-	@GetMapping("/user/email")
+	@GetMapping("/email")
 	public ResponseEntity<Map<String, String>> getUserEmail(
 		@CookieValue(value = "jwtToken", required = false) String jwtToken) {
 		Map<String, String> response = new HashMap<>();
@@ -34,4 +34,5 @@ public class MemberApiController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Unauthorized"));
 		}
 	}
+
 }

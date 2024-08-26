@@ -42,8 +42,14 @@ public class JwtUtil {
     }
 
     //토큰 생성하기
-    public String generateToken(String email) {
+    public String generateRefreshToken(String email) {
         Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, email);
+    }
+
+    public String generateAccessToken(String email,String nickname) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("nickname",nickname);
         return createToken(claims, email);
     }
 

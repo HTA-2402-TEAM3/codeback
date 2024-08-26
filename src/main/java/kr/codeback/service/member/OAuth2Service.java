@@ -1,4 +1,4 @@
-package kr.codeback.service;
+package kr.codeback.service.member;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

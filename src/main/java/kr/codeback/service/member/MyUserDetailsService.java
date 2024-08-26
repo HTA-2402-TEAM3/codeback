@@ -1,4 +1,4 @@
-package kr.codeback.service;
+package kr.codeback.service.member;
 
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;

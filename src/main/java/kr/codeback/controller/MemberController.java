@@ -90,7 +90,7 @@ public class MemberController {
 
 
 		//token 생성
-		String token = jwtUtil.generateToken(userResponseDTO.getEmail());
+		String token = jwtUtil.generateAccessToken(userResponseDTO.getEmail(),userResponseDTO.getNickname());
 
 		Authority authority = authorityService.findByName("ROLE_USER").get();
 
