@@ -31,16 +31,16 @@
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center"><h2>Code Review</h2>
-            <div class="box" id="checkbox-container">
+            <div class="box" id="checkbox-container" style="justify-content: space-between">
                 <p></p>
-                <div th:each="language : ${languages}">
+                <div class="checkbox-group" th:each="language : ${languages}">
                     <input
                             type="checkbox"
-                            th:id="${language.name}"
-                            name="language"
-                            checked
-                            th:value="${language.Id}"
-                    /><label th:for="${language.name}" th:text="${language.name}"></label>
+                            th:id="${language.getLanguageName()}"
+                            th:value="${language.getId()}"
+                            onclick="selectOnlyOne(this)"
+                    />
+                    <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}"></label>
                 </div>
             </div>
         </header>
@@ -62,9 +62,9 @@
             </a>
         </div>
     </div>
-    <div class="box-container">
+    <div class="box-container" id="reviewsContainer">
         <div th:each="reviews : ${reviews}">
-            <a href="/api/review/${reviews.id}" class="box" style="padding-bottom: 0;">
+            <a th:href="@{/review/{id}(id=${reviews.id})}" class="box" style="padding-bottom: 0;">
                 <div>
                     <ul style="margin-bottom: 30px;">
                         <li>
@@ -78,13 +78,13 @@
                     <ul style="margin-top: 30px;">
                         <li>
                             <h5 id="writer1" name="writer" style="margin: 0; font-weight: bold;"
-                                th:text="${reviews.member.getNickname()}"></h5>
+                                th:text="${reviews.member}"></h5>
                             <h5 id="date1" name="date" style="margin-top: 0;" th:text="${reviews.createDate}"></h5>
                         </li>
                         <li>
                             <div>
                                 <icon class="icon fa-thumbs-up" th:text="${reviews.preferenceCnt}"></icon>
-                                <icon class="icon fa-comment" th:text="${reviews.codeReviewComments.size()}"></icon>
+                                <icon class="icon fa-comment" th:text="${reviews.codeReviewComments}"></icon>
                             </div>
                         </li>
                     </ul>
@@ -96,37 +96,29 @@
 <!-- footer -->
 <nav aria-label="Page navigation">
     <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
+        <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/api/review/?pageNum=${currentPage - 1}}" aria-label="Previous" th:disabled="${currentPage == 0}">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
+
+        <li class="page-item" th:each="page : ${#numbers.range(0, totalPages - 1)}">
+            <a class="page-link" th:href="@{/api/review/?pageNum=${page + 1}}" th:text="${page + 1}"></a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+
+        <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/api/review/?pageNum=${currentPage + 1}}" aria-label="Next" th:disabled="${currentPage == totalPages - 1}">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
     </ul>
 </nav>
-<script src="../../static/assets/js/jquery.min.js"></script>
-<script src="../../static/assets/js/skel.min.js"></script>
-<script src="../../static/assets/js/util.js"></script>
-<script src="../../static/assets/js/main.js"></script>
+
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/skel.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/review-list.js"></script>
 </body>
-</body></html>
+</html>
 

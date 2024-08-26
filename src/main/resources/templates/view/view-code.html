@@ -38,13 +38,13 @@
             <h2 th:text="${codeReview.title}"></h2>
             <div class="row" id="article-info">
                 <div class="user-info">
-                    <h4 th:text="${codeReview.member.nickname}"></h4>
+                    <h4 th:text="${codeReview.member}"></h4>
                 </div>
                 <div class="row">
                     <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                     <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
-                        <span class="count">5</span>
+                        <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
                     </a>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                 <ul>
                     <li>
                         <div>
-                            <h4 th:text="${comments.member.nickname}" style="margin: 0;"></h4>
+                            <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
                             <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
                         </div>
                     </li>
@@ -100,13 +100,12 @@
                         </a>
                     </li>
                 </ul>
-                <div id="comment">
-                    <p th:utext="${comments.comment}"></p>
+                <div id="comment1">
+                    <p th:utext="${comments.comment}"/>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<div style="height: 100px;"></div> <!-- 빈 공간 추가 -->
 </body>
 </html>

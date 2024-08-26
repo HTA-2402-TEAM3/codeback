@@ -1712,10 +1712,6 @@ body {
 
 /* Basic */
 
-@-ms-viewport {
-  width: device-width;
-}
-
 body {
   -ms-overflow-style: scrollbar;
 }
@@ -2277,8 +2273,10 @@ input[type="radio"] + label:before {
   text-transform: none !important;
 }
 
-input[type="checkbox"] + label:before {
-  background: rgba(144, 144, 144, 0.075);
+input[type="checkbox"] + label:before,
+input[type="radio"] + label:before {
+
+    background: rgba(144, 144, 144, 0.075);
   border-radius: 0;
   border: solid 1px #8dcca9;
   content: "";
@@ -2291,21 +2289,8 @@ input[type="checkbox"] + label:before {
   top: 0;
   width: 1.65em;
 }
-/* input[type="radio"] + label:before {
-  background: rgba(144, 144, 144, 0.075);
-  border-radius: 0;
-  border: solid 1px #8dcca9;
-  content: "";
-  display: inline-block;
-  height: 1.65em;
-  left: 0;
-  line-height: 1.58125em;
-  position: absolute;
-  text-align: center;
-  top: 0;
-  width: 1.65em;
-} */
 
+input[type="radio"]:checked + label:before,
 input[type="checkbox"]:checked + label:before {
   background: #aa2c2c;
   border-color: #aa2c2c;
@@ -2313,6 +2298,7 @@ input[type="checkbox"]:checked + label:before {
   content: "\f00c";
 }
 
+input[type="radio"]:focus + label:before,
 input[type="checkbox"]:focus + label:before {
   border-color: #aa2c2c;
   box-shadow: 0 0 0 1px #aa2c2c;
@@ -2550,10 +2536,15 @@ input[type="radio"] + label:before {
   color: #aa2c2c;
 }
 
-/* .search-container input[type="text"] {
-  /* flex: 1; 입력란이 가능한 공간을 모두 차지하도록 설정 */
-/* margin-right: 50px; 입력란과 버튼 사이에 간격 추가 */
-/* } */
+#checkbox-container {
+  display: flex;
+  flex-wrap: wrap; /* 줄 바꿈을 가능하게 합니다 */
+}
+
+.checkbox-group {
+  width: 20%; /* 한 줄에 5개를 표시하기 위해 20% */
+  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비를 계산합니다 */
+}
 
 /* Box */
 .box-container {
@@ -3341,7 +3332,6 @@ img {
 #banner {
   height: 100%;
   padding: 8em 0 9em 0;
-  background-image: url(../../images/banner.jpg);
   background-size: cover;
   background-position: bottom;
   background-attachment: fixed;
