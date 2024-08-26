@@ -1,6 +1,7 @@
 package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,11 +51,13 @@ public class CodeReview {
 
 	@Builder
 	private CodeReview(UUID id, Member member, String title, String content,
-		CodeLanguageCategory codeLanguageCategory) {
+		CodeLanguageCategory codeLanguageCategory, List<CodeReviewComment> comments
+	,List<CodeReviewPreference> preferences) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
 		this.content = content;
 		this.codeLanguageCategory = codeLanguageCategory;
+		this.comments = comments;
 	}
 }
