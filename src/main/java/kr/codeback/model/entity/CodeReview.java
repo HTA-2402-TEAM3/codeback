@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -51,8 +52,7 @@ public class CodeReview {
 
 	@Builder
 	private CodeReview(UUID id, Member member, String title, String content,
-		CodeLanguageCategory codeLanguageCategory, List<CodeReviewComment> comments
-	,List<CodeReviewPreference> preferences) {
+		CodeLanguageCategory codeLanguageCategory, List<CodeReviewComment> comments) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
