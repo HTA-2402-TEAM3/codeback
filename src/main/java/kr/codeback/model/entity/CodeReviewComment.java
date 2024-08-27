@@ -26,7 +26,7 @@ public class CodeReviewComment {
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "email", nullable = false)
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@Column(name = "comment", nullable = false, length = 2000)

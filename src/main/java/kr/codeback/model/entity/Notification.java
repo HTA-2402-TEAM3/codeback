@@ -26,7 +26,7 @@ public class Notification {
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "receiver_email", nullable = false)
+	@JoinColumn(name = "receiver_member_id", nullable = false)
 	private Member member;
 
 	@Column(name = "entity_id", nullable = false)

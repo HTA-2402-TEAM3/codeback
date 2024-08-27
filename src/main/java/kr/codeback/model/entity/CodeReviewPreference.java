@@ -26,7 +26,7 @@ public class CodeReviewPreference {
 	private UUID id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "sender_email", nullable = false)
+	@JoinColumn(name = "sender_member_id", nullable = false)
 	private Member member;
 
 	@Column(name = "entity_id", nullable = false)
