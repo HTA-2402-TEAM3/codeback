@@ -1,5 +1,6 @@
 package kr.codeback.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,22 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Member;
 import lombok.NonNull;
 
 @Repository
 public interface CodeReviewPreferenceRepository extends JpaRepository<CodeReviewPreference, UUID> {
 
-	@Modifying
-	@Query("""
-		delete from CodeReviewPreference p
-		where p.member.email = :email
-		""")
-	void deleteByEmail(@NonNull String email);
+	List<CodeReviewPreference> findByEntityID(@NonNull UUID EntityId);
 
-	@Modifying
-	@Query("""
-		delete from CodeReviewPreference p
-		where p.entityID = :entityID
-		""")
-	void deleteByEntityID(@NonNull UUID entityID);
+	List<CodeReviewPreference> findByMember(@NonNull Member member);
 }

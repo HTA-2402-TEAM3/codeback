@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
+import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
@@ -24,20 +25,30 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	@Override
 	@Transactional
-	public void deleteByEmail(String deleteEmail) {
-		codeReviewCommentRepository.deleteByEmail(deleteEmail);
-	}
+	public void deleteByMember(Member member) {
 
-	@Override
-	public List<CodeReviewComment> findByCodeReview(CodeReview codeReview) {
-		return codeReviewCommentRepository.findByCodeReview(codeReview);
+		List<CodeReviewComment> codeReviewComments = codeReviewCommentRepository.findByMember(member);
+
+		if (codeReviewComments.isEmpty()) {
+			return;
+		}
+
+		codeReviewComments.stream()
+			.map(CodeReviewComment::getId)
+			.forEach(notificationService::deleteByEntityID);
+
+		codeReviewComments.stream()
+			.map(CodeReviewComment::getId)
+			.forEach(codeReviewPreferenceService::deleteByEntityID);
+
+		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByCodeReview(CodeReview codeReview) {
 
-		List<CodeReviewComment> codeReviewComments = findByCodeReview(codeReview);
+		List<CodeReviewComment> codeReviewComments = codeReview.getComments();
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)

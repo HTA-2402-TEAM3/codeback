@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.Member;
 
 public interface CodeReviewService {
 
@@ -23,9 +24,8 @@ public interface CodeReviewService {
 	// 게시물 삭제 (JpaRepository의 delete() 메서드 제공)
 	Boolean deleteCodeReviewById(String id);
 
-	// 이메일로 삭제
-	void deleteByEmail(String deleteEmail);
+	void deleteByMember(Member member);
 
-	List<CodeReview> findByMemberEmail(String memberEmail);
+	List<CodeReview> findByMember(Member member);
 
 }

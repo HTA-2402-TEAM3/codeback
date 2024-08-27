@@ -1,5 +1,6 @@
 package kr.codeback.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewPreferenceRepository;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +30,38 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 	}
 
 	@Override
+	public List<CodeReviewPreference> findByMember(Member member) {
+		return codeReviewPreferenceRepository.findByMember(member);
+	}
+
+	@Override
 	@Transactional
-	public void deleteByEmail(String deleteEmail) {
-		codeReviewPreferenceRepository.deleteByEmail(deleteEmail);
+	public void deleteByMember(Member member) {
+
+		List<CodeReviewPreference> codeReviewPreferences = findByMember(member);
+
+		if (codeReviewPreferences.isEmpty()) {
+			return;
+		}
+
+		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+	}
+
+	@Override
+	public List<CodeReviewPreference> findByEntityID(UUID entityID) {
+		return codeReviewPreferenceRepository.findByEntityID(entityID);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByEntityID(UUID entityID) {
-		codeReviewPreferenceRepository.deleteByEntityID(entityID);
+
+		List<CodeReviewPreference> codeReviewPreferences = findByEntityID(entityID);
+
+		if (codeReviewPreferences.isEmpty()) {
+			return;
+		}
+
+		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
 	}
 }

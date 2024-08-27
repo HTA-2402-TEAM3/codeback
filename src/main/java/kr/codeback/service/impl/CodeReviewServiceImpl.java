@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
@@ -57,9 +58,9 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public void deleteByEmail(String deleteEmail) {
+	public void deleteByMember(Member member) {
 
-		List<CodeReview> deleteCodeReviews = findByMemberEmail(deleteEmail);
+		List<CodeReview> deleteCodeReviews = findByMember(member);
 
 		deleteCodeReviews.forEach(codeReviewCommentService::deleteByCodeReview);
 		deleteCodeReviews.forEach(codeReview -> codeReviewPreferenceService.deleteByEntityID(codeReview.getId()));
@@ -68,7 +69,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public List<CodeReview> findByMemberEmail(String memberEmail) {
-		return codeReviewRepository.findByMemberEmail(memberEmail);
+	public List<CodeReview> findByMember(Member member) {
+		return codeReviewRepository.findByMemberEmail(member.getEmail());
 	}
 }

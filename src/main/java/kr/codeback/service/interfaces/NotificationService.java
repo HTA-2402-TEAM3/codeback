@@ -1,9 +1,11 @@
 package kr.codeback.service.interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 
 public interface NotificationService {
@@ -23,9 +25,12 @@ public interface NotificationService {
 	// 알림 삭제
 	Boolean deleteNotification(UUID notificationId);
 
-	// 이메일로 삭제
-	void deleteByEmail(String deleteEmail);
+	void deleteByMember(Member member);
 
 	void deleteByEntityID(UUID entityID);
+
+	List<Notification> findByMember(Member member);
+
+	List<Notification> findByEntityID(UUID entityID);
 
 }

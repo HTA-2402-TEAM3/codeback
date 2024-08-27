@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,13 +23,6 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 		where cr.id = :id
 		""")
 	Optional<CodeReview> findById(@NonNull UUID id);
-
-	@Modifying
-	@Query("""
-		delete from CodeReview cr
-		where cr.member.email = :email
-		""")
-	void deleteAllByEmail(@NonNull String email);
 
 	@Query("""
 		select cr from CodeReview cr
