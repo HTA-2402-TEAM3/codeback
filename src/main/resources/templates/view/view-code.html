@@ -1,4 +1,4 @@
-view-code
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -32,23 +32,31 @@ view-code
             </a>
         </a>
     </div>
+
+
 </header>
 <section id="main" class="wrapper">
     <div class="inner">
         <header class="align-center">
             <h2 th:text="${codeReview.title}"></h2>
+
+
             <div class="row" id="article-info">
                 <div class="user-info">
                     <h4 style="margin : 0;" th:text="${codeReview.member.nickname}"></h4>
                 </div>
                 <div class="row">
                     <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
+                    <li>
                     <a href="#" class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
                         <span class="count">5</span>
                     </a>
+                    </li>
                 </div>
             </div>
+
+
         </header>
 
         <hr class="major"/>
