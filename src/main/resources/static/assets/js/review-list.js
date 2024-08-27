@@ -16,32 +16,72 @@ function selectOnlyOne(checkbox) {
     console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
 }
 
-function fetchData(value) {
-    $.ajax({
-        url: `/api/review/${value}`,
-        method: 'GET',
-        success: function (data) {
-            console.log("data ::::" , data);
-            renderReviews(data.reviews);
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
+function renderPaging(totalPage) {
+    const ul = $('#pagingUl');
+    ul.empty();
+
+    let pageElements = `
+        <li class="page-item">
+            <a class="page-link" aria-label="Previous" onclick="fetchAllData(0); return false;">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+    `;
+
+    for (let page = 0; page < totalPage; page++) {
+        pageElements += `
+            <li class="page-item">
+                <a class="page-link" onclick="fetchAllData(${page}); return false;">${page + 1}</a>
+            </li>
+        `;
+    }
+
+    pageElements += `
+        <li class="page-item">
+            <a class="page-link" onclick="fetchAllData(${totalPage}); return false;">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `;
+    ul.append(pageElements);
 }
 
-function fetchAllData() {
-    $.ajax({
-        url: `/review/list`,
-        method: 'GET',
-        success: function (data) {
-            console.log("allData: ",data);
-        },
-        error: function (error) {
-            console.error(error);
-        }
-    });
+function fetchData(value) {
+    fetch(`/api/review/${value}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("data ::::", data);
+            renderReviews(data.reviews);
+            renderPaging(data.totalPage);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
 }
+
+function fetchAllData(page) {
+    fetch(`/api/review/?pageNum=${page}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("allData: ", data);
+            renderReviews(data.reviews);
+            renderPaging(data.totalPage);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+}
+
 
 function renderReviews(reviews) {
     const container = $('#reviewsContainer');

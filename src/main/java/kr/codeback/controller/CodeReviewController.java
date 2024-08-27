@@ -3,23 +3,22 @@ package kr.codeback.controller;
 import java.util.List;
 import java.util.UUID;
 
-import kr.codeback.model.dto.DTOSample;
+import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReviewPreference;
-import kr.codeback.service.ServiceSample;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kr.codeback.model.dto.response.CodeReviewResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/review")
@@ -45,7 +44,7 @@ public class CodeReviewController {
                 .content(codeReview.getContent())
                 .createDate(codeReview.getCreateDate())
                 .codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-                .codeReviewComments(codeReview.getComments().size())
+                .codeReviewComments(codeReview.getComments())
                 .preferenceCnt(codeReviewPreference.size())
                 .build());
 
@@ -54,7 +53,7 @@ public class CodeReviewController {
 
     @GetMapping("/")
     public String checkReviews(Model model) {
-        List<CodeReviewResponseDTO> reviews = codeReviewService.findCodeReviewAll(0, 10, "createDate").getContent();
+        List<CodeReviewListResponseDTO> reviews = codeReviewService.findCodeReviewAll(0, 10, "createDate").getContent();
         List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
 
         model.addAttribute("totalPages", codeReviewService.findCodeReviewAll(0, 10, "createDate").getTotalPages());
@@ -62,5 +61,13 @@ public class CodeReviewController {
         model.addAttribute("reviews", reviews);
 
         return "/view/review-list";
+    }
+
+    @GetMapping("/write")
+    public String writeReview(Model model) {
+        List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
+
+        model.addAttribute("languages", languageCategories);
+        return "/view/write";
     }
 }

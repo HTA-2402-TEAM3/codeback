@@ -1,10 +1,8 @@
 package kr.codeback.repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import kr.codeback.model.dto.response.CodeReviewResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +25,4 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 	Optional<CodeReview> findById(UUID id);
 
 	Page<CodeReview> findByCodeLanguageCategory_Id(UUID language, Pageable pageable);
-
-	Optional<CodeReview> findByCodeLanguageCategory_Id(UUID language);
 }

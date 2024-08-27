@@ -77,6 +77,7 @@
             document.getElementById('submit').addEventListener('click', () => {
                 const content = editor.getHTML();
                 console.log(content);
+                console.log(editor.getMarkdown());
             })
         </script>
 
@@ -101,7 +102,7 @@
                     </li>
                 </ul>
                 <div id="comment1">
-                    <p th:utext="${comments.comment}"/>
+                    <p th:utext="${comments.comment}"></p>
                 </div>
             </div>
         </div>
