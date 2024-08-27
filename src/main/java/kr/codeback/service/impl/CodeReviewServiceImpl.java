@@ -88,8 +88,12 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     }
 
     @Override
-    public Boolean deleteCodeReviewById(String id) {
-        return null;
+    public Boolean deleteCodeReviewById(UUID id) {
+        CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(()->
+                new IllegalArgumentException("no CodeReview : "+id));
+        codeReviewRepository.delete(codeReview);
+
+        return true;
     }
 
     @Override

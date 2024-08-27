@@ -27,7 +27,7 @@ public interface CodeReviewService {
 	List<CodeReview> findCodeReviewByTitle(String title);
 
 	// 게시물 삭제 (JpaRepository의 delete() 메서드 제공)
-	Boolean deleteCodeReviewById(String id);
+	Boolean deleteCodeReviewById(UUID id);
 
 	// 게시물 작성
 	CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);

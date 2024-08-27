@@ -50,4 +50,10 @@ public class CodeReviewRestController {
         codeReviewService.saveCodeReview(codeReview);
         return ResponseEntity.ok().body("{\"status\":\"success\"}");
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteReview(@PathVariable UUID id) {
+        codeReviewService.deleteCodeReviewById(id);
+        return ResponseEntity.ok().body("{\"status\":\"success\"}");
+    }
 }
