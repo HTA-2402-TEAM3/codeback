@@ -49,8 +49,6 @@
                     </a>
                 </div>
             </div>
-
-
         </header>
 
         <hr class="major"/>
@@ -62,7 +60,9 @@
             <button class="button special disabled">#java</button>
             <div style="display: flex;gap:20px" class="icon_view">
                 <a class="icon fa-pencil" href="#"></a>
-                <a class="icon fa-trash" href="#"></a>
+                <a class="icon fa-trash"
+                   th:reviewId="${codeReview.id}"
+                   th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
             </div>
         </div>
         <hr class="major"/>
@@ -113,5 +113,24 @@
         </script>
     </div>
 </section>
+<script>
+    function deleteCodeReview(id) {
+        if(confirm("정말 삭제하시겠습니까?")) {
+            fetch(`/api/review/delete/${id}`, {
+                method: 'DELETE'
+            })
+                .then(resp => {
+                    if(resp.ok) {
+                        alert("삭제되었습니다.");
+                        window.location.href = '/review/';
+                    } else {
+                        throw new Error("err");
+                    }
+                }).catch(error => {
+                    console.error(error);
+            })
+        }
+    }
+</script>
 </body>
 </html>

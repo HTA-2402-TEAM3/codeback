@@ -31,9 +31,9 @@
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center"><h2>Code Review</h2>
-            <div class="box" id="checkbox-container" style="justify-content: space-between">
+            <div class="box" id="checkbox-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
                 <p></p>
-                <div class="checkbox-group" th:each="language : ${languages}">
+                <div class="checkbox-group" th:each="language : ${languages}" style="width: 20%; box-sizing: border-box;">
                     <input
                             type="checkbox"
                             th:id="${language.getLanguageName()}"
@@ -46,7 +46,7 @@
         </header>
     </div>
     <div class="inner_logo">
-        <button class="special button">글쓰기</button>
+        <button class="special button" onclick="window.location.href='/review/write'">글쓰기</button>
         <div class="search-container">
             <div>
                 <input type="text" name="search" id="search" value="" placeholder="Search"/>
