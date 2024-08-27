@@ -1,6 +1,7 @@
 package kr.codeback.service.interfaces;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import kr.codeback.model.entity.CodeReview;
@@ -23,6 +24,8 @@ public interface CodeReviewService {
 	Boolean deleteCodeReviewById(String id);
 
 	// 이메일로 삭제
-	void deleteAllByEmail(String deleteEmail);
+	void deleteByEmail(String deleteEmail);
+
+	List<CodeReview> findByMemberEmail(String memberEmail);
 
 }

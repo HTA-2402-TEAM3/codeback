@@ -98,11 +98,11 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public void deleteByEmail(String deleteEmail) {
 
-		notificationService.deleteAllByEmail(deleteEmail);
-		codeReviewPreferenceService.deleteAllByEmail(deleteEmail);
+		notificationService.deleteByEmail(deleteEmail);
+		codeReviewPreferenceService.deleteByEmail(deleteEmail);
 
-		codeReviewCommentService.deleteAllByEmail(deleteEmail);
-		codeReviewService.deleteAllByEmail(deleteEmail);
+		codeReviewCommentService.deleteByEmail(deleteEmail);
+		codeReviewService.deleteByEmail(deleteEmail);
 
 		memberRepository.deleteById(deleteEmail);
 	}

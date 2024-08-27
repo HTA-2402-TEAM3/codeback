@@ -18,6 +18,12 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
 		delete from Notification n
 		where n.member.email = :email
 		""")
-	void deleteAllByEmail(@NonNull String email);
+	void deleteByEmail(@NonNull String email);
 
+	@Modifying
+	@Query("""
+		delete from Notification n
+		where n.entityID = :entityID
+		""")
+	void deleteByEntityID(@NonNull UUID entityID);
 }

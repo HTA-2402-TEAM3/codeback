@@ -1,6 +1,7 @@
 package kr.codeback.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
+import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	private final CodeReviewRepository codeReviewRepository;
 
 	private final CodeReviewCommentService codeReviewCommentService;
+	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
 	public ArrayList<CodeReview> findCodeReviewAll() {
@@ -54,7 +57,18 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public void deleteAllByEmail(String deleteEmail) {
-		codeReviewRepository.deleteAllByEmail(deleteEmail);
+	public void deleteByEmail(String deleteEmail) {
+
+		List<CodeReview> deleteCodeReviews = findByMemberEmail(deleteEmail);
+
+		deleteCodeReviews.forEach(codeReviewCommentService::deleteByCodeReview);
+		deleteCodeReviews.forEach(codeReview -> codeReviewPreferenceService.deleteByEntityID(codeReview.getId()));
+
+		codeReviewRepository.deleteAll(deleteCodeReviews);
+	}
+
+	@Override
+	public List<CodeReview> findByMemberEmail(String memberEmail) {
+		return codeReviewRepository.findByMemberEmail(memberEmail);
 	}
 }

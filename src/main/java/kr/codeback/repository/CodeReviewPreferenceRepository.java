@@ -18,6 +18,12 @@ public interface CodeReviewPreferenceRepository extends JpaRepository<CodeReview
 		delete from CodeReviewPreference p
 		where p.member.email = :email
 		""")
-	void deleteAllByEmail(@NonNull String email);
+	void deleteByEmail(@NonNull String email);
 
+	@Modifying
+	@Query("""
+		delete from CodeReviewPreference p
+		where p.entityID = :entityID
+		""")
+	void deleteByEntityID(@NonNull UUID entityID);
 }

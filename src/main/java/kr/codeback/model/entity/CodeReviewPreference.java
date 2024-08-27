@@ -30,7 +30,7 @@ public class CodeReviewPreference {
 	private Member member;
 
 	@Column(name = "entity_id", nullable = false)
-	private String entityID;
+	private UUID entityID;
 
 	@Column(name = "is_like", columnDefinition = "TINYINT(1)")
 	private boolean isLike;
@@ -40,7 +40,7 @@ public class CodeReviewPreference {
 	private Timestamp createDate;
 
 	@Builder
-	public CodeReviewPreference(UUID id, Member member, String entityID, boolean isLike) {
+	public CodeReviewPreference(UUID id, Member member, UUID entityID, boolean isLike) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;

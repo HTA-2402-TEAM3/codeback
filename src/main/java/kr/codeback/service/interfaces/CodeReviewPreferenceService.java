@@ -1,6 +1,7 @@
 package kr.codeback.service.interfaces;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import kr.codeback.model.entity.CodeReviewPreference;
 
@@ -13,6 +14,8 @@ public interface CodeReviewPreferenceService {
 	Boolean removePreference(String email, String entityId);
 
 	//이메일로 삭제 삭제
-	void deleteAllByEmail(String deleteEmail);
+	void deleteByEmail(String deleteEmail);
+
+	void deleteByEntityID(UUID entityID);
 
 }

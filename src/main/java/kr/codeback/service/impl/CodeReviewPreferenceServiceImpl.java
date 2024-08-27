@@ -1,6 +1,7 @@
 package kr.codeback.service.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,13 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 
 	@Override
 	@Transactional
-	public void deleteAllByEmail(String deleteEmail) {
-		codeReviewPreferenceRepository.deleteAllByEmail(deleteEmail);
+	public void deleteByEmail(String deleteEmail) {
+		codeReviewPreferenceRepository.deleteByEmail(deleteEmail);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEntityID(UUID entityID) {
+		codeReviewPreferenceRepository.deleteByEntityID(entityID);
 	}
 }

@@ -1,5 +1,6 @@
 package kr.codeback.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,4 +31,13 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 		where cr.member.email = :email
 		""")
 	void deleteAllByEmail(@NonNull String email);
+
+	@Query("""
+		select cr from CodeReview cr
+				join fetch cr.member
+				join fetch cr.codeLanguageCategory
+				left join fetch cr.comments
+				where cr.member.email = :email
+		""")
+	List<CodeReview> findByMemberEmail(@NonNull String email);
 }

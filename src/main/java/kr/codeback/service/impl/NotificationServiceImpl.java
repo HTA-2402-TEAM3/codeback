@@ -45,7 +45,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public void deleteAllByEmail(String deleteEmail) {
-		notificationRepository.deleteAllByEmail(deleteEmail);
+	public void deleteByEmail(String deleteEmail) {
+		notificationRepository.deleteByEmail(deleteEmail);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEntityID(UUID entityID) {
+		notificationRepository.deleteByEntityID(entityID);
 	}
 }

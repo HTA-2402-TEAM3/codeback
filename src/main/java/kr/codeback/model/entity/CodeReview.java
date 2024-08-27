@@ -41,7 +41,7 @@ public class CodeReview {
 	@CreationTimestamp
 	private Timestamp createDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "language_id", nullable = false)
 	private CodeLanguageCategory codeLanguageCategory;
 
