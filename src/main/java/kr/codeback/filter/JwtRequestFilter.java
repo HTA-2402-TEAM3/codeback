@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.service.member.MyUserDetailsService;
+import kr.codeback.util.CookieUtil;
 import kr.codeback.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,18 +33,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         final String authorizationHeader = request.getHeader("Authorization");
 
         String email = null;
-        String jwt = null;
+        String jwt = CookieUtil.extractAccessToken(request);
 
+        //Authorization 헤더에서 Bearer 토큰 가져오기
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             email = jwtUtil.extractEmail(jwt);
         }
 
+        // 사용자 인증 정보가 SecurityContext
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
 
-            if (jwtUtil.validateToken(jwt, email)) {
+            if (jwtUtil.validateToken(jwt)) {
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());

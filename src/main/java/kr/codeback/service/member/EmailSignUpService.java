@@ -23,32 +23,17 @@ public class EmailSignUpService {
 	@Value("${spring.mail.username}")
 	private String senderEmail;
 
-	@Value("${moview.client.url}")
+	@Value("${spring.mail.client-url}")
 	private String clientUrl;
 
-	public boolean registerMember(String email) {
+	public void sendVerificationEmail(String email, String token) {
 
-		String nickname = substringEmail(email);
-
-		Member member = Member.builder()
-			.email(email)
-			.nickname(nickname)
-			.build();
-
-		String jwtToken = jwtUtil.generateAccessToken(email,nickname);
-
-		sendVerificationEmail(member,jwtToken);
-		return verifyMember(jwtToken);
-
-	}
-
-	public void sendVerificationEmail(Member member, String token) {
-		String subject = "Please verify your email";
-		String verificationUrl = clientUrl + "/verify?token=" + token;
+		String subject = "Code Back 에서 회원가입 요청을 보냈습니다.";
+		String verificationUrl = clientUrl + "/registration?code=" + token;
 
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setFrom(senderEmail);
-		mailMessage.setTo(member.getEmail());
+		mailMessage.setTo(email);
 		mailMessage.setSubject(subject);
 		mailMessage.setText("다음 링크를 클릭하시면 회원가입이 완료됩니다. " + verificationUrl);
 
@@ -56,7 +41,7 @@ public class EmailSignUpService {
 	}
 
 	public boolean verifyMember(String token) {
-		if (jwtUtil.validateToken(token,jwtUtil.extractEmail(token))) {
+		if (jwtUtil.validateToken(token)) {
 			String email = jwtUtil.extractEmail(token);
 			Member member = memberRepository.findById(email).get();
 			memberRepository.save(member);
@@ -64,10 +49,6 @@ public class EmailSignUpService {
 		}
 		return false;
 	}
-
-	// private MemberRegisterService getSelf() {
-	// 	return applicationContext.getBean(MemberRegisterService.class);
-	// }
 
 	public String substringEmail(String email){
 		int atIndex = email.indexOf('@');

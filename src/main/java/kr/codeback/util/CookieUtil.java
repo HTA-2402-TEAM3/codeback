@@ -35,6 +35,10 @@ public class CookieUtil {
         return null;
     }
 
+    public static String extractAccessToken(HttpServletRequest request) {
+        return getCookieValue(request,"access_token"); // JWT 쿠키가 없으면 null 반환
+    }
+
     // 쿠키를 삭제하는 메서드
     public static void deleteCookie(HttpServletResponse response, String name) {
         Cookie cookie = new Cookie(name, "");

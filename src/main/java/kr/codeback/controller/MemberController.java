@@ -40,44 +40,15 @@ public class MemberController {
 	private final AuthorityService authorityService;
 	private final JwtUtil jwtUtil;
 
-
-	@GetMapping("/home")
-	public String homepage(@RequestParam String email, @RequestParam String nickname) {
-
-		System.out.println(memberService.findByEmail(email).get());
-
-		return "/index";
-	}
-
-	@GetMapping("/test")
-	public String home() {
-		return "/view/test"; // home.html을 반환
-	}
-
-	@GetMapping("/user")
-	public String user(@AuthenticationPrincipal OAuth2User principal, Model model) {
-		// GitHub 사용자 정보 처리
-		model.addAttribute("username", principal.getAttribute("login")); // GitHub username
-		model.addAttribute("email", principal.getAttribute("email")); // GitHub email
-		return "user"; // user.html를 반환
-	}
-
-	//수정이 필요합니다...
-	@GetMapping("/user/test")
-	public String readCookie(Model model,HttpServletRequest request) {
-		String cookieValue = getCookieValue(request, "jwtToken");
-		model.addAttribute("username", "test setting"); // GitHub username
-		model.addAttribute("email", ("email")); // GitHub email
-		return "user";
-	}
-
-
 	@GetMapping("/submit")
-	public String subget(){
+	public String submit(){
 		return "/view/submit";
 	}
 
-
+	@GetMapping("registration")
+	public String registration(){
+		return "/view/registration";
+	}
 
 	@GetMapping("/form/login")
 	public String login(){

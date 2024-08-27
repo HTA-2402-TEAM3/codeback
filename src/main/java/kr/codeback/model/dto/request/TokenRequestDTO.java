@@ -1,17 +1,18 @@
 package kr.codeback.model.dto.request;
 
-import java.util.Optional;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class UserRequestDTO {
+@AllArgsConstructor
+public class TokenRequestDTO {
+
 	String email;
 	String nickname;
+
+	public TokenRequestDTO(String email) {
+		this.email = email;
+	}
 }

@@ -2,6 +2,7 @@ package kr.codeback.controller;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,11 +10,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.codeback.util.HttpUtil;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/oauth")
+@RequestMapping("/oauth2")
 @RequiredArgsConstructor
+@Controller
 public class OauthController {
 
-	private final HttpUtil httpUtil;
+	@GetMapping()
+	public String oauthLogin(){
+		return "/view/oauth";
+	}
 
 	@GetMapping("/github/callback")
 	public Map<String,String> githubCallback(@RequestParam Map<String,String> codemap){
