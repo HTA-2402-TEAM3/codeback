@@ -55,4 +55,12 @@ public class Member {
 		deleteSign = true;
 	}
 
+	public String getNickname() {
+		if(deleteSign) {
+			return "탈퇴한 회원";
+		}
+
+		return nickname;
+	}
+
 }

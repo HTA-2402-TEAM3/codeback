@@ -14,7 +14,6 @@ import lombok.NonNull;
 @Repository
 public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 
-	@Override
 	@Query("""
 		select cr from CodeReview cr
 		join fetch cr.member
@@ -22,7 +21,7 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 		left join fetch cr.comments
 		where cr.id = :id
 		""")
-	Optional<CodeReview> findById(@NonNull UUID id);
+	Optional<CodeReview> findByIdWithComments(@NonNull UUID id);
 
 	@Query("""
 		select cr from CodeReview cr

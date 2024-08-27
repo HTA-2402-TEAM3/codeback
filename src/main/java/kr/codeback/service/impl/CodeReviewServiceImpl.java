@@ -33,7 +33,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	@Override
 	public CodeReview findById(UUID id) {
 
-		Optional<CodeReview> optionalCodeReview = codeReviewRepository.findById(id);
+		Optional<CodeReview> optionalCodeReview = codeReviewRepository.findByIdWithComments(id);
 
 		return optionalCodeReview.orElseThrow(
 			() -> new IllegalArgumentException("No code review found with id: " + id)
