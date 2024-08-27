@@ -33,7 +33,7 @@ public class Member {
 	private Authority authority;
 
 	@Column(name = "is_delete", columnDefinition = "TINYINT(1)")
-	private boolean isDelete = false;
+	private boolean deleteSign = false;
 
 	@Builder
 	private Member(UUID id, String email, String nickname, Authority authority) {
@@ -45,6 +45,14 @@ public class Member {
 
 	public boolean isAdmin() {
 		return authority.getName().equals("ROLE_ADMIN");
+	}
+
+	public void deleteMember() {
+
+		String uuid = String.valueOf(UUID.randomUUID());
+		email = uuid;
+		nickname = uuid;
+		deleteSign = true;
 	}
 
 }

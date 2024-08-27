@@ -30,7 +30,7 @@ public interface MemberService {
 	MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize);
 
 	// 이메일로 회원 삭제
-	void deleteByEmail(String deleteEmail);
+	void softDeleteByEmail(String email);
 
 	// 관리자 계정 찾기
 	Member findAdminMemberByEmail(String email);

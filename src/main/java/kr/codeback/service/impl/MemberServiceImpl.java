@@ -43,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member findByEmail(String email) {
 
-		Optional<Member> optionalMember = memberRepository.findById(email);
+		Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
 		return optionalMember.orElseThrow(
 			() -> new MemberNotFoundException(
@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
 
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
-		Page<MemberResponseDTO> pageMemberResponseDTO = memberRepository.findAll(pageable)
+		Page<MemberResponseDTO> pageMemberResponseDTO = memberRepository.findByDeleteSignIsFalse(pageable)
 			.map(member -> MemberResponseDTO.builder()
 				.email(member.getEmail())
 				.nickname(member.getNickname())
@@ -96,17 +96,15 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	@Transactional
-	public void deleteByEmail(String deleteEmail) {
+	public void softDeleteByEmail(String email) {
 
-		Member deleteMember = findByEmail(deleteEmail);
+		Member deleteMember = findByEmail(email);
 
 		notificationService.deleteByMember(deleteMember);
 		codeReviewPreferenceService.deleteByMember(deleteMember);
 
-		codeReviewCommentService.deleteByMember(deleteMember);
-		codeReviewService.deleteByMember(deleteMember);
-
-		memberRepository.delete(deleteMember);
+		deleteMember.deleteMember();
+		memberRepository.save(deleteMember);
 	}
 
 	@Override
