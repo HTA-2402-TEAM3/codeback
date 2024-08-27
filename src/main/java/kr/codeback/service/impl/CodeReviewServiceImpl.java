@@ -4,7 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import kr.codeback.model.dto.response.CodeReviewResponseDTO;
+import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
+import kr.codeback.model.entity.CodeLanguageCategory;
+import kr.codeback.model.entity.Member;
+import kr.codeback.repository.CodeLanguageCategoryRepository;
+import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +29,14 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
     private final CodeReviewRepository codeReviewRepository;
     private final CodeReviewPreferenceService codeReviewPreferenceService;
+    private final MemberRepository memberRepository;
+    private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
     @Override
-    public Page<CodeReviewResponseDTO> findCodeReviewAll(int pageNum, int pageSize, String sort) {
+    public Page<CodeReviewListResponseDTO> findCodeReviewAll(int pageNum, int pageSize, String sort) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
-        Page<CodeReviewResponseDTO> codeReviewResponseDTOS = codeReviewRepository.findAll(pageable)
-                .map((CodeReview codeReview) -> CodeReviewResponseDTO.builder()
+        Page<CodeReviewListResponseDTO> codeReviewResponseDTOS = codeReviewRepository.findAll(pageable)
+                .map((CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
                         .id(codeReview.getId())
                         .member(codeReview.getMember().getNickname())
                         .title(codeReview.getTitle())
@@ -44,11 +52,11 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     }
 
     @Override
-    public Page<CodeReviewResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize, String sort) {
+    public Page<CodeReviewListResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize, String sort) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
-        Page<CodeReviewResponseDTO> codeReviewResponseDTOS =
+        Page<CodeReviewListResponseDTO> codeReviewResponseDTOS =
                 codeReviewRepository.findByCodeLanguageCategory_Id(language, pageable).map(
-                        (CodeReview codeReview) -> CodeReviewResponseDTO.builder()
+                        (CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
                                 .id(codeReview.getId())
                                 .member(codeReview.getMember().getNickname())
                                 .title(codeReview.getTitle())
@@ -82,5 +90,27 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     @Override
     public Boolean deleteCodeReviewById(String id) {
         return null;
+    }
+
+    @Override
+    public CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO) {
+        Member member = memberRepository.findByEmail(codeReviewRequestDTO.getMemberEmail())
+                .orElseThrow(()->new IllegalArgumentException("cannot find member by email: "+codeReviewRequestDTO.getMemberEmail()));
+//        Member entity
+        CodeLanguageCategory codeLanguageCategory = codeLanguageCategoryRepository
+                .findById(codeReviewRequestDTO.getCodeLanguageCategoryId())
+                .orElseThrow(()-> new IllegalArgumentException("cannot find language by id: "+codeReviewRequestDTO.getCodeLanguageCategoryId()));
+//        CodeLanguageCategory entity
+
+        CodeReview codeReview = CodeReview.builder()
+                .id(UUID.randomUUID())
+                .title(codeReviewRequestDTO.getTitle())
+                .content(codeReviewRequestDTO.getContent())
+                .member(member)
+                .codeLanguageCategory(codeLanguageCategory)
+                .build();
+//        reqDTO -> CodeReview entity
+
+        return codeReviewRepository.save(codeReview);
     }
 }
