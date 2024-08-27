@@ -2402,21 +2402,26 @@ input[type="radio"] + label:before {
   margin-left: 5px; /* 아이콘 간격 조정 */
 }
 
-
-#article-info:hover .icon,
-#article-info:hover .count {
-  color: #ff0000; /* 마우스를 올렸을 때 텍스트와 아이콘 색상 변경 */
+.icon:hover {
+  color: red !important;
 }
+/*#article-info:hover .icon,*/
+/*#article-info:hover .count {*/
+/*  color: #ff0000; !* 마우스를 올렸을 때 텍스트와 아이콘 색상 변경 *!*/
+/*}*/
 
-#article-info {
-  display: flex; /* 플렉스 박스 사용 */
-  align-items: center; /* 수직 정렬 */
-}
-
+/*#article-info {*/
+/*  display: flex; !* 플렉스 박스 사용 *!*/
+/*  align-items: center; !* 수직 정렬 *!*/
+/*}*/
+.li{
+  list-style: none !important;
+  }
 .user-info {
   display: flex; /* 플렉스 박스 사용 */
   align-items: center; /* 수직 정렬 */
   margin-right: auto;
+  margin-top: 10px;
 }
 
 .user-image {
@@ -2592,6 +2597,12 @@ input[type="radio"] + label:before {
     padding: 0px 10px 0px 10px;
   }
 }
+li {
+  list-style: none !important;
+}
+.icon.fa-thumbs-up:hover {
+  color: red; /* 아이콘 색상 변경 */
+}
 
 .box {
   display: block;
@@ -2739,6 +2750,7 @@ ul {
   list-style: disc;
   margin: 0 0 2em 0;
   padding-left: 1em;
+  list-style: none; /* 불릿 제거 */
 }
 
 ul li {

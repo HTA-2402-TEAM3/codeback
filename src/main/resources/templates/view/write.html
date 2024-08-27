@@ -23,10 +23,10 @@
 <body class="subpage">
 <header id="header">
     <div class="inner_logo">
-        <a href="/static" class="logo"></a>
+        <a href="/" class="logo"></a>
         <img src="/images/codeback2.png"/>
         <nav id="nav">
-            <a href="#">CodeReview</a>
+            <a href="/review/">CodeReview</a>
             <a href="#">ProjectReview</a>
             <button href="#" class="button special" id="show-login">Login</button>
                 <!-- 로그인 팝업 -->
@@ -88,10 +88,7 @@
             <input type="text" id="titleInput" placeholder="제목을 입력하세요">
         </header>
         <hr class="major"/>
-
-
         <div id="editor"></div>
-
         <hr class="major"/>
 
         <!-- 에디터 js -->
@@ -105,46 +102,28 @@
                 previewStyle: 'vertical'
             });
 
-            document.getElementById('submit').addEventListener('click', () => {
-                const content = editor.getHTML();
-                console.log(content);
-            })
+            // document.getElementById('submit').addEventListener('click', () => {
+            //     const content = editor.getHTML();
+            //     console.log(content);
+            // })
         </script>
-        <div class="button-container">
-            <input type="checkbox" id="demo-copy" class="single-checkbox">
-            <label for="demo-copy">#JAVA</label>
 
-            <input type="checkbox" id="demo-copy1" class="single-checkbox">
-            <label for="demo-copy1">#PYTHON</label>
 
-            <input type="checkbox" id="demo-copy2" class="single-checkbox">
-            <label for="demo-copy2">#JAVASCRIPT</label>
-
-            <input type="checkbox" id="demo-copy3" class="single-checkbox">
-            <label for="demo-copy3">#SQL</label>
-
-            <input type="checkbox" id="demo-copy4" class="single-checkbox">
-            <label for="demo-copy4">#C++</label>
+        <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+            <div class="checkbox-group" th:each="language : ${languages}" style="width: 18%; box-sizing: border-box;">
+                <input type="checkbox" th:id="${language.getLanguageName()}"
+                       th:value="${language.getId()}"
+                       onclick="selectOnlyOne(this)">
+                <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}"></label>
+            </div>
         </div>
-        <script>
-            document.querySelectorAll('.single-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', function () {
-                    if (this.checked) {
-                        document.querySelectorAll('.single-checkbox').forEach(otherCheckbox => {
-                            if (otherCheckbox !== this) {
-                                otherCheckbox.checked = false;
-                            }
-                        });
-                    }
-                });
-            });
-        </script>
         <hr class="major"/>
         <div class="inner_button">
-            <button href="#" class="button">취소</button>
-            <button href="#" class="button special">쓰기/수정</button>
+            <button class="special button" onclick="window.location.href='/review/'">취소</button>
+            <button class="button special" onclick="submit()">쓰기/수정</button>
         </div>
     </div>
+    <script src="/assets/js/write.js"></script>
 </section>
 </body>
 </html>

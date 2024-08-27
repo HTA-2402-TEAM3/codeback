@@ -20,7 +20,7 @@
 <body class="subpage">
 <header id="header">
     <div class="inner">
-        <a href="/static" class="logo">
+        <a href="/" class="logo">
             <img src="/images/codeback2.png" alt="logo"/>
             <nav id="nav">
                 <a class="login-btn">
@@ -32,31 +32,25 @@
             </a>
         </a>
     </div>
-
-
 </header>
 <section id="main" class="wrapper">
     <div class="inner">
         <header class="align-center">
             <h2 th:text="${codeReview.title}"></h2>
-
-
             <div class="row" id="article-info">
                 <div class="user-info">
-                    <h4 style="margin : 0;" th:text="${codeReview.member.nickname}"></h4>
+                    <h4 th:text="${codeReview.member}"></h4>
                 </div>
                 <div class="row">
                     <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                     <li>
-                    <a href="#" class="icon fa-thumbs-up">
+                    <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
-                        <span class="count">5</span>
+                        <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
                     </a>
                     </li>
                 </div>
             </div>
-
-
         </header>
 
         <hr class="major"/>
@@ -68,7 +62,9 @@
             <button class="button special disabled">#java</button>
             <div style="display: flex;gap:20px" class="icon_view">
                 <a class="icon fa-pencil" href="#"></a>
-                <a class="icon fa-trash" href="#"></a>
+                <a class="icon fa-trash"
+                   th:reviewId="${codeReview.id}"
+                   th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
             </div>
         </div>
         <hr class="major"/>
@@ -79,14 +75,14 @@
                 <ul>
                     <li>
                         <div>
-                            <h4 th:text="${comments.member.nickname}" style="margin: 0;"></h4>
+                            <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
                             <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
                         </div>
                     </li>
                     <li>
-                        <a href="#" class="icon fa-thumbs-up">
+                        <a class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
-                            <span class="count">3</span>
+                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
                         </a>
                     </li>
                 </ul>
@@ -119,5 +115,24 @@
         </script>
     </div>
 </section>
+<script>
+    function deleteCodeReview(id) {
+        if(confirm("정말 삭제하시겠습니까?")) {
+            fetch(`/api/review/delete/${id}`, {
+                method: 'DELETE'
+            })
+                .then(resp => {
+                    if(resp.ok) {
+                        alert("삭제되었습니다.");
+                        window.location.href = '/review/';
+                    } else {
+                        throw new Error("err");
+                    }
+                }).catch(error => {
+                    console.error(error);
+            })
+        }
+    }
+</script>
 </body>
 </html>
