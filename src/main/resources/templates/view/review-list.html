@@ -45,21 +45,17 @@
             </div>
         </header>
     </div>
-    <div class="search-container">
-        <div>
-            <label for="search"></label>
-            <input
-                    type="text"
-                    name="search"
-                    id="search"
-                    value=""
-                    placeholder="Search"
-            />
-        </div>
-        <div>
-            <a href="#" class="code-review">
-                <span class="icon fa-search"></span>
-            </a>
+    <div class="inner_logo">
+        <button class="special button">글쓰기</button>
+        <div class="search-container">
+            <div>
+                <input type="text" name="search" id="search" value="" placeholder="Search"/>
+            </div>
+            <div>
+                <a href="#" class="code-review" style="text-decoration: none">
+                    <span class="icon fa-search"></span>
+                </a>
+            </div>
         </div>
     </div>
     <div class="box-container" id="reviewsContainer">
@@ -104,7 +100,7 @@
         </li>
         <li class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}">
             <a class="page-link"
-               th:pageNum="${pageStat.count}"
+               th:pageNum="${pageStat.count - 1}"
                th:onclick="fetchAllData(this.getAttribute('pageNum'))" th:text="${pageStat.count}"></a>
         </li>
         <li class="page-item" >
