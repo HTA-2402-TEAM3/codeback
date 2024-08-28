@@ -8,6 +8,7 @@ import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,10 +53,11 @@ public class CodeReviewController {
 
     @GetMapping("/")
     public String checkReviews(Model model) {
-        List<CodeReviewListResponseDTO> reviews = codeReviewService.findAllWithPage(0, 10, "createDate").getContent();
+        Page<CodeReviewListResponseDTO> page = codeReviewService.findAllWithPage(0,10,"createDate");
+        List<CodeReviewListResponseDTO> reviews = page.getContent();
         List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
 
-        model.addAttribute("totalPages", codeReviewService.findAllWithPage(0, 10, "createDate").getTotalPages());
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("languages", languages);
         model.addAttribute("reviews", reviews);
 
