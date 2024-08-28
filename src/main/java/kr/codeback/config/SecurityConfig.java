@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import kr.codeback.service.member.MyUserDetailsService;
 import kr.codeback.service.member.OAuth2Service;
+import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -28,20 +29,38 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+		// token을 사용하는 방식이기 때문에 csrf disable
 		http
-			// token을 사용하는 방식이기 때문에 csrf disable
-			.csrf(AbstractHttpConfigurer::disable)
+			.csrf(AbstractHttpConfigurer::disable);
+
+		http
+			.httpBasic(AbstractHttpConfigurer::disable);
+		//
+		http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 				.requestMatchers("/**").permitAll()
 				// .anyRequest().permitAll()
-			)
-			// 세션을 사용하지 않기 때문에 STATELESS로 설정
+			);
+
+		//form 로그인 disable
+		http
+			.formLogin(AbstractHttpConfigurer::disable);
+
+
+		// 세션을 사용하지 않기 때문에 STATELESS로 설정
+		http
 			.sessionManagement(sessionManagement ->
 				sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
+			);
+
+		//oauth
+		http
 			.oauth2Login((oauth2) -> oauth2
 			.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-				.userService(oAuth2Service)))
+				.userService(oAuth2Service)));
+
+		//jwt 필터 적용
+		http
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

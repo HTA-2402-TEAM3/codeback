@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.model.dto.request.TokenRequestDTO;
 import kr.codeback.model.dto.request.UserRequestDTO;
@@ -105,5 +107,13 @@ public class MemberRestController {
 
 		return ResponseEntity.ok("로그인 성공");
 	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletResponse response){
+		CookieUtil.deleteCookie(response,"access_token");
+		CookieUtil.deleteCookie(response,"refresh_token");
+		return ResponseEntity.ok("로그아웃 되었습니다.");
+	}
+
 
 }
