@@ -36,6 +36,6 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 
 	Optional<CodeReview> findById(UUID id);
 
-	Page<CodeReview> findByCodeLanguageCategoryID(UUID language, Pageable pageable);
+	Page<CodeReview> findByCodeLanguageCategoryId(UUID language, Pageable pageable);
 
 }

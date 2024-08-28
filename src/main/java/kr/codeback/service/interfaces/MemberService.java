@@ -1,6 +1,5 @@
 package kr.codeback.service.interfaces;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -10,12 +9,10 @@ import kr.codeback.model.entity.Member;
 public interface MemberService {
 
 	// 멤버 생성 메서드
-	Boolean save(Member member);
+	Boolean saveMember(Member member);
 
 	//멤버를 이메일로 찾는 메서드
 	Member findByEmail(String email);
-
-	Optional<Member> findByEmail(String email);
 
 	//멤버를 닉네임으로 찾는 메서드
 	Optional<Member> findMemberByNickname(String nickname);
@@ -30,12 +27,14 @@ public interface MemberService {
 	Boolean deleteMemberByEmail(String email);
 
 	//관리자 계정으로 멤버 찾는 메서드
-	MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize);
+	MembersWithPageResponseDTO findAllUnderAdmin(int pageNum, int pageSize);
 
 	// 이메일로 회원 삭제
 	void softDeleteByEmail(String email);
 
 	// 관리자 계정 찾기
-	Member findAdminMemberByEmail(String email);
+	void validateAdminMemberByEmail(String email);
+
+	Boolean save(Member member);
 
 }

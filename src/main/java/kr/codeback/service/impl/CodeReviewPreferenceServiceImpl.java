@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import kr.codeback.repository.CodeReviewPreferenceRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -65,17 +63,17 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 			return;
 		}
 
-	  codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
-  }  
-  
+		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+	}
+
 	@Override
 	public List<CodeReviewPreference> findById(UUID id) {
 		Optional<CodeReviewPreference> optionalCodeReviewPreference =
-				codeReviewPreferenceRepository.findById(id);
+			codeReviewPreferenceRepository.findById(id);
 
 		return optionalCodeReviewPreference.map(Collections::singletonList)
-				.orElseGet(Collections::emptyList);
-//		댓글 없으면 빈 객체 return
+			.orElseGet(Collections::emptyList);
+		//		댓글 없으면 빈 객체 return
 	}
-    
+
 }

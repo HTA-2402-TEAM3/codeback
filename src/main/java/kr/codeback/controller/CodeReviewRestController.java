@@ -3,7 +3,6 @@ package kr.codeback.controller;
 
 import kr.codeback.model.dto.request.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
-import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,8 +37,8 @@ public class CodeReviewRestController {
                                            @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
 
         CodeReviewPagingResponseDTO reviews = CodeReviewPagingResponseDTO.builder()
-                .reviews(codeReviewService.findCodeReviewAll(pageNum, pageSize, sort).getContent())
-                .totalPage(codeReviewService.findCodeReviewAll(pageNum, pageSize, sort).getTotalPages())
+                .reviews(codeReviewService.findAllWithPage(pageNum, pageSize, sort).getContent())
+                .totalPage(codeReviewService.findAllWithPage(pageNum, pageSize, sort).getTotalPages())
                 .currentPage(pageNum)
                 .build();
 

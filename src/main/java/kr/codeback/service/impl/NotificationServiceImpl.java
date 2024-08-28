@@ -1,6 +1,5 @@
 package kr.codeback.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
-
 
 	@Override
 	public List<Notification> getAllNotifications() {

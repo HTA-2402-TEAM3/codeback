@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
-import kr.codeback.model.entity.Member;
 import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 
@@ -30,8 +29,8 @@ public class AdminController {
 
 		// 쿠키로 이메일 가져오는 기능
 
-		Member adminMember = memberService.findAdminMemberByEmail("joosung@google.com");
-		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(adminMember, pageNum,
+		memberService.validateAdminMemberByEmail("joosung@google.com");
+		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(pageNum,
 			pageSize);
 
 		return ResponseEntity.status(HttpStatus.OK).body(membersWithPageResponseDTO);
@@ -42,7 +41,7 @@ public class AdminController {
 
 		// 쿠키로 이메일 가져오는 기능
 
-		Member adminMember = memberService.findAdminMemberByEmail("joosung@google.com");
+		memberService.validateAdminMemberByEmail("joosung@google.com");
 
 		memberService.softDeleteByEmail(deleteEmail);
 

@@ -1,23 +1,22 @@
 package kr.codeback.service.impl;
 
-import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.repository.CodeLanguageCategoryRepository;
-import kr.codeback.repository.CodeReviewRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import kr.codeback.model.entity.CodeLanguageCategory;
+import kr.codeback.repository.CodeLanguageCategoryRepository;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
-
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CodeLanguageCategoryServiceImpl implements CodeLanguageCategoryService {
 
-    private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
+	private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
-    @Override
-    public List<CodeLanguageCategory> findAll() {
-        return codeLanguageCategoryRepository.findAll();
-    }
+	@Override
+	public List<CodeLanguageCategory> findAll() {
+		return codeLanguageCategoryRepository.findAll();
+	}
 }

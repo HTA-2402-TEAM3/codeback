@@ -11,14 +11,14 @@ function selectOnlyOne(checkbox) {
         });
         fetchData(checkbox.value);
     } else {
-        fetchAllData();
+        fetchAllData(0);
     }
     console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
 }
 
 function renderPaging(totalPage) {
-    const ul = $('#pagingUl');
-    ul.empty();
+    const ul = document.getElementById('pagingUl');
+    ul.innerHTML = '';
 
     let pageElements = `
         <li class="page-item">
@@ -38,13 +38,15 @@ function renderPaging(totalPage) {
 
     pageElements += `
         <li class="page-item">
-            <a class="page-link" onclick="fetchAllData(${totalPage}); return false;">
+            <a class="page-link" onclick="fetchAllData(${totalPage - 1}); return false;">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
     `;
-    ul.append(pageElements);
+
+    ul.innerHTML += pageElements;
 }
+
 
 function fetchData(value) {
     fetch(`/api/review/${value}`)
@@ -64,8 +66,8 @@ function fetchData(value) {
         });
 }
 
-function fetchAllData() {
-    fetch(`/api/review/?pageNum=0`)
+function fetchAllData(page) {
+    fetch(`/api/review/?pageNum=${page}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -81,43 +83,62 @@ function fetchAllData() {
             console.error('Fetch error:', error);
         });
 }
+function formatDate(dateString) {
+    const date = new Date(dateString);
 
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
 
 function renderReviews(reviews) {
-    const container = $('#reviewsContainer');
-    container.empty();
+    console.log("renderReviews : ",reviews);
+
+    const container = document.getElementById('reviewsContainer');
+    container.innerHTML = '';
 
     reviews.forEach(review => {
-        const reviewElement = `  <a href="/review/${review.id}" class="box" style="padding-bottom: 0;">
-                <div>
-                    <ul style="margin-bottom: 30px;">
-                        <li>
-                            <h3 id="${review.id}" name="title" style="margin-bottom: 15px;">
-                                ${review.title}
-                            </h3>
-                        </li>
-                        <li>
-                            <button class="button special disabled icon">${review.codeLanguageName}</button>
-                        </li>
-                    </ul>
-                    <ul style="margin-top: 30px;">
-                        <li>
-                            <h5 id="writer1" name="writer" style="margin: 0; font-weight: bold;">
-                                ${review.member}
-                            </h5>
-                            <h5 id="date1" name="date" style="margin-top: 0;">
-                                ${review.createDate}
-                            </h5>
-                        </li>
-                        <li>
-                            <div>
-                                <icon class="icon fa-thumbs-up">${review.preferenceCnt}</icon>
-                                <icon class="icon fa-comment">${review.codeReviewComments}</icon>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </a>`;
-        container.append(reviewElement);
+        const formatedDate = formatDate(review.createDate);
+
+        const reviewElement = document.createElement('a');
+        reviewElement.href = `/review/${review.id}`;
+        reviewElement.className = 'box';
+        reviewElement.style.paddingBottom = '0';
+
+        reviewElement.innerHTML = `
+        <div>
+            <ul style="margin-bottom: 30px;">
+                <li>
+                    <h3 id="${review.id}" name="title" style="margin-bottom: 15px;">
+                        ${review.title}
+                    </h3>
+                </li>
+                <li>
+                    <button class="button special disabled icon">${review.codeLanguageName}</button>
+                </li>
+            </ul>
+            <ul style="margin-top: 30px;">
+                <li>
+                    <h5 id="writer1" name="writer" style="margin: 0; font-weight: bold;">
+                        ${review.member}
+                    </h5>
+                    <h5 id="date1" name="date" style="margin-top: 0;">
+                        ${formatedDate}
+                    </h5>
+                </li>
+                <li>
+                    <div>
+                        <icon class="icon fa-thumbs-up">${review.preferenceCnt}</icon>
+                        <icon class="icon fa-comment">${review.codeReviewComments}</icon>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    `;
+        container.insertAdjacentElement('beforeend', reviewElement); // DOM 요소를 추가
     });
 }

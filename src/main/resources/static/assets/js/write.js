@@ -1,6 +1,6 @@
 
-function submit(){
-    const email = 'chaeunkang@github.com';
+function submit(email){
+    // const email = getMemberInfo();
     const title = document.getElementById('titleInput').value;
     const content = editor.getHTML();
 
@@ -36,6 +36,26 @@ function submit(){
     }).catch(error => {
         console.error(error);
     });
+}
+
+function getMemberInfo() {
+    let email = '';
+    fetch(`/api/member/info`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("data ::::", data.email);
+            email = data.email;
+            submit(email)
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+    return email;
 }
 
 let languageValue = '';
