@@ -22,8 +22,8 @@ public class CodeReview {
 	@Id
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "email", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@Column(name = "title", nullable = false)
@@ -36,7 +36,7 @@ public class CodeReview {
 	@CreationTimestamp
 	private Timestamp createDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "language_id", nullable = false)
 	private CodeLanguageCategory codeLanguageCategory;
 

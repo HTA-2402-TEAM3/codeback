@@ -7,12 +7,19 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.repository.NotificationRepository;
 import kr.codeback.service.interfaces.NotificationService;
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class NotificationServiceImpl implements NotificationService{
+@RequiredArgsConstructor
+public class NotificationServiceImpl implements NotificationService {
+
+	private final NotificationRepository notificationRepository;
+
 
 	@Override
 	public List<Notification> getAllNotifications() {
@@ -38,4 +45,41 @@ public class NotificationServiceImpl implements NotificationService{
 	public Boolean deleteNotification(UUID notificationId) {
 		return null;
 	}
+
+	@Override
+	@Transactional
+	public void deleteByMember(Member member) {
+
+		List<Notification> notifications = findByMember(member);
+
+		if (notifications.isEmpty()) {
+			return;
+		}
+
+		notificationRepository.deleteAll(notifications);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEntityID(UUID entityID) {
+
+		List<Notification> notifications = findByEntityID(entityID);
+
+		if (notifications.isEmpty()) {
+			return;
+		}
+
+		notificationRepository.deleteAll(notifications);
+	}
+
+	@Override
+	public List<Notification> findByMember(Member member) {
+		return notificationRepository.findByMember(member);
+	}
+
+	@Override
+	public List<Notification> findByEntityID(UUID entityID) {
+		return notificationRepository.findByEntityID(entityID);
+	}
+
 }

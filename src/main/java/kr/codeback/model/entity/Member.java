@@ -1,5 +1,7 @@
 package kr.codeback.model.entity;
 
+import java.util.UUID;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,20 +22,47 @@ import lombok.ToString;
 public class Member {
 
 	@Id
+	private UUID id;
+
+	@Column(name="email", nullable = false, unique = true)
 	private String email;
 
 	@Column(name = "nickname", nullable = false, unique = true)
 	private String nickname;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "authority_id", nullable = false)
 	private Authority authority;
 
+	@Column(name = "is_delete", columnDefinition = "TINYINT(1)")
+	private boolean deleteSign = false;
+
 	@Builder
-	private Member(String email, String nickname, Authority authority) {
+	private Member(UUID id, String email, String nickname, Authority authority) {
+		this.id = id;
 		this.email = email;
 		this.nickname = nickname;
 		this.authority = authority;
+	}
+
+	public boolean isAdmin() {
+		return authority.getName().equals("ROLE_ADMIN");
+	}
+
+	public void deleteMember() {
+
+		String uuid = String.valueOf(UUID.randomUUID());
+		email = uuid;
+		nickname = uuid;
+		deleteSign = true;
+	}
+
+	public String getNickname() {
+		if(deleteSign) {
+			return "탈퇴한 회원";
+		}
+
+		return nickname;
 	}
 
 }

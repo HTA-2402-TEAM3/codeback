@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 
 public interface NotificationService {
@@ -23,4 +24,13 @@ public interface NotificationService {
 
 	// 알림 삭제
 	Boolean deleteNotification(UUID notificationId);
+
+	void deleteByMember(Member member);
+
+	void deleteByEntityID(UUID entityID);
+
+	List<Notification> findByMember(Member member);
+
+	List<Notification> findByEntityID(UUID entityID);
+
 }

@@ -1,5 +1,7 @@
 package kr.codeback.service.impl;
 
+import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,8 +20,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewRepository;
+import kr.codeback.service.interfaces.CodeReviewCommentService;
+import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,13 +35,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class CodeReviewServiceImpl implements CodeReviewService {
 
     private final CodeReviewRepository codeReviewRepository;
+  
     private final CodeReviewPreferenceService codeReviewPreferenceService;
     private final MemberRepository memberRepository;
     private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
+	private final CodeReviewCommentService codeReviewCommentService;
+	private final CodeReviewPreferenceService codeReviewPreferenceService;
+
+	@Override
+	public ArrayList<CodeReview> findCodeReviewAll() {
+		return null;
+	}
+
     @Override
     public Page<CodeReviewListResponseDTO> findCodeReviewAll(int pageNum, int pageSize, String sort) {
+      
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+      
         Page<CodeReviewListResponseDTO> codeReviewResponseDTOS = codeReviewRepository.findAll(pageable)
                 .map((CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
                         .id(codeReview.getId())
@@ -71,7 +88,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
         return codeReviewResponseDTOS;
     }
 
-
     @Override
     public CodeReview findById(UUID id) {
         Optional<CodeReview> optionalCodeReview = codeReviewRepository.findById(id);
@@ -87,6 +103,28 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     public List<CodeReview> findCodeReviewByTitle(String title) {
         return null;
     }
+
+	@Override
+	public Boolean deleteCodeReviewById(String id) {
+		return null;
+	}
+
+	@Override
+	@Transactional
+	public void deleteByMember(Member member) {
+
+		List<CodeReview> deleteCodeReviews = findByMember(member);
+
+		deleteCodeReviews.forEach(codeReviewCommentService::deleteByCodeReview);
+		deleteCodeReviews.forEach(codeReview -> codeReviewPreferenceService.deleteByEntityID(codeReview.getId()));
+
+		codeReviewRepository.deleteAll(deleteCodeReviews);
+	}
+
+	@Override
+	public List<CodeReview> findByMember(Member member) {
+		return codeReviewRepository.findByMemberEmail(member.getEmail());
+	}
 
     @Override
     @Transactional
@@ -121,3 +159,4 @@ public class CodeReviewServiceImpl implements CodeReviewService {
         return codeReviewRepository.save(codeReview);
     }
 }
+

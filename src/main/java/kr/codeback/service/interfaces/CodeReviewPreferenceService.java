@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Member;
 
 public interface CodeReviewPreferenceService {
 
@@ -14,5 +15,14 @@ public interface CodeReviewPreferenceService {
 	// 좋아요 제거
 	Boolean removePreference(String email, String entityId);
 
+	void deleteByMember(Member member);
+
+	void deleteByEntityID(UUID entityID);
+
+	List<CodeReviewPreference> findByEntityID(UUID entityID);
+
+	List<CodeReviewPreference> findByMember(Member member);
+
 	List<CodeReviewPreference> findById(UUID id);
+
 }

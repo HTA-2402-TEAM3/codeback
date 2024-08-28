@@ -9,14 +9,19 @@ import kr.codeback.repository.CodeReviewPreferenceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Member;
+import kr.codeback.repository.CodeReviewPreferenceRepository;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceService {
 
 	private final CodeReviewPreferenceRepository codeReviewPreferenceRepository;
+
 	@Override
 	public Optional<CodeReviewPreference> addPreference(String email, String entityId) {
 		return Optional.empty();
@@ -28,6 +33,42 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 	}
 
 	@Override
+	public List<CodeReviewPreference> findByMember(Member member) {
+		return codeReviewPreferenceRepository.findByMember(member);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByMember(Member member) {
+
+		List<CodeReviewPreference> codeReviewPreferences = findByMember(member);
+
+		if (codeReviewPreferences.isEmpty()) {
+			return;
+		}
+
+		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+	}
+
+	@Override
+	public List<CodeReviewPreference> findByEntityID(UUID entityID) {
+		return codeReviewPreferenceRepository.findByEntityID(entityID);
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEntityID(UUID entityID) {
+
+		List<CodeReviewPreference> codeReviewPreferences = findByEntityID(entityID);
+
+		if (codeReviewPreferences.isEmpty()) {
+			return;
+		}
+
+	  codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+  }  
+  
+	@Override
 	public List<CodeReviewPreference> findById(UUID id) {
 		Optional<CodeReviewPreference> optionalCodeReviewPreference =
 				codeReviewPreferenceRepository.findById(id);
@@ -36,4 +77,5 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 				.orElseGet(Collections::emptyList);
 //		댓글 없으면 빈 객체 return
 	}
+    
 }
