@@ -20,13 +20,14 @@ public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
 
+
 	@Override
-	public ArrayList<Notification> getAllNotifications() {
+	public List<Notification> getAllNotifications() {
 		return null;
 	}
 
 	@Override
-	public ArrayList<Notification> getNotificationsByEmail(String email) {
+	public List<Notification> getNotificationsByEmail(String email) {
 		return null;
 	}
 
@@ -80,4 +81,5 @@ public class NotificationServiceImpl implements NotificationService {
 	public List<Notification> findByEntityID(UUID entityID) {
 		return notificationRepository.findByEntityID(entityID);
 	}
+
 }

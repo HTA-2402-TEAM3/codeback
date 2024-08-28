@@ -12,11 +12,13 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "MEMBER")
 @NoArgsConstructor
 @Getter
+@ToString
 public class Member {
 
 	@Id

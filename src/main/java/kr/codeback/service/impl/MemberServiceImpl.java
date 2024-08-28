@@ -1,11 +1,15 @@
 package kr.codeback.service.impl;
 
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -16,11 +20,15 @@ import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
+
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;
+
+import kr.codeback.service.interfaces.MemberService;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -52,7 +60,16 @@ public class MemberServiceImpl implements MemberService {
 			)
 		);
 
+
+	public Boolean save(Member member){
+		memberRepository.save(member);
+		return true;
 	}
+
+	@Override
+	public Optional<Member> findByEmail(String email) {
+		return memberRepository.findById(email);
+  }
 
 	@Override
 	public Optional<Member> findMemberByNickname(String nickname) {
@@ -61,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<Member> findAll() {
-		return List.of();
+		return memberRepository.findAll();
 	}
 
 	@Override
@@ -120,6 +137,11 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		return member;
+	}
+
+	@Override
+	public Boolean deleteMemberByEmail(String email) {
+		return null;
 	}
 
 }

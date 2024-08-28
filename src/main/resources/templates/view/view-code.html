@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -20,7 +21,7 @@
 <header id="header">
     <div class="inner">
         <a href="/" class="logo">
-            <img src="/images/codeback.png" alt="logo"/>
+            <img src="/images/codeback2.png" alt="logo"/>
             <nav id="nav">
                 <a class="login-btn">
                     <button href="/" class="button special">Login</button>
@@ -38,26 +39,58 @@
             <h2 th:text="${codeReview.title}"></h2>
             <div class="row" id="article-info">
                 <div class="user-info">
-                    <h4 th:text="${codeReview.member.nickname}"></h4>
+                    <h4 th:text="${codeReview.member}"></h4>
                 </div>
                 <div class="row">
                     <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                     <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
-                        <span class="count">5</span>
+                        <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
                     </a>
                 </div>
             </div>
-            <hr class="major"/>
         </header>
+
+        <hr class="major"/>
+
         <div class="question-content">
             <p th:utext="${codeReview.content}"></p>
         </div>
-        <div class="button-container">
+        <div class="inner_button">
             <button class="button special disabled">#java</button>
-
+            <div style="display: flex;gap:20px" class="icon_view">
+                <a class="icon fa-pencil"
+                   onclick="window.location.href='/review/write'"></a>
+                <a class="icon fa-trash"
+                   th:reviewId="${codeReview.id}"
+                   th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
+            </div>
         </div>
         <hr class="major"/>
+
+        <h3 th:text="${codeReview.codeReviewComments.size()} + comments">comments size</h3>
+        <div id="comment-container">
+            <div th:each="comments : ${codeReview.codeReviewComments}">
+                <ul>
+                    <li>
+                        <div>
+                            <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#" class="icon fa-thumbs-up">
+                            <span class="label">thumbsUp</span>
+                            <span class="count">0</span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="comment1">
+                    <p th:utext="${comments.comment}"></p>
+                </div>
+                <hr class="major"/>
+            </div>
+        </div>
 
 
         <div id="editor"></div>
@@ -79,33 +112,42 @@
                 console.log(content);
             })
         </script>
-
-        <hr class="major"/>
-
-        <h5 th:text = "${codeReview.codeReviewComments.size()} + comments">comments size</h5>
-        <div id="comment-container">
-            <div th:each="comments : ${codeReview.codeReviewComments}">
-                <hr/>
-                <ul>
-                    <li>
-                        <div>
-                            <h4 th:text="${comments.member.nickname}" style="margin: 0;"></h4>
-                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="icon fa-thumbs-up">
-                            <span class="label">thumbsUp</span>
-                            <span class="count">0</span>
-                        </a>
-                    </li>
-                </ul>
-                <div id="comment1">
-                    <p th:utext="${comments.comment}"></p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
+<script>
+    function deleteCodeReview(id) {
+        if(confirm("정말 삭제하시겠습니까?")) {
+            fetch(`/api/review/delete/${id}`, {
+                method: 'DELETE'
+            })
+                .then(resp => {
+                    if(resp.ok) {
+                        alert("삭제되었습니다.");
+                        window.location.href = '/review/';
+                    } else {
+                        throw new Error("err");
+                    }
+                }).catch(error => {
+                    console.error(error);
+            })
+        }
+    }
+
+    function updateCodeReview(id) {
+        fetch(`/api/review/update/${id}`, {
+            method: 'PUT'
+        })
+            .then(resp => {
+                if(resp.ok) {
+                    alert("수정되었습니다.");
+                    window.location.href = '/review/';
+                } else {
+                    throw new Error("err");
+                }
+            }).catch(error => {
+            console.error(error);
+        })
+    }
+</script>
 </body>
 </html>

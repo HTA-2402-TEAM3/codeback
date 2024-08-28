@@ -1948,9 +1948,10 @@ hr.major {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  max-width: 75em;
+  max-width: 70em;
   margin: 0 auto;
 }
+
 .inner_button {
   display: flex;
   justify-content: space-between;
@@ -2401,6 +2402,7 @@ input[type="radio"] + label:before {
   margin-left: 5px; /* 아이콘 간격 조정 */
 }
 
+
 #article-info:hover .icon,
 #article-info:hover .count {
   color: #ff0000; /* 마우스를 올렸을 때 텍스트와 아이콘 색상 변경 */
@@ -2546,6 +2548,36 @@ input[type="radio"] + label:before {
 
 .code-review:hover .icon {
   color: #aa2c2c;
+  text-decoration: none;
+}
+.OAuth {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5rem;
+}
+
+.OAuth-box,
+.OAuth-box2,
+.OAuth-box3 {
+  width: auto;
+  height: auto;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  transition: 0.125s ease-in;
+  color: white;
+}
+
+.OAuth-box2 {
+  border: 1px solid;
+}
+
+.OAuth-box .icon,
+.OAuth-box2 .icon,
+.OAuth-box3 .icon {
+  font-size: 40px; /* 로그인 아이콘 */
 }
 
 /* .search-container input[type="text"] {

@@ -1,5 +1,6 @@
 package kr.codeback.service.interfaces;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,10 +10,12 @@ import kr.codeback.model.entity.Member;
 public interface MemberService {
 
 	// 멤버 생성 메서드
-	Boolean saveMember(Member member);
+	Boolean save(Member member);
 
 	//멤버를 이메일로 찾는 메서드
 	Member findByEmail(String email);
+
+	Optional<Member> findByEmail(String email);
 
 	//멤버를 닉네임으로 찾는 메서드
 	Optional<Member> findMemberByNickname(String nickname);

@@ -23,4 +23,6 @@ public interface CodeReviewPreferenceService {
 
 	List<CodeReviewPreference> findByMember(Member member);
 
+	List<CodeReviewPreference> findById(UUID id);
+
 }
