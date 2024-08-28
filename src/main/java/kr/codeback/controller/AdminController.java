@@ -2,6 +2,7 @@ package kr.codeback.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.service.interfaces.MemberService;
+import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,16 +22,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 
+	private final JwtUtil jwtUtil;
 	private final MemberService memberService;
 
 	@GetMapping("/members")
 	public ResponseEntity<MembersWithPageResponseDTO> findAllMembers(
 		@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
-		@RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize) {
+		@RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
+		@CookieValue(value = "access_token") String jwtToken) {
 
-		// 쿠키로 이메일 가져오는 기능
+		String email = jwtUtil.extractEmail(jwtToken);
+		memberService.validateAdminMemberByEmail(email);
 
-		memberService.validateAdminMemberByEmail("joosung@google.com");
 		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(pageNum,
 			pageSize);
 
@@ -37,11 +41,11 @@ public class AdminController {
 	}
 
 	@DeleteMapping("/member/{email}")
-	public ResponseEntity<MessageResponseDTO> deleteMember(@PathVariable(name = "email") String deleteEmail) {
+	public ResponseEntity<MessageResponseDTO> deleteMember(@PathVariable(name = "email") String deleteEmail,
+		@CookieValue(value = "access_token") String jwtToken) {
 
-		// 쿠키로 이메일 가져오는 기능
-
-		memberService.validateAdminMemberByEmail("joosung@google.com");
+		String email = jwtUtil.extractEmail(jwtToken);
+		memberService.validateAdminMemberByEmail(email);
 
 		memberService.softDeleteByEmail(deleteEmail);
 
