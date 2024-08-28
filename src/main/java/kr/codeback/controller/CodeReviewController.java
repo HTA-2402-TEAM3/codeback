@@ -52,10 +52,10 @@ public class CodeReviewController {
 
     @GetMapping("/")
     public String checkReviews(Model model) {
-        List<CodeReviewListResponseDTO> reviews = codeReviewService.findCodeReviewAll(0, 10, "createDate").getContent();
+        List<CodeReviewListResponseDTO> reviews = codeReviewService.findAllWithPage(0, 10, "createDate").getContent();
         List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
 
-        model.addAttribute("totalPages", codeReviewService.findCodeReviewAll(0, 10, "createDate").getTotalPages());
+        model.addAttribute("totalPages", codeReviewService.findAllWithPage(0, 10, "createDate").getTotalPages());
         model.addAttribute("languages", languages);
         model.addAttribute("reviews", reviews);
 

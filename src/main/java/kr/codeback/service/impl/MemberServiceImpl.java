@@ -1,15 +1,11 @@
 package kr.codeback.service.impl;
 
-
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
-import java.util.ArrayList;
-
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -20,15 +16,11 @@ import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
-
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;
-
-import kr.codeback.service.interfaces.MemberService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -59,17 +51,13 @@ public class MemberServiceImpl implements MemberService {
 				ErrorCode.NOT_EXIST_USER.getMessage()
 			)
 		);
-
-
-	public Boolean save(Member member){
-		memberRepository.save(member);
-		return true;
 	}
 
 	@Override
-	public Optional<Member> findByEmail(String email) {
-		return memberRepository.findById(email);
-  }
+	public Boolean save(Member member) {
+		memberRepository.save(member);
+		return true;
+	}
 
 	@Override
 	public Optional<Member> findMemberByNickname(String nickname) {
@@ -92,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MembersWithPageResponseDTO findAllUnderAdmin(Member adminMember, int pageNum, int pageSize) {
+	public MembersWithPageResponseDTO findAllUnderAdmin(int pageNum, int pageSize) {
 
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
@@ -125,7 +113,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member findAdminMemberByEmail(String email) {
+	public void validateAdminMemberByEmail(String email) {
 
 		Member member = findByEmail(email);
 
@@ -135,13 +123,6 @@ public class MemberServiceImpl implements MemberService {
 				ErrorCode.WRONG_AUTHORITY.getMessage()
 			);
 		}
-
-		return member;
-	}
-
-	@Override
-	public Boolean deleteMemberByEmail(String email) {
-		return null;
 	}
 
 }

@@ -1,13 +1,11 @@
 package kr.codeback.service.member;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -39,18 +37,20 @@ public class EmailSignUpService {
 
 		emailSender.send(mailMessage);
 	}
+/*
 
 	public boolean verifyMember(String token) {
 		if (jwtUtil.validateToken(token)) {
 			String email = jwtUtil.extractEmail(token);
-			Member member = memberRepository.findById(email).get();
+			Member member = memberRepository.findById(email);
 			memberRepository.save(member);
 			return true;
 		}
 		return false;
 	}
+*/
 
-	public String substringEmail(String email){
+	public String substringEmail(String email) {
 		int atIndex = email.indexOf('@');
 
 		if (atIndex != -1) { // 골뱅이가 문자열에 존재하는지 확인

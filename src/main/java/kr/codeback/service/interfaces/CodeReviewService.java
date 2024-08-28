@@ -3,20 +3,17 @@ package kr.codeback.service.interfaces;
 import java.util.List;
 import java.util.UUID;
 
-import kr.codeback.model.dto.request.CodeReviewRequestDTO;
-import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
-import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
-import kr.codeback.model.entity.CodeReview;
-
-import kr.codeback.model.entity.Member;
-
 import org.springframework.data.domain.Page;
 
+import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.Member;
 
 public interface CodeReviewService {
 
 	// 모든 게시물 조회
-	Page<CodeReviewListResponseDTO> findCodeReviewAll(int pageNum, int pageSize, String sort);
+	Page<CodeReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort);
 
 	// 언어 태그 별 게시물 조쇠
 	Page<CodeReviewListResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize, String sort);
