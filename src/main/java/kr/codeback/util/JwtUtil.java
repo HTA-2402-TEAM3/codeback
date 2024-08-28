@@ -87,11 +87,11 @@ public class JwtUtil {
 	//토큰 판별하기
 	public boolean validateToken(String token) {
 		try {
-			// Claims 객체 추출
-			Claims claims = extractAllClaims(token);
 			// 만료 여부 확인
 			return !isTokenExpired(token);
 		} catch (Exception e) {
+			// System.out.println(isTokenExpired(token));
+			System.out.println(extractExpiration(token));
 			return false;
 		}
 	}

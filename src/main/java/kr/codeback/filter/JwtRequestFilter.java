@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.service.member.MyUserDetailsService;
 import kr.codeback.util.CookieUtil;
 import kr.codeback.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,42 +20,31 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private MyUserDetailsService userDetailsService;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final MyUserDetailsService userDetailsService;
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        final String authorizationHeader = request.getHeader("Authorization");
-
-        String email = null;
-        String jwt = CookieUtil.extractAccessToken(request);
-
-        //Authorization 헤더에서 Bearer 토큰 가져오기
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            email = jwtUtil.extractEmail(jwt);
-        }
-
-        // 사용자 인증 정보가 SecurityContext
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
-
-            if (jwtUtil.validateToken(jwt)) {
-
+            // 사용자 인증 정보가 SecurityContext
+            if (jwtUtil.validateToken(CookieUtil.extractAccessToken(request))) {
+                String email = jwtUtil.extractEmail(CookieUtil.extractAccessToken(request));
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }else {
+                // JWT가 유효하지 않은 경우
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                return; // 필터 체인에서 요청 처리 중단
             }
-        }
+
         chain.doFilter(request, response);
     }
 }

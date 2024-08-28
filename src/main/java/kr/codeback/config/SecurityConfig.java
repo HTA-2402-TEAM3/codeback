@@ -1,5 +1,6 @@
 package kr.codeback.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.filter.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -39,7 +41,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 				.requestMatchers("/**").permitAll()
-				// .anyRequest().permitAll()
+				.anyRequest().permitAll()
 			);
 
 		//form 로그인 disable
@@ -64,6 +66,8 @@ public class SecurityConfig {
 			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
+
+
 	}
 
 }
