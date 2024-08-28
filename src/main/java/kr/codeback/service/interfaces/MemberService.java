@@ -9,7 +9,7 @@ import kr.codeback.model.entity.Member;
 public interface MemberService {
 
 	// 멤버 생성 메서드
-	Boolean saveMember(Member member);
+	Boolean save(Member member);
 
 	//멤버를 이메일로 찾는 메서드
 	Member findByEmail(String email);
@@ -21,7 +21,7 @@ public interface MemberService {
 	List<Member> findAll();
 
 	//멤버 수정 메서드, 수정 시 true 반환
-	Boolean updateMember(Member member);
+	Boolean update(Member member);
 
 	//멤버 삭제 메서드, 삭제 시 true 반환
 	Boolean deleteMemberByEmail(String email);
@@ -34,7 +34,5 @@ public interface MemberService {
 
 	// 관리자 계정 찾기
 	void validateAdminMemberByEmail(String email);
-
-	Boolean save(Member member);
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletResponse;
+import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.dto.request.TokenRequestDTO;
 import kr.codeback.model.dto.request.UserRequestDTO;
 import kr.codeback.model.entity.Authority;
@@ -95,7 +96,7 @@ public class MemberRestController {
 
 	//토큰 및 쿠키 생성
 	@PostMapping("/signin")
-	public ResponseEntity<String> signIn(@RequestBody UserRequestDTO userRequestDTO, HttpServletResponse response) {
+	public ResponseEntity<?> signIn(@RequestBody UserRequestDTO userRequestDTO, HttpServletResponse response) {
 
 		String accessToken = jwtUtil.generateAccessToken(userRequestDTO.getEmail(), userRequestDTO.getNickname());
 		String refreshToken = jwtUtil.generateRefreshToken(userRequestDTO.getEmail());
@@ -103,14 +104,14 @@ public class MemberRestController {
 		CookieUtil.createCookie(response, "access_token", accessToken, 60 * 60 * 60 * 10);
 		CookieUtil.createCookie(response, "refresh_token", refreshToken, 60 * 60 * 60 * 24 * 14);
 
-		return ResponseEntity.ok("로그인 성공");
+		return ResponseEntity.ok(new MessageResponseDTO("로그인 성공"));
 	}
 
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
 		CookieUtil.deleteCookie(response, "access_token");
 		CookieUtil.deleteCookie(response, "refresh_token");
-		return ResponseEntity.ok("로그아웃 되었습니다.");
+		return ResponseEntity.ok(new MessageResponseDTO("로그아웃 되었습니다."));
 	}
 
 }

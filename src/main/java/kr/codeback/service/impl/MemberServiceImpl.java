@@ -35,9 +35,12 @@ public class MemberServiceImpl implements MemberService {
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
-	public Boolean saveMember(Member member) {
-		memberRepository.save(member);
-		return null;
+	public Boolean save(Member member) {
+		if(memberRepository.findByEmail(member.getEmail()).isPresent()){
+			memberRepository.save(member);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -53,11 +56,6 @@ public class MemberServiceImpl implements MemberService {
 		);
 	}
 
-	@Override
-	public Boolean save(Member member) {
-		memberRepository.save(member);
-		return true;
-	}
 
 	@Override
 	public Optional<Member> findMemberByNickname(String nickname) {
@@ -70,8 +68,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Boolean updateMember(Member member) {
-		return null;
+	public Boolean update(Member member) {
+		memberRepository.save(member);
+		return true;
 	}
 
 	@Override
