@@ -22,6 +22,7 @@ import kr.codeback.model.entity.CodeReview;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -88,22 +89,24 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteCodeReviewById(UUID id) {
-        CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(()->
-                new IllegalArgumentException("no CodeReview : "+id));
+        CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("no CodeReview : " + id));
         codeReviewRepository.delete(codeReview);
 
         return true;
     }
 
+
     @Override
     public CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO) {
         Member member = memberRepository.findByEmail(codeReviewRequestDTO.getMemberEmail())
-                .orElseThrow(()->new IllegalArgumentException("cannot find member by email: "+codeReviewRequestDTO.getMemberEmail()));
+                .orElseThrow(() -> new IllegalArgumentException("cannot find member by email: " + codeReviewRequestDTO.getMemberEmail()));
 //        Member entity
         CodeLanguageCategory codeLanguageCategory = codeLanguageCategoryRepository
                 .findById(codeReviewRequestDTO.getCodeLanguageCategoryId())
-                .orElseThrow(()-> new IllegalArgumentException("cannot find language by id: "+codeReviewRequestDTO.getCodeLanguageCategoryId()));
+                .orElseThrow(() -> new IllegalArgumentException("cannot find language by id: " + codeReviewRequestDTO.getCodeLanguageCategoryId()));
 //        CodeLanguageCategory entity
 
         CodeReview codeReview = CodeReview.builder()

@@ -59,7 +59,8 @@
         <div class="inner_button">
             <button class="button special disabled">#java</button>
             <div style="display: flex;gap:20px" class="icon_view">
-                <a class="icon fa-pencil" href="#"></a>
+                <a class="icon fa-pencil"
+                   onclick="window.location.href='/review/write'"></a>
                 <a class="icon fa-trash"
                    th:reviewId="${codeReview.id}"
                    th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
@@ -130,6 +131,22 @@
                     console.error(error);
             })
         }
+    }
+
+    function updateCodeReview(id) {
+        fetch(`/api/review/update/${id}`, {
+            method: 'PUT'
+        })
+            .then(resp => {
+                if(resp.ok) {
+                    alert("수정되었습니다.");
+                    window.location.href = '/review/';
+                } else {
+                    throw new Error("err");
+                }
+            }).catch(error => {
+            console.error(error);
+        })
     }
 </script>
 </body>
