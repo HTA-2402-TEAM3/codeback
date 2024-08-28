@@ -13,4 +13,5 @@ import kr.codeback.model.entity.Member;
 public interface MemberRepository extends JpaRepository<Member, UUID>{
     Optional<Member> findByEmail(String memberEmail);
 //    use write CodeReview... => request member email 로 Member 객체 찾음
+
 }
