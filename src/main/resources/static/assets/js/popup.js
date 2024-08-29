@@ -1,4 +1,4 @@
-// popup.js
+
 document.querySelector("#show-signup-form").addEventListener("click", function (e) {
     e.preventDefault(); // 기본 링크 동작 방지
     document.querySelector(".login-form").style.display = "none";

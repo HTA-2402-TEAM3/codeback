@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -10,6 +9,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/login.css"/>
 
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
@@ -19,30 +19,82 @@
 </head>
 <body class="subpage">
 <header id="header">
-    <div class="inner_logo">
-        <a href="/" class="logo"></a>
-        <img src="/images/codeback.png"/>
-        <nav id="nav">
+    <div class="box_logo">
+        <div class="logo_box">
+            <img src="/images/codeback.png"/>
+        </div>
+        <div class="text_box">
+            <a href="/">Home</a>
             <a href="/review/">CodeReview</a>
             <a href="#">ProjectReview</a>
-            <button href="#" class="button special" id="show-login">Login</button>
-        </nav>
-            </nav>
-            <a href="#navPanel" class="navPanelToggle">
-                <span class="fa fa-bars"></span>
-            </a>
-        </a>
+        </div>
+        <div class="button_box">
+            <button class="button special" id="show-login">Login</button>
+        </div>
     </div>
+    <div class="popup">
+        <div class="close-btn">&times;</div>
+        <!-- 로그인 폼 -->
+        <div class="form login-form">
+            <h2>로그인</h2>
+            <div class="form-element">
+                <label for="email">이메일 로그인</label>
+                <form>
+                    <input type="text" id="email" placeholder="Enter email"><br>
+                    <button class="login-button">로그인</button>
+                </form>
+            </div>
+            <div class="OAuth">
+                <label for="email">소셜 계정으로 로그인</label>
+
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-github"></span>
+                </a>
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-google"></span>
+                </a>
+            </div>
+            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
+        </div>
+
+        <!-- 회원가입 폼 -->
+        <div class="form signup-form" style="display: none;">
+            <h2>회원가입</h2>
+            <div class="form-element">
+                <label for="signup-email">이메일 회원가입</label>
+                <form>
+                    <input type="text" id="signup-email" placeholder="Enter email"><br>
+                    <button class="login-button">회원가입</button>
+                </form>
+                <div class="OAuth">
+                    <label for="email">소셜 계정으로 회원가입</label>
+                    <a href="#" class="OAuth-box">
+                        <span class="icon fa-github"></span>
+                    </a>
+                    <a href="#" class="OAuth-box">
+                        <span class="icon fa-google"></span>
+                    </a>
+                </div>
+                <p>이미 계정이 있으신가요?
+                    <!--로그인 버튼 누르면 닫게 해둠-->
+                    <a href="#" id="show-login-form">로그인</a></p>
+            </div>
+        </div>
+        <!--    로그인 js-->
+        <script src="/assets/js/popup.js"></script>
+    </div>
+    <a href="#navPanel" class="navPanelToggle">
+        <span class="fa fa-bars"></span>
+    </a>
 </header>
 <section id="main" class="wrapper">
     <div class="inner">
         <header class="align-center">
             <h2 th:text="${codeReview.title}"></h2>
-            <div class="row" id="article-info">
-                <div class="user-info">
-                    <h4 th:text="${codeReview.member}"></h4>
-                </div>
-                <div class="row">
+
+            <div class="content">
+                <h4 th:text="${codeReview.member}"></h4>
+                <div class="year_icon">
                     <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                     <a class="icon fa-thumbs-up">
                         <span class="label">thumbsUp</span>
@@ -59,7 +111,7 @@
         </div>
         <div class="inner_button">
             <button class="button special disabled">#java</button>
-            <div style="display: flex;gap:20px" class="icon_view">
+            <div class="icon_view">
                 <a class="icon fa-pencil"
                    onclick="window.location.href='/review/write'"></a>
                 <a class="icon fa-trash"
@@ -94,7 +146,7 @@
         </div>
 
 
-        <div id="editor"></div>
+        <div id="editor_test"></div>
         <button class="button special" id="submit">submit</button>
 
         <!-- 에디터 js -->
@@ -106,6 +158,7 @@
                 height: '500px',
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'
+
             });
 
             document.getElementById('submit').addEventListener('click', () => {
@@ -117,19 +170,19 @@
 </section>
 <script>
     function deleteCodeReview(id) {
-        if(confirm("정말 삭제하시겠습니까?")) {
+        if (confirm("정말 삭제하시겠습니까?")) {
             fetch(`/api/review/delete/${id}`, {
                 method: 'DELETE'
             })
                 .then(resp => {
-                    if(resp.ok) {
+                    if (resp.ok) {
                         alert("삭제되었습니다.");
                         window.location.href = '/review/';
                     } else {
                         throw new Error("err");
                     }
                 }).catch(error => {
-                    console.error(error);
+                console.error(error);
             })
         }
     }
@@ -139,7 +192,7 @@
             method: 'PUT'
         })
             .then(resp => {
-                if(resp.ok) {
+                if (resp.ok) {
                     alert("수정되었습니다.");
                     window.location.href = '/review/';
                 } else {
@@ -149,6 +202,7 @@
             console.error(error);
         })
     }
+
 </script>
 </body>
 </html>
