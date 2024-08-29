@@ -1,7 +1,5 @@
 package kr.codeback.controller;
 
-import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -40,9 +38,9 @@ public class AdminController {
 		@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
 		@RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
 		@CookieValue(value = "access_token") String jwtToken) {
-		//
-		// String email = jwtUtil.extractEmail(jwtToken);
-		// memberService.validateAdminMemberByEmail(email);
+
+		String email = jwtUtil.extractEmail(jwtToken);
+		memberService.validateAdminMemberByEmail(email);
 
 		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(pageNum,
 			pageSize);
@@ -53,9 +51,9 @@ public class AdminController {
 	@DeleteMapping("/member/{email}")
 	public ResponseEntity<MessageResponseDTO> deleteMember(@PathVariable(name = "email") String deleteEmail,
 		@CookieValue(value = "access_token") String jwtToken) {
-		//
-		// String email = jwtUtil.extractEmail(jwtToken);
-		// memberService.validateAdminMemberByEmail(email);
+
+		String email = jwtUtil.extractEmail(jwtToken);
+		memberService.validateAdminMemberByEmail(email);
 
 		memberService.softDeleteByEmail(deleteEmail);
 
@@ -67,15 +65,14 @@ public class AdminController {
 	public ResponseEntity<?> changeAuthority(@PathVariable(name = "email") String email,
 		@RequestBody AuthorityRequestDTO authorityRequestDTO) {
 
-		System.out.println(authorityRequestDTO.getAuthorityName());
-
 		Authority authority = authorityService.findByName(authorityRequestDTO.getAuthorityName());
 		Member member = memberService.findByEmail(email);
 
 		member.changeAuthority(authority);
 		memberService.save(member);
 
-		return ResponseEntity.status(HttpStatus.OK).body(new AuthorityResponseDTO(member.getEmail(), authority.getName()));
+		return ResponseEntity.status(HttpStatus.OK)
+			.body(new AuthorityResponseDTO(member.getEmail(), authority.getName()));
 	}
 
 }
