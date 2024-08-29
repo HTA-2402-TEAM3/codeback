@@ -1,10 +1,7 @@
 package kr.codeback.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.repository.AuthorityRepository;
 import kr.codeback.service.interfaces.AuthorityService;
