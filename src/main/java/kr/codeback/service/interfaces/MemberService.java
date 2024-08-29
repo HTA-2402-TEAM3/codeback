@@ -2,6 +2,7 @@ package kr.codeback.service.interfaces;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
@@ -34,5 +35,8 @@ public interface MemberService {
 
 	// 관리자 계정 찾기
 	void validateAdminMemberByEmail(String email);
+
+	//id로 멤버 찾기
+	Member findById(UUID uuid);
 
 }

@@ -1,6 +1,7 @@
 package kr.codeback.service.member;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,10 +20,10 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Member member = memberRepository.findByEmail(email).get();
-		if (member == null) {
+		Optional<Member> member = memberRepository.findByEmail(email);
+		if (member.isEmpty()) {
 			throw new UsernameNotFoundException("User not found");
 		}
-		return new org.springframework.security.core.userdetails.User(member.getEmail(), null, new ArrayList<>());
+		return new org.springframework.security.core.userdetails.User(member.get().getEmail(), "", new ArrayList<>());
 	}
 }

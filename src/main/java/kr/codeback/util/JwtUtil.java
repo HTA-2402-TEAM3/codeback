@@ -15,7 +15,7 @@ import jakarta.annotation.PostConstruct;
 @Component
 public class JwtUtil {
 
-	private static final long accessTokenValidityInMilliseconds = 3600000; // 1시간 (액세스 토큰 유효 기간)
+	private static final long accessTokenValidityInMilliseconds = 360000000; // 1시간 (액세스 토큰 유효 기간)
 	private static final long refreshTokenValidityInMilliseconds = 604800000; // 7일 (리프레시 토큰 유효 기간)
 	private String secretKey;
 
@@ -90,8 +90,7 @@ public class JwtUtil {
 			// 만료 여부 확인
 			return !isTokenExpired(token);
 		} catch (Exception e) {
-			// System.out.println(isTokenExpired(token));
-			System.out.println(extractExpiration(token));
+
 			return false;
 		}
 	}

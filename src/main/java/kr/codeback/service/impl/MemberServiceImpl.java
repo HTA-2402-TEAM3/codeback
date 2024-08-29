@@ -2,6 +2,7 @@ package kr.codeback.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Boolean save(Member member) {
-		if(memberRepository.findByEmail(member.getEmail()).isPresent()){
+		if(memberRepository.findByEmail(member.getEmail()).isEmpty()){
 			memberRepository.save(member);
 			return true;
 		}
@@ -122,6 +123,11 @@ public class MemberServiceImpl implements MemberService {
 				ErrorCode.WRONG_AUTHORITY.getMessage()
 			);
 		}
+	}
+
+	@Override
+	public Member findById(UUID uuid){
+		return memberRepository.findById(uuid).get();
 	}
 
 }

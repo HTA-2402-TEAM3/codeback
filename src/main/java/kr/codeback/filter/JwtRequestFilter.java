@@ -23,7 +23,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-
     private final MyUserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
@@ -39,11 +38,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                         userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }else {
-                // JWT가 유효하지 않은 경우
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
-                return; // 필터 체인에서 요청 처리 중단
             }
+            // else {
+            //     // JWT가 유효하지 않은 경우
+            //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰이 만료되었습니다.");
+            //     return; // 필터 체인에서 요청 처리 중단
+            // }
 
         chain.doFilter(request, response);
     }

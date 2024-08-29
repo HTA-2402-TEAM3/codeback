@@ -39,9 +39,14 @@ public class SecurityConfig {
 			.httpBasic(AbstractHttpConfigurer::disable);
 		//
 		http
+			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+		http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-				.requestMatchers("/**").permitAll()
-				.anyRequest().permitAll()
+				.requestMatchers(
+					"/submit").permitAll()
+				.anyRequest().authenticated()
+				// authenticated()
 			);
 
 		//form 로그인 disable
@@ -62,8 +67,6 @@ public class SecurityConfig {
 				.userService(oAuth2Service)));
 
 		//jwt 필터 적용
-		http
-			.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 
