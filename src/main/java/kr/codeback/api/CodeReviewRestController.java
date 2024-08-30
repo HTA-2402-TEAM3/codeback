@@ -60,4 +60,10 @@ public class CodeReviewRestController {
         codeReviewService.deleteCodeReviewById(id);
         return ResponseEntity.ok().body(new MessageResponseDTO(id+SuccessMessage.DELETE.getMessage()));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateReview(@RequestBody CodeReviewRequestDTO reviewDTO) {
+        codeReviewService.updateCodeReview(reviewDTO);
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
+    }
 }

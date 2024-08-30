@@ -114,7 +114,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public Boolean deleteCodeReviewById(UUID id) {
+	public void deleteCodeReviewById(UUID id) {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
 			new IllegalArgumentException("no CodeReview : " + id));
 		codeReviewRepository.delete(codeReview);
@@ -123,7 +123,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO) {
+	public void saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO) {
 		Member member = memberRepository.findByEmail(codeReviewRequestDTO.getMemberEmail())
 			.orElseThrow(() -> new IllegalArgumentException(
 				"cannot find member by email: " + codeReviewRequestDTO.getMemberEmail()));
@@ -144,6 +144,22 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		//        reqDTO -> CodeReview entity
 
 		return codeReviewRepository.save(codeReview);
+		codeReviewRepository.save(codeReview);
+	}
+
+    @Override
+    public void updateCodeReview(CodeReviewRequestDTO reviewDTO) {
+		CodeReview codeReview = codeReviewRepository.findById(reviewDTO.getId())
+				.orElseThrow(()->new IllegalArgumentException("no codeReivew"));
+
+		CodeLanguageCategory clCategory =
+				codeLanguageCategoryRepository.findById(reviewDTO.getCodeLanguageCategoryId())
+						.orElseThrow(()->new IllegalArgumentException("no CodeLanguageCategory"));
+
+		codeReview.updateCodeReview(reviewDTO,clCategory);
+		codeReviewRepository.save(codeReview);
+    }
+
 	}
 }
 

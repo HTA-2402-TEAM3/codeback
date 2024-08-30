@@ -1,12 +1,11 @@
 package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Builder;
@@ -52,5 +51,11 @@ public class CodeReview {
 		this.content = content;
 		this.codeLanguageCategory = codeLanguageCategory;
 		this.comments = comments;
+	}
+
+	public void updateCodeReview(CodeReviewRequestDTO codeReviewDTO, CodeLanguageCategory clCategory) {
+		title = codeReviewDTO.getTitle();
+		content = codeReviewDTO.getContent();
+		codeLanguageCategory = clCategory;
 	}
 }
