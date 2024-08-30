@@ -143,7 +143,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 			.build();
 		//        reqDTO -> CodeReview entity
 
-		return codeReviewRepository.save(codeReview);
 		codeReviewRepository.save(codeReview);
 	}
 
@@ -160,6 +159,24 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		codeReviewRepository.save(codeReview);
     }
 
+	@Override
+	public Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize, String sort) {
+		Specification<CodeReview> spec = Specification.where(CodeReviewSpecification.hasLanguage(language))
+				.and(CodeReviewSpecification.hasKeyword(search));
+
+		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+
+		return codeReviewRepository.findAll(spec, pageable).map(
+				(CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
+						.id(codeReview.getId())
+						.member(codeReview.getMember().getNickname())
+						.title(codeReview.getTitle())
+						.content(codeReview.getContent())
+						.createDate(codeReview.getCreateDate())
+						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
+						.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
+						.codeReviewComments(codeReview.getComments().size())
+						.build());
 	}
 }
 

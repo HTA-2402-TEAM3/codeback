@@ -1,11 +1,12 @@
-package kr.codeback.controller;
+package kr.codeback.api;
 
 
 import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
-import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
+import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,11 +21,13 @@ import java.util.UUID;
 public class CodeReviewRestController {
     private final CodeReviewService codeReviewService;
 
-    @GetMapping("/{language}")
-    public ResponseEntity<Object> languageSort(@PathVariable UUID language, @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
-                                               @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
-                                               @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
-        Page<CodeReviewListResponseDTO> page = codeReviewService.findCodeReviewByLanguage(language, pageNum, pageSize, sort);
+    @GetMapping("/search")
+    public ResponseEntity<Object> search(@RequestParam(required = false) String search, @RequestParam(required = false) UUID language,
+                                         @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
+                                         @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
+                                         @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
+        
+        Page<CodeReviewListResponseDTO> page = codeReviewService.findWithFilters(search,language, pageNum, pageSize, sort);
 
         CodeReviewPagingResponseDTO reviews = CodeReviewPagingResponseDTO.builder()
                 .reviews(page.getContent())
@@ -49,6 +52,12 @@ public class CodeReviewRestController {
 
         return ResponseEntity.ok().body(reviews);
     }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Object> getReview(@PathVariable UUID id){
+        CodeReview codeReview = codeReviewService.findById(id);
+        return ResponseEntity.ok().body(codeReview);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<Object> writeReview(@RequestBody CodeReviewRequestDTO codeReview) {
         codeReviewService.saveCodeReview(codeReview);
