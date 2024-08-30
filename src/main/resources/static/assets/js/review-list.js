@@ -1,3 +1,6 @@
+let checkboxValue;
+let searchKeyword = '';
+
 function selectOnlyOne(checkbox) {
     // 모든 체크박스를 가져옵니다.
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -9,11 +12,14 @@ function selectOnlyOne(checkbox) {
                 cb.checked = false;
             }
         });
-        fetchData(checkbox.value);
+        checkboxValue = checkbox.value;
+        searchData();
     } else {
+        checkboxValue = '';
         fetchAllData(0);
     }
     console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
+    // checkboxValue = checkbox.checked ? checkbox.value : '';
 }
 
 function renderPaging(totalPage) {
@@ -48,23 +54,23 @@ function renderPaging(totalPage) {
 }
 
 
-function fetchData(value) {
-    fetch(`/api/review/${value}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("data ::::", data);
-            renderReviews(data.reviews);
-            renderPaging(data.totalPage);
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
-}
+// function fetchData(value) {
+//     fetch(`/api/review/search?language=${value}`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log("data ::::", data);
+//             renderReviews(data.reviews);
+//             renderPaging(data.totalPage);
+//         })
+//         .catch(error => {
+//             console.error('Fetch error:', error);
+//         });
+// }
 
 function fetchAllData(page) {
     fetch(`/api/review/?pageNum=${page}`)
@@ -83,6 +89,7 @@ function fetchAllData(page) {
             console.error('Fetch error:', error);
         });
 }
+
 function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -96,7 +103,7 @@ function formatDate(dateString) {
 }
 
 function renderReviews(reviews) {
-    console.log("renderReviews : ",reviews);
+    console.log("renderReviews : ", reviews);
 
     const container = document.getElementById('reviewsContainer');
     container.innerHTML = '';
@@ -141,4 +148,45 @@ function renderReviews(reviews) {
     `;
         container.insertAdjacentElement('beforeend', reviewElement); // DOM 요소를 추가
     });
+}
+
+
+// ==========================================
+
+function searchData(searchValue) {
+    if (searchValue === undefined) {
+        searchKeyword = '';
+    } else {
+        searchKeyword = searchValue;
+    }
+
+    console.log("searchData() : searchKeyword :: " + searchKeyword);
+    console.log("searchData() : checkboxValue :: " + checkboxValue);
+
+    let url;
+    if (searchKeyword !== '' && checkboxValue === '') {
+        url = `/api/review/search?search=${searchValue}`
+    } else if (searchKeyword === '' && checkboxValue !== '') {
+        url = `/api/review/search?language=${checkboxValue}`
+    } else {
+        url = `/api/review/search?search=${searchKeyword}&language=${checkboxValue}`
+    }
+
+    console.log("url : " + url);
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("data ::::", data);
+            renderReviews(data.reviews);
+            renderPaging(data.totalPage);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
 }

@@ -4,14 +4,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.repository.specification.CodeReviewSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReview;
@@ -56,44 +58,11 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public Page<CodeReviewListResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize,
-		String sort) {
-		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
-
-		return codeReviewRepository.findByCodeLanguageCategoryId(language, pageable).map(
-			(CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
-				.id(codeReview.getId())
-				.member(codeReview.getMember().getNickname())
-				.title(codeReview.getTitle())
-				.content(codeReview.getContent())
-				.createDate(codeReview.getCreateDate())
-				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-				.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
-				.codeReviewComments(codeReview.getComments().size())
-				.build()
-		);
-	}
-
-	@Override
 	public CodeReview findById(UUID id) {
 		Optional<CodeReview> optionalCodeReview = codeReviewRepository.findById(id);
 		return optionalCodeReview.orElseThrow(() -> new IllegalArgumentException("No CodeReview : " + id));
 	}
 
-	@Override
-	public List<CodeReview> findCodeReviewByAuthor(String author) {
-		return null;
-	}
-
-	@Override
-	public List<CodeReview> findCodeReviewByTitle(String title) {
-		return null;
-	}
-
-	@Override
-	public Boolean deleteCodeReviewById(String id) {
-		return null;
-	}
 
 	@Override
 	@Transactional
@@ -119,7 +88,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 			new IllegalArgumentException("no CodeReview : " + id));
 		codeReviewRepository.delete(codeReview);
 
-		return true;
 	}
 
 	@Override
