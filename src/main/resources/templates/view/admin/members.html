@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <title>Generic - Projection by TEMPLATED</title>
     <meta charset="utf-8"/>
@@ -49,14 +49,8 @@
             </thead>
             <tbody id="members-detail">
             <!-- 초기 데이터를 타임리프를 사용해 렌더링 -->
-            <tr th:each="member : ${initialMembers}">
-                <td th:text="${member.email}">1</td>
-                <td th:text="${member.nickname}">nickname</td>
-                <td th:text="${member.authorityName}">authorityName</td>
-                <td>
-                    <button onclick="deleteUser([[${member.email}]])">Delete</button>
-                    <button onclick="openAuthorityModal([[${member.email}]], [[${member.nickname}]])">Change Authority</button>
-                </td>
+            <tr>
+
             </tr>
             </tbody>
         </table>

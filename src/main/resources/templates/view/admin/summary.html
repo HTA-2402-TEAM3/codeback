@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <ul>
+        <li th:text="'총 회원 수 : ' + ${memberSummary.getTotalCount()}">totalMemberCount</li>
+        <li th:text="'활성화 회원 수 : ' + ${memberSummary.getActiveCount()}">activeMemberCount</li>
+        <li th:text="'비활성화 회원 수 : ' + ${memberSummary.getInactiveCount()}">deletedMemberCount</li>
+    </ul>
+
+</div>
+
+
+
+
+
+</body>
+</html>

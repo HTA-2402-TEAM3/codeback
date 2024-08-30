@@ -13,6 +13,7 @@ import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
 import kr.codeback.model.dto.response.MemberResponseDTO;
+import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
@@ -57,6 +58,13 @@ public class MemberServiceImpl implements MemberService {
 	public Boolean save(Member member) {
 		memberRepository.save(member);
 		return true;
+	}
+
+	@Override
+	public MemberSummaryResponseDTO getMemberSummary() {
+		return memberRepository.calculateSummary().orElseThrow(
+			() -> new IllegalStateException("잘못된 접근")
+		);
 	}
 
 	@Override
