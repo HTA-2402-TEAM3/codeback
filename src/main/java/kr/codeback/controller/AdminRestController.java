@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kr.codeback.common.MessageResponseDTO;
-import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.AuthorityRequestDTO;
 import kr.codeback.model.dto.response.AuthorityResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
@@ -45,11 +43,12 @@ public class AdminRestController {
 		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(pageNum,
 			pageSize);
 
-		return ResponseEntity.status(HttpStatus.OK).body(membersWithPageResponseDTO);
+		return ResponseEntity.ok().body(membersWithPageResponseDTO);
 	}
 
 	@DeleteMapping("/member/{email}")
-	public ResponseEntity<MessageResponseDTO> deleteMember(@PathVariable(name = "email") String deleteEmail,
+	public ResponseEntity<Void> deleteMember(
+		@PathVariable(name = "email") String deleteEmail,
 		@CookieValue(value = "access_token") String jwtToken) {
 
 		String email = jwtUtil.extractEmail(jwtToken);
@@ -57,12 +56,12 @@ public class AdminRestController {
 
 		memberService.softDeleteByEmail(deleteEmail);
 
-		return ResponseEntity.status(HttpStatus.OK)
-			.body(new MessageResponseDTO(deleteEmail + SuccessMessage.DELETE.getMessage()));
+		return ResponseEntity.noContent().build();
 	}
 
 	@PatchMapping("/member/{email}/authority")
-	public ResponseEntity<?> changeAuthority(@PathVariable(name = "email") String email,
+	public ResponseEntity<AuthorityResponseDTO> changeAuthority(
+		@PathVariable(name = "email") String email,
 		@RequestBody AuthorityRequestDTO authorityRequestDTO) {
 
 		Authority authority = authorityService.findByName(authorityRequestDTO.getAuthorityName());

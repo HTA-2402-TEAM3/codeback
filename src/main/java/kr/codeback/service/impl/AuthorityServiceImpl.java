@@ -16,6 +16,6 @@ public class AuthorityServiceImpl implements AuthorityService {
 	@Override
 	public Authority findByName(String name) {
 		return authorityRepository.findByName(name)
-			.orElseThrow(() -> new IllegalArgumentException("Authority not found"));
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 권한입니다."));
 	}
 }

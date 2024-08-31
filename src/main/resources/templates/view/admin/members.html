@@ -169,7 +169,7 @@
 
     // 삭제 요청
     function deleteUser(email) {
-        if (confirm(`Are you sure you want to delete the user with email: ${email}?`)) {
+        if (confirm(`정말 ${email}을 삭제하시겠습니까?`)) {
             fetch(`/api/admin/member/${email}`, {
                 method: 'DELETE'
             })
@@ -179,12 +179,11 @@
                             throw new Error(errorData.message);
                         })
                     }
-                    // 성공적으로 삭제하면 테이블에서 해당 행을 제거
-                    return response.json();
-                })
-                .then(data => {
 
-                    alert(data.message);
+                })
+                .then(() => {
+
+                    alert(email + " 삭제가 완료되었습니다.");
                     fetchMembers(currentPage);
                 })
                 .catch(error => alert(error.message));
@@ -224,12 +223,14 @@
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to change user authority');
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message)
+                        });
                     }
                     return response.json();
                 })
                 .then(data => {
-                    alert(`${data.email} Authority changed to ${data.authorityName}`);
+                    alert(`${data.email}의 권한이 ${data.authorityName}로 변경되었습니다.`);
 
                     const authorityModal = bootstrap.Modal.getInstance(document.getElementById('authorityModal'));
                     authorityModal.hide(); // 모달 닫기
@@ -238,6 +239,7 @@
                 })
                 .catch(error => {
                     console.error('Error changing authority:', error);
+                    alert(error.message + "\n다시 시도해 주세요");
                 });
         }
     }
