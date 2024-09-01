@@ -6,10 +6,10 @@ import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
-public class MemberSummaryResponseDTO {
+@ToString
+public class CodeReviewSummaryByLanguageResponseDTO {
 
+	private String languageName;
 	private long totalCount;
-	private long activeCount;
-	private long inactiveCount;
 
 }

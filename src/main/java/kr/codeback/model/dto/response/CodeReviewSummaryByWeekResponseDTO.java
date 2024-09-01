@@ -6,10 +6,8 @@ import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
-public class MemberSummaryResponseDTO {
-
-	private long totalCount;
-	private long activeCount;
-	private long inactiveCount;
-
+@ToString
+public class CodeReviewSummaryByWeekResponseDTO {
+	private int weekDiff; // 주차 차이
+	private long count;   // 게시글 수
 }

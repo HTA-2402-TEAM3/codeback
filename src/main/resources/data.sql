@@ -86,7 +86,7 @@ public class BFSExample10 {
         return path;
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', '2024-07-31 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 1), '반복적인 채우기 전략 질문입니다.', '<h2>BFS 예제 2: 반복적인 채우기 전략</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -113,7 +113,7 @@ public class BFSExample9 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
+</code></pre></div>', '2024-07-31 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), '그래프 뎁스 검사 질문', '<h2>BFS 예제 3: 그래프 깊이 검사</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -143,7 +143,7 @@ public class BFSExample8 {
         System.out.println("\nMax Depth: " + depth);
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+</code></pre></div>', '2024-07-30 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 3), '최단 경로를 위한 BFS 질문', '<h2>BFS 예제 4: 최단 경로를 위한 BFS</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -178,7 +178,7 @@ public class BFSExample7 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+</code></pre></div>', '2024-08-01 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 5), '그래프 순회 헬프요 ㅠㅠ', '<h2>BFS 예제 5: 그래프 순회</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -211,7 +211,7 @@ public class BFSExample6 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+</code></pre></div>', '2024-08-07 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 6), '트리 구조 질문이 있습니다', '<h2>BFS 예제 6: 트리 구조의 BFS 구현</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -238,7 +238,7 @@ public class BFSExample5 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+</code></pre></div>', '2024-08-11 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 7), '최단 경로를 찾는 방법', '<h2>BFS 예제 7: 최단 경로 찾기</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -265,7 +265,7 @@ public class BFSExample4 {
         System.out.println(Arrays.toString(distance));
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+</code></pre></div>', '2024-07-21 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 7), '깊이 우선 탐색이랑 결합하는 법', '<h2>BFS 예제 3: 깊이 우선 탐색과 결합</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -294,7 +294,7 @@ public class BFSExample3 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+</code></pre></div>', '2024-08-11 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 8), '1:1 파이썬 초보만', '<h2>BFS 예제 9: 배열 기반의 BFS 구현</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -319,7 +319,7 @@ public class BFSExample2 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+</code></pre></div>', '2024-08-21 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 9), 'BFS 인접 리스트 질문입니다.', '<h2>BFS 예제 10: 인접 리스트 기반의 BFS 구현</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -344,7 +344,7 @@ public class BFSExample1 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
+</code></pre></div>', '2024-08-31 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
 
 INSERT INTO code_review (id, member_id, title, content, create_date, language_id)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 10), 'BFS를 활용한 그래프 탐색', '<h2>BFS 예제 11: 그래프 탐색</h2>
@@ -370,7 +370,7 @@ public class BFSExample11 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', '2024-08-22 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), '최단 경로 탐색을 위한 BFS', '<h2>BFS 예제 12: 최단 경로 탐색</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -401,7 +401,7 @@ public class BFSExample12 {
         return -1; // target에 도달할 수 없는 경우
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
+</code></pre></div>', '2024-08-27 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 1)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 12), 'BFS를 사용한 트리 순회', '<h2>BFS 예제 13: 트리 순회</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -428,7 +428,7 @@ public class BFSExample13 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+</code></pre></div>', '2024-08-12 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 13), 'BFS로 미로 찾기', '<h2>BFS 예제 14: 미로 찾기</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -459,7 +459,7 @@ public class BFSExample14 {
         return false;
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+</code></pre></div>', '2024-08-13 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 15), 'BFS와 DFS를 결합하여 최적 경로 찾기', '<h2>BFS 예제 15: BFS와 DFS 결합</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -489,7 +489,7 @@ public class BFSExample15 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+</code></pre></div>', '2024-08-14 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 16), 'BFS로 사회 연결망 분석하기', '<h2>BFS 예제 16: 사회 연결망 분석</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -515,7 +515,7 @@ public class BFSExample16 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+</code></pre></div>', '2024-08-15 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 17), 'BFS를 사용한 웹 크롤링', '<h2>BFS 예제 17: 웹 크롤링</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -540,7 +540,7 @@ public class BFSExample17 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+</code></pre></div>', '2024-08-22 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 18), 'BFS를 통한 경로 복원', '<h2>BFS 예제 18: 경로 복원</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -575,7 +575,7 @@ public class BFSExample18 {
         return path;
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+</code></pre></div>', '2024-07-28 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 19), 'BFS를 활용한 그래프 탐색 예제', '<h2>BFS 예제 19: 그래프 탐색 예제</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -599,7 +599,7 @@ public class BFSExample19 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+</code></pre></div>', '2024-07-29 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 19), 'BFS를 사용한 무향 그래프 탐색', '<h2>BFS 예제 20: 무향 그래프 탐색</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -623,7 +623,7 @@ public class BFSExample20 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
+</code></pre></div>', '2024-08-29 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 9));
 
 -- 코드 리뷰 데이터 삽입
 INSERT INTO code_review (id, member_id, title, content, create_date, language_id)
@@ -640,7 +640,7 @@ public class OptionalExample {
         System.out.println(result);
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', '2024-08-22 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), 'Python에서의 리스트 컴프리헨션', '<h2>Python: 리스트 컴프리헨션 사용 예제</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -663,7 +663,7 @@ function fetchData(url) {
 fetchData("https://example.com")
     .then(data => console.log(data))
     .catch(error => console.error(error));
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
+</code></pre></div>', '2024-08-22 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 2)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), 'C++에서의 스마트 포인터', '<h2>C++: 스마트 포인터 사용법</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -680,7 +680,7 @@ int main() {
     ptr->sayHello();
     return 0;
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
+</code></pre></div>', '2024-08-23 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 3)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), 'Ruby에서의 블록, 프로시저, 람다 차이', '<h2>Ruby: 블록, 프로시저, 람다 비교</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -698,7 +698,7 @@ proc_example.call
 # 람다 예제
 lambda_example = lambda { puts "Hello from Lambda" }
 lambda_example.call
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
+</code></pre></div>', '2024-08-28 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 4)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), 'Swift에서의 클로저 기본 사용법', '<h2>Swift: 클로저 사용법</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -708,7 +708,7 @@ let closureExample = { (name: String) -> String in
 
 let greeting = closureExample("World")
 print(greeting)
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
+</code></pre></div>', '2024-08-25 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 5)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23), 'Go에서의 고루틴 활용 예제', '<h2>Go: 고루틴 사용 예제</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -730,7 +730,7 @@ func main() {
     go printMessage("Hello")
     printMessage("World")
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
+</code></pre></div>', '2024-08-29 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 6)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 24), 'Kotlin의 확장 함수 활용하기', '<h2>Kotlin: 확장 함수 사용 예제</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -742,7 +742,7 @@ fun main() {
     val message = "Hello, Kotlin!"
     message.printWithPrefix("Greeting: ")
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
+</code></pre></div>', '2024-08-17 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 7)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 25), 'Rust에서의 소유권과 빌림', '<h2>Rust: 소유권과 빌림</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -752,7 +752,7 @@ fn main() {
     println!("s2: {}", s2);
     println!("s1: {}", s1); // 소유권은 여전히 s1에 있음
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
+</code></pre></div>', '2024-08-19 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 8)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 25), 'TypeScript에서의 인터페이스 사용 예제', '<h2>TypeScript: 인터페이스 사용</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>

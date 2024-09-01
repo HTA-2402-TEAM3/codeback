@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.CodeReviewSummaryByWeekResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReview;
@@ -145,5 +147,23 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 		return codeReviewRepository.save(codeReview);
 	}
+
+	@Override
+	public List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage() {
+		return codeReviewRepository.calculateSummaryByLanguage();
+	}
+
+	@Override
+	public List<CodeReviewSummaryByWeekResponseDTO> calculateSummaryByWeek() {
+		List<Object[]> results = codeReviewRepository.calculateSummaryByWeek();
+
+		return results.stream()
+			.map(row -> new CodeReviewSummaryByWeekResponseDTO(
+				((Number)row[0]).intValue(),
+				((Number)row[1]).longValue()
+			))
+			.toList();
+	}
+
 }
 

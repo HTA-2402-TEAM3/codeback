@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -13,6 +13,36 @@
         <li th:text="'비활성화 회원 수 : ' + ${memberSummary.getInactiveCount()}">deletedMemberCount</li>
     </ul>
 
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>Language Name</tr>
+        <tr>Count</tr>
+        </thead>
+
+        <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
+        <td th:text="${codeReviews.languageName}">name</td>
+        <td th:text="${codeReviews.totalCount}">count</td>
+        </tbody>
+    </table>
+</div>
+
+<br>
+
+<div>
+    <table>
+        <thead>
+        <tr>Week</tr>
+        <tr>Count</tr>
+        </thead>
+
+        <tbody th:each="codeReviews:${codeReviewSummaryByWeek}">
+        <td th:text="${codeReviews.weekDiff} + '주차'">name</td>
+        <td th:text="${codeReviews.count}">count</td>
+        </tbody>
+    </table>
 </div>
 
 
