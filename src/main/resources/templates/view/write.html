@@ -118,9 +118,9 @@
             // })
         </script>
 
-
+<!--        글쓰기 페이지에서 체크박스-->
         <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-            <div class="checkbox-group" th:each="language : ${languages}" style="width: 18%; box-sizing: border-box;">
+            <div class="checkbox-group" th:each="language : ${languages}" style="width: 15%; box-sizing: border-box;">
                 <input type="checkbox" th:id="${language.getLanguageName()}"
                        th:value="${language.getId()}"
                        onclick="selectOnlyOne(this)">

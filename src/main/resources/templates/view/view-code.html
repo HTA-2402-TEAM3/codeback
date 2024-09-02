@@ -125,6 +125,7 @@
             <i class="fa fa-comments"></i>
             <span th:text="${codeReview.codeReviewComments.size()}"></span>
         </h3>
+
         <div id="comment-container">
             <div th:each="comments : ${codeReview.codeReviewComments}">
                 <ul>
@@ -150,8 +151,9 @@
                     <p th:utext="${comments.comment}"></p>
                 </div>
                 <div class="comment_delete">
+<!--                    글쓰기모양 댓글 달기로 이동해야하메 -->
                     <a class="icon fa-pencil"
-                       onclick="window.location.href='/review/write'"></a>
+                       onclick="window.location.href='/#'"></a>
                     <a class="icon fa-trash"
                        th:reviewId="${codeReview.id}"
                        th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
