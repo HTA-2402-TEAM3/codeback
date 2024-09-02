@@ -25,4 +25,5 @@ public interface CodeReviewPreferenceService {
 
 	List<CodeReviewPreference> findById(UUID id);
 
+	void deleteAll(List<CodeReviewPreference> preferences);
 }

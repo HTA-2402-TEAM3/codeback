@@ -76,4 +76,11 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 		//		댓글 없으면 빈 객체 return
 	}
 
+	@Override
+	public void deleteAll(List<CodeReviewPreference> preferences) {
+		if(preferences.isEmpty()) {
+			return;
+		}
+		codeReviewPreferenceRepository.deleteAll(preferences);
+	}
 }

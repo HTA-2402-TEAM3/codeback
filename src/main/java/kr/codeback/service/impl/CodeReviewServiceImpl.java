@@ -4,20 +4,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.entity.*;
 import kr.codeback.repository.specification.CodeReviewSpecification;
+import kr.codeback.service.interfaces.NotificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
-import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.model.entity.CodeReview;
-import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeLanguageCategoryRepository;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;
@@ -37,6 +37,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
 	private final CodeReviewCommentService codeReviewCommentService;
+	private final NotificationService notificationService;
 
 	@Override
 	public Page<CodeReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
@@ -86,8 +87,14 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	public void deleteCodeReviewById(UUID id) {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
 			new IllegalArgumentException("no CodeReview : " + id));
-		codeReviewRepository.delete(codeReview);
 
+		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(id);
+		codeReviewPreferenceService.deleteAll(preferences);
+
+		List<Notification> notifications = notificationService.findByEntityID(id);
+		notificationService.deleteAll(notifications);
+
+		codeReviewRepository.delete(codeReview);
 	}
 
 	@Override

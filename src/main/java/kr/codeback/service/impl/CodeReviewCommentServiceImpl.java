@@ -6,14 +6,12 @@ import java.util.UUID;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
+import kr.codeback.model.entity.*;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
-import kr.codeback.model.entity.CodeReview;
-import kr.codeback.model.entity.CodeReviewComment;
-import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
@@ -92,9 +90,14 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	}
 
 	@Override
-	public void deleteById(UUID codeReviewCommentId) {
-		CodeReviewComment comment = codeReviewCommentRepository.findById(codeReviewCommentId)
-				.orElseThrow(()->new IllegalArgumentException("no comments.."+codeReviewCommentId));
+	public void deleteById(UUID commentId) {
+		CodeReviewComment comment = codeReviewCommentRepository.findById(commentId)
+				.orElseThrow(()->new IllegalArgumentException("no comments.."+commentId));
+		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(commentId);
+		codeReviewPreferenceService.deleteAll(preferences);
+
+		List<Notification> notifications = notificationService.findByEntityID(commentId);
+		notificationService.deleteAll(notifications);
 
 		codeReviewCommentRepository.delete(comment);
 	}
