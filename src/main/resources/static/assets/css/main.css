@@ -2411,7 +2411,16 @@ input[type="radio"] + label:before {
   color: #555;
   margin-left: 5px; /* 아이콘 간격 조정 */
 }
-
+.comment_box {
+  display: flex;
+  justify-content: space-between;
+}
+.comment_delete {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  color: #000000 !important;
+}
 .icon_view {
   display: flex;
   justify-content: space-between;
@@ -2438,6 +2447,8 @@ input[type="radio"] + label:before {
 }
 .year_icon .icon.fa-thumbs-up:hover {
   color: red !important;
+  transition: color 0.3s;
+
 }
   #article-info {
     display: flex; /* 플렉스 박스 사용 */
