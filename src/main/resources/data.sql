@@ -12,41 +12,42 @@ VALUES (UUID(), 'Java'),
        (UUID(), 'Go'),
        (UUID(), 'Kotlin'),
        (UUID(), 'Rust'),
-       (UUID(), 'TypeScript');
+       (UUID(), 'TypeScript'),
+       (UUID(), 'C'),
+       (UUID(), 'Basic');
 
 INSERT INTO member (id, email, nickname, authority_id, is_delete)
-VALUES
-    (UUID(), 'jiwonpark@google.com', '박지원', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false),
-    (UUID(), 'seungwookim@google.com', '김승우', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'hayounglee@google.com', '이하영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'yunachoi@google.com', '최유나', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'sooyoungkim@daum.net', '김수영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'jisoolim@codeback.kr', '임지수', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'chaeunkang@github.com', '강채은', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'seokjinjung@github.com', '정석진', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'sangminlee@naver.com', '이상민', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'minjicho@naver.com', '조민지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'joosung@google.com', '박주성', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false),
-    (UUID(), 'park.minseo@gmail.com', '박민서', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'lee.jihoon@naver.com', '이지훈', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'kim.yuna@daum.net', '김유나', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'choi.seunghyun@yahoo.com', '최승현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'jung.daehyun@kakao.com', '정대현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'kang.sora@gmail.com', '강소라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'hwang.minhyun@naver.com', '황민현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'song.jieun@daum.net', '송지은', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'han.jimin@yahoo.com', '한지민', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'oh.sehun@kakao.com', '오세훈', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'yoon.bora@gmail.com', '윤보라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'shin.donghyuk@naver.com', '신동혁', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'go.ara@daum.net', '고아라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'jang.wooyoung@yahoo.com', '장우영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'bae.joohyun@kakao.com', '배주현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'nam.joohyuk@gmail.com', '남주혁', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'ahn.hyeji@naver.com', '안혜지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'kwon.yuri@daum.net', '권유리', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'seo.inguk@yahoo.com', '서인국', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-    (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false);
+VALUES (UUID(), 'jiwonpark@google.com', '박지원', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false),
+       (UUID(), 'seungwookim@google.com', '김승우', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'hayounglee@google.com', '이하영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'yunachoi@google.com', '최유나', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'sooyoungkim@daum.net', '김수영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'jisoolim@codeback.kr', '임지수', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'chaeunkang@github.com', '강채은', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'seokjinjung@github.com', '정석진', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'sangminlee@naver.com', '이상민', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'minjicho@naver.com', '조민지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'joosung@google.com', '박주성', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false),
+       (UUID(), 'park.minseo@gmail.com', '박민서', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'lee.jihoon@naver.com', '이지훈', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'kim.yuna@daum.net', '김유나', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'choi.seunghyun@yahoo.com', '최승현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'jung.daehyun@kakao.com', '정대현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'kang.sora@gmail.com', '강소라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'hwang.minhyun@naver.com', '황민현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'song.jieun@daum.net', '송지은', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'han.jimin@yahoo.com', '한지민', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'oh.sehun@kakao.com', '오세훈', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'yoon.bora@gmail.com', '윤보라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'shin.donghyuk@naver.com', '신동혁', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'go.ara@daum.net', '고아라', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'jang.wooyoung@yahoo.com', '장우영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'bae.joohyun@kakao.com', '배주현', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'nam.joohyuk@gmail.com', '남주혁', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'ahn.hyeji@naver.com', '안혜지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'kwon.yuri@daum.net', '권유리', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'seo.inguk@yahoo.com', '서인국', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false);
 
 INSERT INTO code_review (id, member_id, title, content, create_date, language_id)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 0), '자바 경로탐색 질문입니다.', '<h2>BFS 예제 1: 경로 탐색</h2>
@@ -86,7 +87,8 @@ public class BFSExample10 {
         return path;
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', NOW(),
+       (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 1), '반복적인 채우기 전략 질문입니다.', '<h2>BFS 예제 2: 반복적인 채우기 전략</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -370,7 +372,8 @@ public class BFSExample11 {
         }
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', NOW(),
+       (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), '최단 경로 탐색을 위한 BFS', '<h2>BFS 예제 12: 최단 경로 탐색</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 import java.util.*;
@@ -640,7 +643,8 @@ public class OptionalExample {
         System.out.println(result);
     }
 }
-</code></pre></div>', NOW(), (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
+</code></pre></div>', NOW(),
+       (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
 
 (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), 'Python에서의 리스트 컴프리헨션', '<h2>Python: 리스트 컴프리헨션 사용 예제</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -772,7 +776,8 @@ console.log(greet(user));
 
 
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, member_id)
-VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 0), (SELECT id FROM member LIMIT 1 OFFSET 20)),
+VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 0),
+       (SELECT id FROM member LIMIT 1 OFFSET 20)),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -866,7 +871,8 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', NOW(), (SELECT id FROM code_re
     }저도요', NOW(), (SELECT id FROM code_review LIMIT 1 OFFSET 9), (SELECT id FROM member LIMIT 1 OFFSET 4));
 
 INSERT INTO code_review_preference (id, sender_member_id, entity_id, is_Like, create_date)
-VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1, NOW()),
+VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20),
+       (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1, NOW()),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1, NOW()),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), (SELECT id FROM code_review LIMIT 1 OFFSET 2), 1, NOW()),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23), (SELECT id FROM code_review LIMIT 1 OFFSET 3), 1, NOW()),
