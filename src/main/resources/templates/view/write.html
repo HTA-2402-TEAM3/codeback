@@ -21,59 +21,31 @@
 </head>
 
 <body class="subpage">
-
 <header id="header">
-    <div class="box_logo">
-        <div class="logo_box">
-            <img src="/images/codeback.png"/>
-        </div>
-        <div class="text_box">
-            <a href="#">Home</a>
+    <div class="inner_logo">
+        <a href="/" class="logo"></a>
+        <img src="/images/codeback.png"/>
+        <nav id="nav">
             <a href="/review/">CodeReview</a>
             <a href="#">ProjectReview</a>
-        </div>
-        <div class="button_box">
-            <button class="button special" id="show-login">Login</button>
-        </div>
-    </div>
-    <!-- 로그인 팝업 -->
-    <div class="popup-overlay"></div>
-    <div class="popup">
-        <div class="close-btn">&times;</div>
-        <!-- 로그인 폼 -->
-        <div class="form login-form">
-            <h2>로그인</h2>
-            <div class="form-element">
-                <label for="email">이메일 로그인</label>
-                <form>
-                    <input type="text" id="email" placeholder="Enter email"><br>
-                    <button class="login-button">로그인</button>
-                </form>
-            </div>
-            <div class="OAuth">
-                <label for="email">소셜 계정으로 로그인</label>
-
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-github"></span>
-                </a>
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-google"></span>
-                </a>
-            </div>
-            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
-        </div>
-
-        <!-- 회원가입 폼 -->
-        <div class="form signup-form" style="display: none;">
-            <h2>회원가입</h2>
-            <div class="form-element">
-                <label for="signup-email">이메일 회원가입</label>
-                <form>
-                    <input type="text" id="signup-email" placeholder="Enter email"><br>
-                    <button class="login-button">회원가입</button>
-                </form>
+            <button href="#" class="button special" id="show-login">Login</button>
+        </nav>
+        <!-- 로그인 팝업 -->
+        <div class="popup">
+            <div class="close-btn">&times;</div>
+            <!-- 로그인 폼 -->
+            <div class="form login-form">
+                <h2>로그인</h2>
+                <div class="form-element">
+                    <label for="email">이메일 로그인</label>
+                    <form>
+                        <input type="text" id="email" placeholder="Enter email"><br>
+                        <button class="login-button">로그인</button>
+                    </form>
+                </div>
                 <div class="OAuth">
-                    <label for="email">소셜 계정으로 회원가입</label>
+                    <label for="email">소셜 계정으로 로그인</label>
+
                     <a href="#" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -81,16 +53,37 @@
                         <span class="icon fa-google"></span>
                     </a>
                 </div>
-                <p>이미 계정이 있으신가요?
-                    <!--로그인 버튼 누르면 닫게 해둠-->
-                    <a href="#" id="show-login-form">로그인</a></p>
+                <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
             </div>
-        </div>
-        <!--    로그인 js-->
-        <script src="/assets/js/popup.js"></script>
-    </div>
 
-    <!--    로그인 js 끝-->
+            <!-- 회원가입 폼 -->
+            <div class="form signup-form" style="display: none;">
+                <h2>회원가입</h2>
+                <div class="form-element">
+                    <label for="signup-email">이메일 회원가입</label>
+                    <form>
+                        <input type="text" id="signup-email" placeholder="Enter email"><br>
+                        <button class="login-button">회원가입</button>
+                    </form>
+                    <div class="OAuth">
+                        <label for="email">소셜 계정으로 회원가입</label>
+
+                        <a href="#" class="OAuth-box">
+                            <span class="icon fa-github"></span>
+                        </a>
+                        <a href="#" class="OAuth-box">
+                            <span class="icon fa-google"></span>
+                        </a>
+                    </div>
+                    <p>이미 계정이 있으신가요? <a href="#" id="show-login-form">로그인</a></p>
+                </div>
+            </div>
+            <!--    로그인 js-->
+            <script src="/assets/js/popup.js"></script>
+
+            <!--    로그인 js 끝-->
+        </div>
+    </div>
 </header>
 <section id="main" class="wrapper">
     <div class="inner">
@@ -111,16 +104,11 @@
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'
             });
-
-            // document.getElementById('submit').addEventListener('click', () => {
-            //     const content = editor.getHTML();
-            //     console.log(content);
-            // })
         </script>
 
-<!--        글쓰기 페이지에서 체크박스-->
+
         <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-            <div class="checkbox-group" th:each="language : ${languages}" style="width: 15%; box-sizing: border-box;">
+            <div class="checkbox-group" th:each="language : ${languages}" style="width: 18%; box-sizing: border-box;">
                 <input type="checkbox" th:id="${language.getLanguageName()}"
                        th:value="${language.getId()}"
                        onclick="selectOnlyOne(this)">
@@ -133,6 +121,7 @@
             <button class="button special" onclick="getMemberInfo()">쓰기/수정</button>
         </div>
     </div>
+    <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
     <script src="/assets/js/write.js"></script>
 </section>
 </body>

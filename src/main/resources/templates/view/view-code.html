@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -19,55 +20,34 @@
 </head>
 <body class="subpage">
 <header id="header">
-    <div class="box_logo">
-        <div class="logo_box">
-            <img src="/images/codeback.png"/>
-        </div>
-        <div class="text_box">
-            <a href="/">Home</a>
-            <a href="/review/">CodeReview</a>
-            <a href="#">ProjectReview</a>
-        </div>
-        <div class="button_box">
-            <button class="button special" id="show-login">Login</button>
-        </div>
-    </div>
-    <div class="popup">
-        <div class="close-btn">&times;</div>
-        <!-- 로그인 폼 -->
-        <div class="form login-form">
-            <h2>로그인</h2>
-            <div class="form-element">
-                <label for="email">이메일 로그인</label>
-                <form>
-                    <input type="text" id="email" placeholder="Enter email"><br>
-                    <button class="login-button">로그인</button>
-                </form>
+        <div class="box_logo">
+            <div class="logo_box">
+                <img src="/images/codeback.png"/>
             </div>
-            <div class="OAuth">
-                <label for="email">소셜 계정으로 로그인</label>
-
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-github"></span>
-                </a>
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-google"></span>
-                </a>
+            <div class="text_box">
+                <a href="/">Home</a>
+                <a href="/review/">CodeReview</a>
+                <a href="#">ProjectReview</a>
             </div>
-            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
+            <div class="button_box">
+                <button class="button special" id="show-login">Login</button>
+            </div>
         </div>
-
-        <!-- 회원가입 폼 -->
-        <div class="form signup-form" style="display: none;">
-            <h2>회원가입</h2>
-            <div class="form-element">
-                <label for="signup-email">이메일 회원가입</label>
-                <form>
-                    <input type="text" id="signup-email" placeholder="Enter email"><br>
-                    <button class="login-button">회원가입</button>
-                </form>
+        <div class="popup">
+            <div class="close-btn">&times;</div>
+            <!-- 로그인 폼 -->
+            <div class="form login-form">
+                <h2>로그인</h2>
+                <div class="form-element">
+                    <label for="email">이메일 로그인</label>
+                    <form>
+                        <input type="text" id="email" placeholder="Enter email"><br>
+                        <button class="login-button">로그인</button>
+                    </form>
+                </div>
                 <div class="OAuth">
-                    <label for="email">소셜 계정으로 회원가입</label>
+                    <label for="email">소셜 계정으로 로그인</label>
+
                     <a href="#" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -75,34 +55,55 @@
                         <span class="icon fa-google"></span>
                     </a>
                 </div>
-                <p>이미 계정이 있으신가요?
-                    <!--로그인 버튼 누르면 닫게 해둠-->
-                    <a href="#" id="show-login-form">로그인</a></p>
+                <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
             </div>
+            <!-- 회원가입 폼 -->
+            <div class="form signup-form" style="display: none;">
+                <h2>회원가입</h2>
+                <div class="form-element">
+                    <label for="signup-email">이메일 회원가입</label>
+                    <form>
+                        <input type="text" id="signup-email" placeholder="Enter email"><br>
+                        <button class="login-button">회원가입</button>
+                    </form>
+                    <div class="OAuth">
+                        <label for="email">소셜 계정으로 회원가입</label>
+                        <a href="#" class="OAuth-box">
+                            <span class="icon fa-github"></span>
+                        </a>
+                        <a href="#" class="OAuth-box">
+                            <span class="icon fa-google"></span>
+                        </a>
+                    </div>
+                    <p>이미 계정이 있으신가요?
+                        <!--로그인 버튼 누르면 닫게 해둠-->
+                        <a href="#" id="show-login-form">로그인</a></p>
+                </div>
+            </div>
+            <!--    로그인 js-->
+            <script src="/assets/js/popup.js"></script>
         </div>
-        <!--    로그인 js-->
-        <script src="/assets/js/popup.js"></script>
-    </div>
     <a href="#navPanel" class="navPanelToggle">
         <span class="fa fa-bars"></span>
     </a>
 </header>
 <section id="main" class="wrapper">
     <div class="inner">
-        <header class="align-center">
-            <h2 th:text="${codeReview.title}"></h2>
+        <div class="inner">
+            <header class="align-center">
+                <h2 th:text="${codeReview.title}"></h2>
 
-            <div class="content">
-                <h4 th:text="${codeReview.member}"></h4>
-                <div class="year_icon">
-                    <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
-                    <a class="icon fa-thumbs-up">
-                        <span class="label">thumbsUp</span>
-                        <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
-                    </a>
+                <div class="content">
+                    <h4 th:text="${codeReview.member}"></h4>
+                    <div class="year_icon">
+                        <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
+                        <a class="icon fa-thumbs-up">
+                            <span class="label">thumbsUp</span>
+                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header>
 
         <hr class="major"/>
 
@@ -113,7 +114,7 @@
             <button class="button special disabled">#java</button>
             <div class="icon_view">
                 <a class="icon fa-pencil"
-                   onclick="window.location.href='/review/write'"></a>
+                   th:href="@{/review/write(id=${codeReview.id})}"></a>
                 <a class="icon fa-trash"
                    th:reviewId="${codeReview.id}"
                    th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
@@ -125,13 +126,13 @@
             <i class="fa fa-comments"></i>
             <span th:text="${codeReview.codeReviewComments.size()}"></span>
         </h3>
-
         <div id="comment-container">
-            <div th:each="comments : ${codeReview.codeReviewComments}">
+            <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
                 <ul>
                     <li>
                         <div>
                             <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+<!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                         </div>
                     </li>
                     <li>
@@ -151,75 +152,65 @@
                     <p th:utext="${comments.comment}"></p>
                 </div>
                 <div class="comment_delete">
-<!--                    글쓰기모양 댓글 달기로 이동해야하메 -->
                     <a class="icon fa-pencil"
-                       onclick="window.location.href='/#'"></a>
+                       id="modifyIcon"
+                       th:commentId="${comments.id}"
+                       th:commentContent="${comments.comment}"
+                       th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
                     <a class="icon fa-trash"
-                       th:reviewId="${codeReview.id}"
-                       th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
+                       th:commentId="${comments.id}"
+                       th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
                 </div>
                 <hr class="major"/>
             </div>
         </div>
 
 
-        <div id="editor_test"></div>
+        <div id="editor"></div>
         <button class="button special" id="submit">submit</button>
 
         <!-- 에디터 js -->
         <script>
             const Editor = toastui.Editor;
+            let commentContent;
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
                 height: '500px',
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'
-
             });
 
             document.getElementById('submit').addEventListener('click', () => {
                 const content = editor.getHTML();
                 console.log(content);
+                commentContent = content;
+
+                getMemberInComment();
             })
+
+            function deleteCodeReview(id) {
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    fetch(`/api/review/delete/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(resp => {
+                            if (resp.ok) {
+                                alert("삭제되었습니다.");
+                                window.location.href = '/review/';
+                            } else {
+                                throw new Error("err");
+                            }
+                        }).catch(error => {
+                        console.error(error);
+                    })
+                }
+            }
         </script>
     </div>
 </section>
-<script>
-    function deleteCodeReview(id) {
-        if (confirm("정말 삭제하시겠습니까?")) {
-            fetch(`/api/review/delete/${id}`, {
-                method: 'DELETE'
-            })
-                .then(resp => {
-                    if (resp.ok) {
-                        alert("삭제되었습니다.");
-                        window.location.href = '/review/';
-                    } else {
-                        throw new Error("err");
-                    }
-                }).catch(error => {
-                console.error(error);
-            })
-        }
-    }
-
-    function updateCodeReview(id) {
-        fetch(`/api/review/update/${id}`, {
-            method: 'PUT'
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    alert("수정되었습니다.");
-                    window.location.href = '/review/';
-                } else {
-                    throw new Error("err");
-                }
-            }).catch(error => {
-            console.error(error);
-        })
-    }
-
-</script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script src="/assets/js/comment.js"></script>
+<script src="/assets/js/write.js"></script>
 </body>
 </html>

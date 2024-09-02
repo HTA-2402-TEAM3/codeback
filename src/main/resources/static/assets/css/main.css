@@ -2438,7 +2438,8 @@ input[type="radio"] + label:before {
     padding: 20px;
     flex-wrap: wrap;
     width: 1350px;
-    margin-left: 85px
+    margin-left: 85px;
+    padding-right: 30px;
 }
 
 .icon_view {

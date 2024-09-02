@@ -92,14 +92,12 @@
                         th:value="${language.getId()}"
                         onclick="selectOnlyOne(this)"
                 />
-                <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}" style="display: flex;"></label>
+                <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}" style="display: flex"></label>
             </div>
         </div>
     </header>
     <div class="inner_logo">
-        <div class="text_box">
-            <button class="special button" onclick="window.location.href='/review/write'">글쓰기</button>
-        </div>
+        <button class="special button" onclick="window.location.href='/review/write'">글쓰기</button>
         <div class="search-container">
             <div>
                 <input type="text" name="search" id="search" value="" placeholder="Search"/>
