@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function renderComment(data) {
-    console.log(data);
+    const commentID = data.id;
+    const commentContent = data.commentContent;
+
     const commentElement = document.createElement('div');
     commentElement.innerHTML = `
            
@@ -38,9 +40,9 @@ function renderComment(data) {
     </div>
     <div class="comment_delete">
         <a class="icon fa-pencil" id="modifyIcon"
-           onClick="modifyComment(${data.id}, ${data.commentContent})"></a>
+           onClick="modifyComment('${commentID}', '${commentContent}')"></a>
         <a class="icon fa-trash"
-           onclick="deleteComment(${data.id})"></a>
+           onclick="deleteComment('${commentID}')"></a>
     </div>
     <hr class="major"/>`;
 
@@ -105,15 +107,17 @@ function deleteComment(commentID) {
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
         fetch(`/api/review/comment/${commentID}`, {
             method: 'DELETE'
-        })
-            .then(resp => {
-                if (resp.ok) {
-                    alert("삭제되었습니다.");
-                    location.reload();
-                } else {
-                    throw new Error("err");
+        }).then(resp => {
+                if (!resp.ok) {
+                    throw new Error("fail to fetch");
                 }
-            }).catch(error => {
+                return resp.json();
+            }).then(resp => {
+            console.log(resp);
+
+            alert(resp.message);
+            location.reload();
+        }).catch(error => {
             console.error(error);
         })
     }
@@ -138,14 +142,17 @@ function updateComments(commentId, content) {
         }
         return resp.json();
     }).then(resp => {
-        window.location.href = '/review/';
+        console.log(resp);
+
+        alert(resp.message);
+        location.reload();
     }).catch(error => {
         console.error(error);
     });
 }
 
 function modifyComment(commentId, commentContent) {
-    console.log("commentContent : "+commentContent);
+    console.log("commentContent : " + commentContent);
 
 
     const comment1 = document.getElementById('comment1');
