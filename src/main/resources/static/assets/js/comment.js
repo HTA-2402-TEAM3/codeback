@@ -3,10 +3,8 @@ const commentContainer = document.getElementById('comment-container');
 
 document.addEventListener('DOMContentLoaded', function () {
     const pathSegments = window.location.pathname.split('/'); // 경로를 '/'로 나누기
-    const uuid = pathSegments[pathSegments.length - 1]; // 마지막 요소가 UUID
-
-    console.log(uuid); // UUID 출력
-    review_uuid = uuid;
+    // 마지막 요소가 UUID
+    review_uuid = pathSegments[pathSegments.length - 1];
 });
 
 function renderComment(data) {
@@ -35,11 +33,11 @@ function renderComment(data) {
         </div>
 
     </div>
-    <div id="comment1">
+    <div id="${data.id}">
         <p>${data.commentContent}</p>
     </div>
     <div class="comment_delete">
-        <a class="icon fa-pencil" id="modifyIcon"
+        <a class="icon fa-pencil" id="modify${data.id}"
            onClick="modifyComment('${commentID}', '${commentContent}')"></a>
         <a class="icon fa-trash"
            onclick="deleteComment('${commentID}')"></a>
@@ -108,11 +106,11 @@ function deleteComment(commentID) {
         fetch(`/api/review/comment/${commentID}`, {
             method: 'DELETE'
         }).then(resp => {
-                if (!resp.ok) {
-                    throw new Error("fail to fetch");
-                }
-                return resp.json();
-            }).then(resp => {
+            if (!resp.ok) {
+                throw new Error("fail to fetch");
+            }
+            return resp.json();
+        }).then(resp => {
             console.log(resp);
 
             alert(resp.message);
@@ -151,21 +149,35 @@ function updateComments(commentId, content) {
     });
 }
 
+let lastCommentId;
+let lastCommentContent;
+
 function modifyComment(commentId, commentContent) {
+    console.log("commentID : " + commentId);
     console.log("commentContent : " + commentContent);
 
-
-    const comment1 = document.getElementById('comment1');
-    comment1.innerHTML = '';
-
-    const modifyIcon = document.getElementById('modifyIcon');
+    if (lastCommentId === null) {
+        lastCommentId = commentId;
+        lastCommentContent = commentContent;
+    } else if (lastCommentId !== commentId) {
+        const comment = document.getElementById(lastCommentId);
+        if (comment) {
+            comment.innerHTML = lastCommentContent;
+        }
+        lastCommentId = commentId;
+        lastCommentContent = commentContent;
+    }
+    const comment = document.getElementById(`${commentId}`);
+    comment.innerHTML = '';
 
     const turndownService = new TurndownService();
     const markdown = turndownService.turndown(commentContent);
 
+    const modifyIcon = document.getElementById(`modify${commentId}`);
+
     const editorDiv = document.createElement('div');
     editorDiv.id = 'commentEditor';
-    comment1.appendChild(editorDiv);
+    comment.appendChild(editorDiv);
 
     const commentEditor = toastui.Editor;
 

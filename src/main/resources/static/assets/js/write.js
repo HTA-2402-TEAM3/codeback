@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     reviewId = urlParams.get('id');
 
-    console.log(reviewId);
-
     if (reviewId !== null && reviewId !== '') {
         renderCodeReview(reviewId);
     }

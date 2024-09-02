@@ -95,12 +95,12 @@
                     </div>
 
                 </div>
-                <div id="comment1">
+                <div th:id="${comments.id}">
                     <p th:utext="${comments.comment}"></p>
                 </div>
                 <div class="comment_delete">
                     <a class="icon fa-pencil"
-                       id="modifyIcon"
+                       th:id="'modify'+${comments.id}"
                        th:commentId="${comments.id}"
                        th:commentContent="${comments.comment}"
                        th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
