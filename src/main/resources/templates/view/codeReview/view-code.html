@@ -100,6 +100,7 @@
         <!-- 에디터 js -->
         <script>
             const Editor = toastui.Editor;
+            let commentContent;
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
@@ -111,6 +112,9 @@
             document.getElementById('submit').addEventListener('click', () => {
                 const content = editor.getHTML();
                 console.log(content);
+                commentContent = content;
+
+                getMemberInComment();
             })
 
             function deleteCodeReview(id) {
@@ -133,7 +137,7 @@
         </script>
     </div>
 </section>
-<script src="/assets/js/update.js"></script>
+<script src="/assets/js/comment.js"></script>
 <script src="/assets/js/write.js"></script>
 </body>
 </html>

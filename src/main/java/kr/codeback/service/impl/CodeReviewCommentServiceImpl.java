@@ -1,7 +1,12 @@
 package kr.codeback.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
+import kr.codeback.repository.CodeReviewRepository;
+import kr.codeback.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -22,6 +27,9 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
 	private final NotificationService notificationService;
+	private final MemberRepository memberRepository;
+	private final CodeReviewRepository codeReviewRepository;
+
 
 	@Override
 	@Transactional
@@ -61,4 +69,29 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
 
+	@Override
+	public CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO) {
+		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
+				.orElseThrow(()-> new IllegalArgumentException("no member..."));
+		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
+				.orElseThrow(()-> new IllegalArgumentException("no codeReview..."));
+
+		CodeReviewComment codeReviewComment = CodeReviewComment.builder()
+				.comment(commentDTO.getContent())
+				.id(UUID.randomUUID())
+				.member(member)
+				.codeReview(codeReview)
+				.build();
+		codeReviewCommentRepository.save(codeReviewComment);
+
+		CodeReviewComment savedComment = codeReviewCommentRepository.findById(codeReviewComment.getId())
+				.orElseThrow(()->new IllegalArgumentException("no comment..."+codeReviewComment.getId()));
+
+		return savedComment.toDTO();
+	}
+
+	@Override
+	public void deleteById(UUID codeReviewCommentId) {
+
+	}
 }

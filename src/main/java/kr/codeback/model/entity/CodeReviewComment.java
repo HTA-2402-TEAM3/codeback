@@ -3,6 +3,7 @@ package kr.codeback.model.entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -46,5 +47,15 @@ public class CodeReviewComment {
 		this.member = member;
 		this.comment = comment;
 		this.codeReview = codeReview;
+	}
+
+	public CodeReviewCommentResponseDTO toDTO() {
+		return CodeReviewCommentResponseDTO.builder()
+				.codeReviewId(codeReview.getId())
+				.memberNickname(member.getNickname())
+				.createDate(createDate)
+				.commentContent(comment)
+				.id(id)
+				.build();
 	}
 }
