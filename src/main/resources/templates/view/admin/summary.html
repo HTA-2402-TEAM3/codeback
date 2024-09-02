@@ -38,8 +38,8 @@
 <br>
 
 <label>
-    <input type="date" id="search-input">
-    <button onclick="search()">검색</button>
+    <input type="month" id="search-input">
+    <button type="button" onclick="search()">검색</button>
 </label>
 <br>
 
@@ -98,20 +98,34 @@
 </div>
 
 <script>
-
-    window.onload = function () {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchDate = urlParams.get('searchDate');
-        if (searchDate) {
-            document.getElementById('search-input').value = searchDate;
-        }
-    };
-
     function search() {
         const searchInput = document.getElementById('search-input').value;
-        const url = '/admin/summary?searchDate=' + searchInput;
-        window.location.href = url;
+
+        if (searchInput) {
+            // 선택한 달의 마지막 날 구하기
+            const [year, month] = searchInput.split('-');
+            const lastDay = new Date(year, month, 0).getDate(); // 선택된 달의 마지막 날 계산
+
+            // YYYY-MM-DD 형식으로 변환
+            const lastDateOfMonth = `${year}-${month}-${lastDay}`;
+
+            // URL 생성 및 이동
+            const url = '/admin/summary?searchDate=' + lastDateOfMonth;
+            window.location.href = url;
+        }
     }
+
+    // 페이지 로드 시 searchDate 값을 월로 설정
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchDate = urlParams.get('searchDate');
+
+        if (searchDate) {
+            const date = new Date(searchDate);
+            const yearMonth = date.toISOString().substring(0, 7); // 'YYYY-MM' 형식으로 변환
+            document.getElementById('search-input').value = yearMonth;
+        }
+    };
 </script>
 
 </body>
