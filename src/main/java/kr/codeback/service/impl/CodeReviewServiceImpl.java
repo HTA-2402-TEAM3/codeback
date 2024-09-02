@@ -1,5 +1,7 @@
 package kr.codeback.service.impl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -154,12 +156,21 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth() {
-		List<Object[]> results = codeReviewRepository.calculateSummaryByWeek();
+	public List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
+
+
+		Date searchDate = null;
+		if (inputDate == null || inputDate.isEmpty()) {
+			searchDate = Date.valueOf(LocalDate.now());
+		} else {
+			searchDate = Date.valueOf(LocalDate.parse(inputDate));
+		}
+
+		List<Object[]> results = codeReviewRepository.calculateSummaryByMonth(searchDate);
 
 		return results.stream()
 			.map(row -> new CodeReviewSummaryByMonthResponseDTO(
-				((Number)row[0]).intValue(),
+				Integer.parseInt(row[0].toString()),
 				((Number)row[1]).longValue()
 			))
 			.toList();

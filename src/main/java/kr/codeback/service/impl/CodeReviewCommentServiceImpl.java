@@ -1,5 +1,7 @@
 package kr.codeback.service.impl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -63,17 +65,23 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	}
 
 	@Override
-	public List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth() {
+	public List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
 
-		List<Object[]> results = codeReviewCommentRepository.calculateSummaryByMonth();
+		Date searchDate = null;
+		if (inputDate == null || inputDate.isEmpty()) {
+			searchDate = Date.valueOf(LocalDate.now());
+		} else {
+			searchDate = Date.valueOf(LocalDate.parse(inputDate));
+		}
+
+		List<Object[]> results = codeReviewCommentRepository.calculateSummaryByMonth(searchDate);
 
 		return results.stream().map(
 				row -> new CodeReviewCommentSummaryResponseDTO(
-					((Number)row[0]).intValue(),
+					Integer.parseInt(row[0].toString()),
 					((Number)row[1]).longValue()
 				))
 			.toList();
 
 	}
-
 }

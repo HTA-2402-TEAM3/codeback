@@ -15,6 +15,7 @@
 
 </div>
 
+
 <br>
 
 <h2>언어별 코드 리뷰 게시글 수</h2>
@@ -34,6 +35,12 @@
     </table>
 </div>
 
+<br>
+
+<label>
+    <input type="date" id="search-input">
+    <button onclick="search()">검색</button>
+</label>
 <br>
 
 <h2>코드 리뷰 게시글 요약</h2>
@@ -90,7 +97,22 @@
     </table>
 </div>
 
+<script>
 
+    window.onload = function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchDate = urlParams.get('searchDate');
+        if (searchDate) {
+            document.getElementById('search-input').value = searchDate;
+        }
+    };
+
+    function search() {
+        const searchInput = document.getElementById('search-input').value;
+        const url = '/admin/summary?searchDate=' + searchInput;
+        window.location.href = url;
+    }
+</script>
 
 </body>
 </html>

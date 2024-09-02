@@ -43,6 +43,6 @@ public interface CodeReviewService {
 
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
-	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth();
+	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
 
 }
