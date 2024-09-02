@@ -12,7 +12,9 @@ VALUES (UUID(), 'Java'),
        (UUID(), 'Go'),
        (UUID(), 'Kotlin'),
        (UUID(), 'Rust'),
-       (UUID(), 'TypeScript');
+       (UUID(), 'TypeScript'),
+       (UUID(), 'C'),
+       (UUID(), 'Basic');
 
 INSERT INTO member (id, email, nickname, authority_id, is_delete)
 VALUES
