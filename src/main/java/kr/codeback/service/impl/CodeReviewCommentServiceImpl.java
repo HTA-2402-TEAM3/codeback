@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;
@@ -92,6 +93,18 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	@Override
 	public void deleteById(UUID codeReviewCommentId) {
+		CodeReviewComment comment = codeReviewCommentRepository.findById(codeReviewCommentId)
+				.orElseThrow(()->new IllegalArgumentException("no comments.."+codeReviewCommentId));
 
+		codeReviewCommentRepository.delete(comment);
+	}
+
+	@Override
+	public void update(CommentModifyRequestDTO commentDTO) {
+		CodeReviewComment comment = codeReviewCommentRepository.findById(commentDTO.getId())
+				.orElseThrow(()->new IllegalArgumentException("no Comment..."));
+
+		comment.updateCodeReviewComment(commentDTO);
+		codeReviewCommentRepository.save(comment);
 	}
 }

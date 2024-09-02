@@ -121,7 +121,12 @@ function selectOnlyOne(checkbox) {
 function renderCodeReview(reviewId) {
     console.log("renderCodeReview() : "+reviewId);
 
-    fetch(`/api/review/get/${reviewId}`)
+    fetch(`/api/review/get/${reviewId}`,{
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');

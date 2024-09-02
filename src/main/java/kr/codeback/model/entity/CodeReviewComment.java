@@ -3,6 +3,8 @@ package kr.codeback.model.entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -57,5 +59,9 @@ public class CodeReviewComment {
 				.commentContent(comment)
 				.id(id)
 				.build();
+	}
+
+	public void updateCodeReviewComment(CommentModifyRequestDTO commentDTO) {
+		comment = commentDTO.getContent();
 	}
 }

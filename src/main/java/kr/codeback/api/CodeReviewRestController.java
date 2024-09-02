@@ -5,6 +5,7 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewModifyResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
@@ -55,7 +56,8 @@ public class CodeReviewRestController {
     @GetMapping("/get/{id}")
     public ResponseEntity<Object> getReview(@PathVariable UUID id){
         CodeReview codeReview = codeReviewService.findById(id);
-        return ResponseEntity.ok().body(codeReview);
+        CodeReviewModifyResponseDTO modifyDTO = codeReview.toModifyDTO();
+        return ResponseEntity.ok().body(modifyDTO);
     }
 
     @PostMapping("/save")

@@ -4,6 +4,7 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.impl.CodeReviewCommentServiceImpl;
@@ -24,8 +25,14 @@ public class CodeReviewCommentRestController {
         return ResponseEntity.ok().body(comment);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteComment(@PathVariable UUID codeReviewCommentId) {
-        codeReviewCommentService.deleteById(codeReviewCommentId);
+    public ResponseEntity<Object> deleteComment(@PathVariable UUID id) {
+        codeReviewCommentService.deleteById(id);
         return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateComment(@RequestBody CommentModifyRequestDTO commentDTO) {
+        codeReviewCommentService.update(commentDTO);
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
+    }
+
 }

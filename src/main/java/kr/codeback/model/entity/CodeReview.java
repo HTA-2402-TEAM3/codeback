@@ -6,6 +6,8 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewModifyResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Builder;
@@ -40,6 +42,7 @@ public class CodeReview {
 	private CodeLanguageCategory codeLanguageCategory;
 
 	@OneToMany(mappedBy = "codeReview", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("createDate DESC")
 	private List<CodeReviewComment> comments;
 
 	@Builder
@@ -57,5 +60,13 @@ public class CodeReview {
 		title = codeReviewDTO.getTitle();
 		content = codeReviewDTO.getContent();
 		codeLanguageCategory = clCategory;
+	}
+
+	public CodeReviewModifyResponseDTO toModifyDTO() {
+		return CodeReviewModifyResponseDTO.builder()
+				.codeLanguageCategory(codeLanguageCategory)
+				.title(title)
+				.content(content)
+				.build();
 	}
 }

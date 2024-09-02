@@ -1,6 +1,7 @@
 package kr.codeback.service.interfaces;
 
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
@@ -17,4 +18,6 @@ public interface CodeReviewCommentService {
     CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO);
 
 	void deleteById(UUID codeReviewCommentId);
+
+	void update(CommentModifyRequestDTO commentDTO);
 }

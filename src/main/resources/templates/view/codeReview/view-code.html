@@ -27,10 +27,10 @@
             <a href="#">ProjectReview</a>
             <button href="#" class="button special" id="show-login">Login</button>
         </nav>
-            </nav>
-            <a href="#navPanel" class="navPanelToggle">
-                <span class="fa fa-bars"></span>
-            </a>
+        </nav>
+        <a href="#navPanel" class="navPanelToggle">
+            <span class="fa fa-bars"></span>
+        </a>
         </a>
     </div>
 </header>
@@ -69,14 +69,17 @@
         </div>
         <hr class="major"/>
 
-        <h3 th:text="${codeReview.codeReviewComments.size()} + comments">comments size</h3>
+        <h3>
+            <i class="fa fa-comments"></i>
+            <span th:text="${codeReview.codeReviewComments.size()}"></span>
+        </h3>
         <div id="comment-container">
-            <div th:each="comments : ${codeReview.codeReviewComments}">
+            <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
                 <ul>
                     <li>
                         <div>
                             <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
-                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+<!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                         </div>
                     </li>
                     <li>
@@ -86,8 +89,24 @@
                         </a>
                     </li>
                 </ul>
+                <div class="comment_box">
+                    <div>
+                        <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+                    </div>
+
+                </div>
                 <div id="comment1">
                     <p th:utext="${comments.comment}"></p>
+                </div>
+                <div class="comment_delete">
+                    <a class="icon fa-pencil"
+                       id="modifyIcon"
+                       th:commentId="${comments.id}"
+                       th:commentContent="${comments.comment}"
+                       th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                    <a class="icon fa-trash"
+                       th:commentId="${comments.id}"
+                       th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
                 </div>
                 <hr class="major"/>
             </div>
@@ -137,6 +156,7 @@
         </script>
     </div>
 </section>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/assets/js/comment.js"></script>
 <script src="/assets/js/write.js"></script>
 </body>
