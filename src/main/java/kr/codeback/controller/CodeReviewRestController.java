@@ -5,6 +5,8 @@ import kr.codeback.model.dto.request.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/review")
 @RequiredArgsConstructor
+@Slf4j
 public class CodeReviewRestController {
     private final CodeReviewService codeReviewService;
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
-import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
+import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 

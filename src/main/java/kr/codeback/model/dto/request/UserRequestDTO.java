@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class UserRequestDTO {
 	String email;
 	String nickname;
+	String role;
 }

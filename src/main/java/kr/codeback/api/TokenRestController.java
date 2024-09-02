@@ -11,17 +11,21 @@ import kr.codeback.model.dto.request.TokenRequestDTO;
 import kr.codeback.model.dto.request.UserRequestDTO;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/token")
+@Slf4j
 public class TokenRestController {
 
 	private final JwtUtil jwtUtil;
 
 	@PostMapping("/")
 	public String generateAccessToken(@RequestBody TokenRequestDTO tokenRequestDTO){
-		return jwtUtil.generateAccessToken(tokenRequestDTO.getEmail(), tokenRequestDTO.getNickname());
+		log.info("api/member/token");
+		return jwtUtil.generateAccessToken(tokenRequestDTO.getEmail(), tokenRequestDTO.getNickname(),
+			tokenRequestDTO.getRole());
 	}
 
 	// @PostMapping("/")

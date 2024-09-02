@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/oauth2")
+@RequestMapping("/oauth")
 @RequiredArgsConstructor
 @Controller
 public class OauthController {

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
+import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 
 public interface MemberService {
