@@ -6,8 +6,8 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 
 import kr.codeback.model.dto.request.CodeReviewRequestDTO;
-import kr.codeback.model.dto.response.CodeReviewSummaryByLanguageResponseDTO;
-import kr.codeback.model.dto.response.CodeReviewSummaryByWeekResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.Member;
@@ -43,6 +43,6 @@ public interface CodeReviewService {
 
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
-	List<CodeReviewSummaryByWeekResponseDTO> calculateSummaryByWeek();
+	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth();
 
 }

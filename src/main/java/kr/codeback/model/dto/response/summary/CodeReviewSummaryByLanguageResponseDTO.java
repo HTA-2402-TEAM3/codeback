@@ -1,4 +1,4 @@
-package kr.codeback.model.dto.response;
+package kr.codeback.model.dto.response.summary;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -10,8 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import kr.codeback.model.dto.response.CodeReviewSummaryByLanguageResponseDTO;
-import kr.codeback.model.dto.response.CodeReviewSummaryByWeekResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import lombok.NonNull;
 
@@ -43,7 +42,7 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 
 	@Query("""
 		select
-		new kr.codeback.model.dto.response.CodeReviewSummaryByLanguageResponseDTO(
+		new kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO(
 		cl.languageName,
 		count(*)
 		)
@@ -55,17 +54,16 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID> {
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
 	@Query(value = """
-		    SELECT
-		        WEEK(CURRENT_DATE) - WEEK(cr.create_date) AS week_diff,
-		        COUNT(*) AS count
-		    FROM
-		        code_review cr
-		    WHERE
-		        cr.create_date >= DATE_SUB(CURRENT_DATE, INTERVAL 10 WEEK)
-		    GROUP BY
-		        WEEK(cr.create_date)
-		    ORDER BY
-		        week_diff
+		SELECT m.month as month,
+		       coalesce(count(cr.id), 0) as count
+		FROM months m
+		         left join code_review cr
+		                   on m.month = month(cr.create_date)
+		                       and current_date > cr.create_date
+		                       and cr.create_date >= date_sub(current_date, interval 5 month)
+		WHERE m.month between month(date_sub(current_date, interval 5 month)) and month(current_date)
+		GROUP BY m.month
+		ORDER BY m.month desc
 		""", nativeQuery = true)
 	List<Object[]> calculateSummaryByWeek();
 

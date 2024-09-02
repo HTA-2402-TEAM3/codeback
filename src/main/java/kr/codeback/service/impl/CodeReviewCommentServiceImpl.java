@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.model.dto.response.summary.CodeReviewCommentSummaryResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
@@ -59,6 +60,20 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 			.forEach(codeReviewPreferenceService::deleteByEntityID);
 
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
+	}
+
+	@Override
+	public List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth() {
+
+		List<Object[]> results = codeReviewCommentRepository.calculateSummaryByMonth();
+
+		return results.stream().map(
+				row -> new CodeReviewCommentSummaryResponseDTO(
+					((Number)row[0]).intValue(),
+					((Number)row[1]).longValue()
+				))
+			.toList();
+
 	}
 
 }

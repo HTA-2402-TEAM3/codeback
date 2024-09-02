@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
 import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewPreferenceRepository;
@@ -74,6 +75,19 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 		return optionalCodeReviewPreference.map(Collections::singletonList)
 			.orElseGet(Collections::emptyList);
 		//		댓글 없으면 빈 객체 return
+	}
+
+	@Override
+	public List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth() {
+
+		List<Object[]> results = codeReviewPreferenceRepository.calculateSummaryByMonth();
+
+		return results.stream().map(row ->
+				new CodeReviewPreferenceSummaryResponseDTO(
+					((Number)row[0]).intValue(),
+					((Number)row[1]).longValue()
+				))
+			.toList();
 	}
 
 }

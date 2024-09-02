@@ -15,6 +15,9 @@
 
 </div>
 
+<br>
+
+<h2>언어별 코드 리뷰 게시글 수</h2>
 <div>
     <table>
         <thead>
@@ -23,29 +26,69 @@
         </thead>
 
         <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
-        <td th:text="${codeReviews.languageName}">name</td>
-        <td th:text="${codeReviews.totalCount}">count</td>
+        <tr>
+            <td th:text="${codeReviews.languageName}">name</td>
+            <td th:text="${codeReviews.totalCount}">count</td>
+        </tr>
         </tbody>
     </table>
 </div>
 
 <br>
 
+<h2>코드 리뷰 게시글 요약</h2>
 <div>
     <table>
         <thead>
-        <tr>Week</tr>
+        <tr>Month</tr>
         <tr>Count</tr>
         </thead>
 
-        <tbody th:each="codeReviews:${codeReviewSummaryByWeek}">
-        <td th:text="${codeReviews.weekDiff} + '주차'">name</td>
-        <td th:text="${codeReviews.count}">count</td>
+        <tbody th:each="codeReviews:${codeReviewSummaryByMonth}">
+        <tr>
+            <td th:text="${codeReviews.month} + '월'">name</td>
+            <td th:text="${codeReviews.count}">count</td>
+        </tr>
         </tbody>
     </table>
 </div>
 
+<br>
 
+<h2>댓글 요약</h2>
+<div>
+    <table>
+        <thead>
+        <tr>Month</tr>
+        <tr>Count</tr>
+        </thead>
+
+        <tbody th:each="codeReviewComments:${codeReviewCommentSummaryByMonth}">
+        <tr>
+            <td th:text="${codeReviewComments.month} + '월'">name</td>
+            <td th:text="${codeReviewComments.count}">count</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<br>
+<h2>좋아요 요약</h2>
+<div>
+    <table>
+        <thead>
+        <tr>Month</tr>
+        <tr>Count</tr>
+        </thead>
+
+        <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
+        <tr>
+            <td th:text="${codeReviewPreference.month} + '월'">name</td>
+            <td th:text="${codeReviewPreference.count}">count</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 
 
