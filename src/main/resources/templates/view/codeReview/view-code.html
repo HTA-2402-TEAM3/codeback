@@ -10,6 +10,47 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css"/>
+
+    <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
+</head>
+<body class="subpage">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generic - Projection by TEMPLATED</title>
+    <meta charset="utf-8"/>
+    <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css"/>
+
+    <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
+</head>
+<body class="subpage">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generic - Projection by TEMPLATED</title>
+    <meta charset="utf-8"/>
+    <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/login.css"/>
 
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
@@ -19,35 +60,54 @@
 </head>
 <body class="subpage">
 <header id="header">
-
-        <div class="box_logo">
-            <div class="logo_box">
-                <img src="/images/codeback.png"/>
-            </div>
-            <div class="text_box">
-                <a href="/">Home</a>
-                <a href="/review/">CodeReview</a>
-                <a href="#">ProjectReview</a>
-            </div>
-            <div class="button_box">
-                <button class="button special" id="show-login">Login</button>
-            </div>
+    <div class="box_logo">
+        <div class="logo_box">
+            <img src="/images/codeback.png"/>
         </div>
-        <div class="popup">
-            <div class="close-btn">&times;</div>
-            <!-- 로그인 폼 -->
-            <div class="form login-form">
-                <h2>로그인</h2>
-                <div class="form-element">
-                    <label for="email">이메일 로그인</label>
-                    <form>
-                        <input type="text" id="email" placeholder="Enter email"><br>
-                        <button class="login-button">로그인</button>
-                    </form>
-                </div>
-                <div class="OAuth">
-                    <label for="email">소셜 계정으로 로그인</label>
+        <div class="text_box">
+            <a href="/">Home</a>
+            <a href="/review/">CodeReview</a>
+            <a href="#">ProjectReview</a>
+        </div>
+        <div class="button_box">
+            <button class="button special" id="show-login">Login</button>
+        </div>
+    </div>
+    <div class="popup">
+        <div class="close-btn">&times;</div>
+        <!-- 로그인 폼 -->
+        <div class="form login-form">
+            <h2>로그인</h2>
+            <div class="form-element">
+                <label for="email">이메일 로그인</label>
+                <form>
+                    <input type="text" id="email" placeholder="Enter email"><br>
+                    <button class="login-button">로그인</button>
+                </form>
+            </div>
+            <div class="OAuth">
+                <label for="email">소셜 계정으로 로그인</label>
 
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-github"></span>
+                </a>
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-google"></span>
+                </a>
+            </div>
+            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
+        </div>
+        <!-- 회원가입 폼 -->
+        <div class="form signup-form" style="display: none;">
+            <h2>회원가입</h2>
+            <div class="form-element">
+                <label for="signup-email">이메일 회원가입</label>
+                <form>
+                    <input type="text" id="signup-email" placeholder="Enter email"><br>
+                    <button class="login-button">회원가입</button>
+                </form>
+                <div class="OAuth">
+                    <label for="email">소셜 계정으로 회원가입</label>
                     <a href="#" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -55,39 +115,18 @@
                         <span class="icon fa-google"></span>
                     </a>
                 </div>
-                <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
+                <p>이미 계정이 있으신가요?
+                    <!--로그인 버튼 누르면 닫게 해둠-->
+                    <a href="#" id="show-login-form">로그인</a></p>
             </div>
-            <!-- 회원가입 폼 -->
-            <div class="form signup-form" style="display: none;">
-                <h2>회원가입</h2>
-                <div class="form-element">
-                    <label for="signup-email">이메일 회원가입</label>
-                    <form>
-                        <input type="text" id="signup-email" placeholder="Enter email"><br>
-                        <button class="login-button">회원가입</button>
-                    </form>
-                    <div class="OAuth">
-                        <label for="email">소셜 계정으로 회원가입</label>
-                        <a href="#" class="OAuth-box">
-                            <span class="icon fa-github"></span>
-                        </a>
-                        <a href="#" class="OAuth-box">
-                            <span class="icon fa-google"></span>
-                        </a>
-                    </div>
-                    <p>이미 계정이 있으신가요?
-                        <!--로그인 버튼 누르면 닫게 해둠-->
-                        <a href="#" id="show-login-form">로그인</a></p>
-                </div>
-            </div>
-            <!--    로그인 js-->
-            <script src="/assets/js/popup.js"></script>
         </div>
-    <a href="#navPanel" class="navPanelToggle">
-        <span class="fa fa-bars"></span>
-    </a>
+        <!--    로그인 js-->
+        <script src="/js/popup.js"></script>
+    </div>
 
 </header>
+
+</body>
 <section id="main" class="wrapper">
     <div class="inner">
         <div class="inner">
