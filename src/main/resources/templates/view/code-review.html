@@ -9,24 +9,79 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="/assets/css/main.css"/>
+    <link rel="stylesheet" href="/assets/css/login.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body class="subpage">
-<header id="header">
-    <div class="inner_logo">
-        <a href="/" class="logo"></a>
+<div class="box_logo">
+    <div class="logo_box">
         <img src="/images/codeback.png"/>
-        <nav id="nav">
-            <a href="/review/">CodeReview</a>
-            <a href="#">ProjectReview</a>
-            <button href="#" class="button special" id="show-login">Login</button>
-        </nav>
-
-        <a href="#navPanel" class="navPanelToggle"
-        ><span class="fa fa-bars"></span
-        ></a>
     </div>
+    <div class="text_box">
+        <a href="/">Home</a>
+        <a href="/review/">CodeReview</a>
+        <a href="#">ProjectReview</a>
+    </div>
+    <div class="button_box">
+        <button class="button special" id="show-login">Login</button>
+    </div>
+    <div class="popup">
+        <div class="close-btn">&times;</div>
+        <!-- 로그인 폼 -->
+        <div class="form login-form">
+            <h2>로그인</h2>
+            <div class="form-element">
+                <label for="email">이메일 로그인</label>
+                <form>
+                    <input type="text" id="email" placeholder="Enter email"><br>
+                    <button class="login-button">로그인</button>
+                </form>
+            </div>
+            <div class="OAuth">
+                <label for="email">소셜 계정으로 로그인</label>
+
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-github"></span>
+                </a>
+                <a href="#" class="OAuth-box">
+                    <span class="icon fa-google"></span>
+                </a>
+            </div>
+            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
+        </div>
+
+        <!-- 회원가입 폼 -->
+        <div class="form signup-form" style="display: none;">
+            <h2>회원가입</h2>
+            <div class="form-element">
+                <label for="signup-email">이메일 회원가입</label>
+                <form>
+                    <input type="text" id="signup-email" placeholder="Enter email"><br>
+                    <button class="login-button">회원가입</button>
+                </form>
+                <div class="OAuth">
+                    <label for="email">소셜 계정으로 회원가입</label>
+                    <a href="#" class="OAuth-box">
+                        <span class="icon fa-github"></span>
+                    </a>
+                    <a href="#" class="OAuth-box">
+                        <span class="icon fa-google"></span>
+                    </a>
+                </div>
+                <p>이미 계정이 있으신가요?
+                    <!--로그인 버튼 누르면 닫게 해둠-->
+                    <a href="#" id="show-login-form">로그인</a></p>
+            </div>
+        </div>
+        <!--    로그인 js-->
+        <script src="/assets/js/popup.js"></script>
+    </div>
+
+    <a href="#navPanel" class="navPanelToggle"
+    ><span class="fa fa-bars"></span
+    ></a>
+</div>
 </header>
 <section id="three" class="wrapper">
     <div class="inner">
@@ -47,19 +102,19 @@
     </div>
     <div class="inner_logo">
         <button class="special button">글쓰기</button>
-    <div class="search-container">
-        <div>
-            <input type="text" name="search" id="search" value="" placeholder="Search"/>
+        <div class="search-container">
+            <div>
+                <input type="text" name="search" id="search" value="" placeholder="Search"/>
+            </div>
+            <div>
+                <a href="#" class="code-review" style="text-decoration: none">
+                    <span class="icon fa-search"></span>
+                </a>
+            </div>
         </div>
-        <div>
-            <a href="#" class="code-review" style="text-decoration: none">
-                <span class="icon fa-search"></span>
-            </a>
-        </div>
-    </div>
     </div>
     <div class="box-container">
-        <a href="view-code.html" class="box" style="padding-bottom: 0;">
+        <a href="test/view-code.html" class="box" style="padding-bottom: 0;">
             <div>
                 <ul style="margin-bottom: 30px;">
                     <li>
@@ -85,7 +140,7 @@
         </a>
 
 
-        <a href="view-code.html" class="box" style="padding-bottom: 0;">
+        <a href="test/view-code.html" class="box" style="padding-bottom: 0;">
             <div>
                 <ul style="margin-bottom: 30px;">
                     <li>
@@ -109,7 +164,7 @@
                 </ul>
             </div>
         </a>
-        <a href="view-code.html" class="box" style="padding-bottom: 0;">
+        <a href="test/view-code.html" class="box" style="padding-bottom: 0;">
             <div>
                 <ul style="margin-bottom: 30px;">
                     <li>
@@ -133,7 +188,7 @@
                 </ul>
             </div>
         </a>
-        <a href="view-code.html" class="box" style="padding-bottom: 0;">
+        <a href="test/view-code.html" class="box" style="padding-bottom: 0;">
             <div>
                 <ul style="margin-bottom: 30px;">
                     <li>
@@ -157,7 +212,7 @@
                 </ul>
             </div>
         </a>
-        <a href="view-code.html" class="box" style="padding-bottom: 0;">
+        <a href="test/view-code.html" class="box" style="padding-bottom: 0;">
             <div>
                 <ul style="margin-bottom: 30px;">
                     <li>

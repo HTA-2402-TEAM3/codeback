@@ -1,251 +1,347 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html" lang="en">
-<head>
+  <head>
     <title>Generic - Projection by TEMPLATED</title>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8" />
     <meta
-            name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
-            crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+      crossorigin="anonymous"
+    ></script>
 
-</head>
-<body class="subpage">
-<header id="header">
-    <div class="inner">
-        <a href="/static" class="logo"
-        ><strong>Projection</strong> by TEMPLATED</a
-        >
-        <nav id="nav">
-            <a class="login-btn">
-                <button href="/" class="button special">Login</button>
+    <link rel="stylesheet" href="/assets/css/login.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="subpage">
+    <header id="header">
+      <div class="box_logo">
+        <div class="logo_box">
+          <a href="/">
+            <img src="/images/codeback.png" alt="로고" />
+          </a>
+        </div>
+        <div class="text_box">
+          <a href="/">Home</a>
+          <a href="/review/">CodeReview</a>
+          <a href="#">ProjectReview</a>
+        </div>
+        <div class="button_box">
+          <button class="button special" id="show-login">Login</button>
+        </div>
+      </div>
+      <!-- 로그인 팝업 -->
+      <div class="popup-overlay"></div>
+      <div class="popup">
+        <div class="close-btn">&times;</div>
+        <!-- 로그인 폼 -->
+        <div class="form login-form">
+          <h2>로그인</h2>
+          <div class="form-element">
+            <label for="email">이메일 로그인</label>
+            <form>
+              <input type="text" id="email" placeholder="Enter email" /><br />
+              <button class="login-button">로그인</button>
+            </form>
+          </div>
+          <div class="OAuth">
+            <label for="email">소셜 계정으로 로그인</label>
+
+            <a href="#" class="OAuth-box">
+              <span class="icon fa-github"></span>
             </a>
-        </nav>
-        <a href="#navPanel" class="navPanelToggle"
-        ><span class="fa fa-bars"></span
-        ></a>
-    </div>
-</header>
+            <a href="#" class="OAuth-box">
+              <span class="icon fa-google"></span>
+            </a>
+          </div>
+          <p>
+            아직 회원이 아니신가요?
+            <a href="#" id="show-signup-form">회원가입</a>
+          </p>
+        </div>
 
-<section id="three" class="wrapper">
-    <div class="inner">
+        <!-- 회원가입 폼 -->
+        <div class="form signup-form" style="display: none">
+          <h2>회원가입</h2>
+          <div class="form-element">
+            <label for="signup-email">이메일 회원가입</label>
+            <form>
+              <input
+                type="text"
+                id="signup-email"
+                placeholder="Enter email"
+              /><br />
+              <button class="login-button">회원가입</button>
+            </form>
+            <div class="OAuth">
+              <label for="email">소셜 계정으로 회원가입</label>
+              <a href="#" class="OAuth-box">
+                <span class="icon fa-github"></span>
+              </a>
+              <a href="#" class="OAuth-box">
+                <span class="icon fa-google"></span>
+              </a>
+            </div>
+            <p>
+              이미 계정이 있으신가요?
+              <!--로그인 버튼 누르면 닫게 해둠-->
+              <a href="#" id="show-login-form">로그인</a>
+            </p>
+          </div>
+        </div>
+        <!--    로그인 js-->
+        <script src="/assets/js/popup.js"></script>
+      </div>
+      <!--    로그인 js 끝-->
+    </header>
+
+    <section id="three" class="wrapper">
+      <div class="inner">
         <table>
-            <thead>
+          <thead>
             <tr>
-                <th>Email</th>
-                <th>Name</th>
-                <th>Authority</th>
-                <th>Delete</th>
-                <th>ChangeAuthority</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Authority</th>
+              <th>Delete</th>
+              <th>ChangeAuthority</th>
             </tr>
-            </thead>
-            <tbody id="members-detail">
+          </thead>
+          <tbody id="members-detail">
             <!-- 초기 데이터를 타임리프를 사용해 렌더링 -->
-            <tr>
-
-            </tr>
-            </tbody>
+            <tr></tr>
+          </tbody>
         </table>
 
         <div id="pagination-controls">
-            <button id="prev-page">Previous</button>
-            <span id="current-page">1</span> / <span id="total-pages">1</span>
-            <button id="next-page">Next</button>
+          <button id="prev-page">Previous</button>
+          <span id="current-page">1</span> / <span id="total-pages">1</span>
+          <button id="next-page">Next</button>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<!-- Authority Change Modal -->
-<div class="modal fade" id="authorityModal" tabindex="-1" aria-labelledby="authorityModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <!-- Authority Change Modal -->
+    <div
+      class="modal fade"
+      id="authorityModal"
+      tabindex="-1"
+      aria-labelledby="authorityModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="authorityModalLabel">Change User Authority</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
+          <div class="modal-header">
+            <h5 class="modal-title" id="authorityModalLabel">
+              Change User Authority
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <span id="modal-email"> email </span>
 
-                <span id="modal-email">
-                    email
-                </span>
-
-                <label for="authoritySelect">
-                    <select id="authoritySelect" class="form-select">
-                        <option value="ROLE_ADMIN">Admin</option>
-                        <option value="ROLE_USER">User</option>
-                        <option value="ROLE_MANAGER">Manager</option>
-                        <!-- 필요한 권한 옵션 추가 -->
-                    </select>
-                </label>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="submitAuthorityChange()">Save changes</button>
-            </div>
+            <label for="authoritySelect">
+              <select id="authoritySelect" class="form-select">
+                <option value="ROLE_ADMIN">Admin</option>
+                <option value="ROLE_USER">User</option>
+                <option value="ROLE_MANAGER">Manager</option>
+                <!-- 필요한 권한 옵션 추가 -->
+              </select>
+            </label>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="submitAuthorityChange()"
+            >
+              Save changes
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
+    <script>
+      let currentPage = 1;
+      const itemsPerPage = 10; // 페이지당 항목 수
+      let totalPages = 0;
 
-    let currentPage = 1;
-    const itemsPerPage = 10; // 페이지당 항목 수
-    let totalPages = 0;
-
-    // 서버에서 JSON 데이터를 가져와 테이블에 추가
-    function fetchMembers(page) {
+      // 서버에서 JSON 데이터를 가져와 테이블에 추가
+      function fetchMembers(page) {
         fetch(`/api/admin/members?pageNum=${page - 1}&pageSize=${itemsPerPage}`)
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.message);
-                    })
-                }
-                return response.json();  // JSON 형태로 응답을 파싱
-            })
-            .then(data => {
-                const tbody = document.getElementById('members-detail');
-                tbody.innerHTML = ''; // 렌더링 초기화
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((errorData) => {
+                throw new Error(errorData.message);
+              });
+            }
+            return response.json(); // JSON 형태로 응답을 파싱
+          })
+          .then((data) => {
+            const tbody = document.getElementById("members-detail");
+            tbody.innerHTML = ""; // 렌더링 초기화
 
-                data.memberResponseDTOs.forEach(member => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
+            data.memberResponseDTOs.forEach((member) => {
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
                         <td>${member.email}</td>
                         <td>${member.nickname}</td>
                         <td>${member.authorityName}</td>
                         <td><button onclick="deleteUser('${member.email}')">Delete</button></td>
                         <td><button onclick="openAuthorityModal('${member.email}', '${member.nickname}')">Change Authority</button></td>
                     `;
-                    tbody.appendChild(tr);
-                });
+              tbody.appendChild(tr);
+            });
 
+            totalPages = data.totalPages;
+            updatePagination();
+          })
+          .catch((error) => {
+            alert(error.message || "An unexpected error occurred.");
+            window.location.href = "/";
+          });
+      }
 
-                totalPages = data.totalPages;
-                updatePagination();
-            })
-            .catch(error => {
-                alert(error.message || 'An unexpected error occurred.');
-                window.location.href = '/';
-            })
-    }
+      // 페이지네이션 초기화
+      function updatePagination() {
+        document.getElementById("current-page").textContent = currentPage;
+        document.getElementById("total-pages").textContent = totalPages;
 
-    // 페이지네이션 초기화
-    function updatePagination() {
+        document.getElementById("prev-page").disabled = currentPage === 1;
+        document.getElementById("next-page").disabled =
+          currentPage === totalPages;
+      }
 
-        document.getElementById('current-page').textContent = currentPage;
-        document.getElementById('total-pages').textContent = totalPages;
-
-        document.getElementById('prev-page').disabled = currentPage === 1;
-        document.getElementById('next-page').disabled = currentPage === totalPages;
-    }
-
-    // 이전 페이지 로직
-    document.getElementById('prev-page').addEventListener('click', () => {
+      // 이전 페이지 로직
+      document.getElementById("prev-page").addEventListener("click", () => {
         if (currentPage > 0) {
-            currentPage--;
-            fetchMembers(currentPage);
+          currentPage--;
+          fetchMembers(currentPage);
         }
-    });
+      });
 
-    // 다음 페이지 로직
-    document.getElementById('next-page').addEventListener('click', () => {
-
+      // 다음 페이지 로직
+      document.getElementById("next-page").addEventListener("click", () => {
         if (currentPage < totalPages) {
-            currentPage++;
-            fetchMembers(currentPage);
+          currentPage++;
+          fetchMembers(currentPage);
         }
-    });
+      });
 
-    // 초기 데이터 로드
-    fetchMembers(currentPage);
+      // 초기 데이터 로드
+      fetchMembers(currentPage);
 
-    // 삭제 요청
-    function deleteUser(email) {
+      // 삭제 요청
+      function deleteUser(email) {
         if (confirm(`정말 ${email}을 삭제하시겠습니까?`)) {
-            fetch(`/api/admin/member/${email}`, {
-                method: 'DELETE'
+          fetch(`/api/admin/member/${email}`, {
+            method: "DELETE",
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.json().then((errorData) => {
+                  throw new Error(errorData.message);
+                });
+              }
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.message);
-                        })
-                    }
-
-                })
-                .then(() => {
-
-                    alert(email + " 삭제가 완료되었습니다.");
-                    fetchMembers(currentPage);
-                })
-                .catch(error => alert(error.message));
+            .then(() => {
+              alert(email + " 삭제가 완료되었습니다.");
+              fetchMembers(currentPage);
+            })
+            .catch((error) => alert(error.message));
         }
-    }
+      }
 
-    let selectedEmail;
+      let selectedEmail;
 
-    // 모달 열기
-    function openAuthorityModal(email, nickname) {
+      // 모달 열기
+      function openAuthorityModal(email, nickname) {
         selectedEmail = email;
         let selectedNickname = nickname;
 
-        const tbody = document.getElementById('modal-email');
-        tbody.innerHTML = ''; // 렌더링 초기화
+        const tbody = document.getElementById("modal-email");
+        tbody.innerHTML = ""; // 렌더링 초기화
 
-        const span = document.createElement('span');
+        const span = document.createElement("span");
         span.innerHTML = selectedEmail + "(" + selectedNickname + ")";
 
         tbody.appendChild(span);
 
-        const authorityModal = new bootstrap.Modal(document.getElementById('authorityModal'));
+        const authorityModal = new bootstrap.Modal(
+          document.getElementById("authorityModal")
+        );
         authorityModal.show();
-    }
+      }
 
-    // 권한 수정 요청
-    function submitAuthorityChange() {
-        const newAuthority = document.getElementById('authoritySelect').value;
+      // 권한 수정 요청
+      function submitAuthorityChange() {
+        const newAuthority = document.getElementById("authoritySelect").value;
 
         if (newAuthority && selectedEmail) {
-            fetch(`/api/admin/member/${selectedEmail}/authority`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({authorityName: newAuthority})
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.message)
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert(`${data.email}의 권한이 ${data.authorityName}로 변경되었습니다.`);
-
-                    const authorityModal = bootstrap.Modal.getInstance(document.getElementById('authorityModal'));
-                    authorityModal.hide(); // 모달 닫기
-
-                    fetchMembers(currentPage); // 변경된 데이터 다시 로드
-                })
-                .catch(error => {
-                    console.error('Error changing authority:', error);
-                    alert(error.message + "\n다시 시도해 주세요");
+          fetch(`/api/admin/member/${selectedEmail}/authority`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ authorityName: newAuthority }),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                return response.json().then((errorData) => {
+                  throw new Error(errorData.message);
                 });
+              }
+              return response.json();
+            })
+            .then((data) => {
+              alert(
+                `${data.email}의 권한이 ${data.authorityName}로 변경되었습니다.`
+              );
+
+              const authorityModal = bootstrap.Modal.getInstance(
+                document.getElementById("authorityModal")
+              );
+              authorityModal.hide(); // 모달 닫기
+
+              fetchMembers(currentPage); // 변경된 데이터 다시 로드
+            })
+            .catch((error) => {
+              console.error("Error changing authority:", error);
+              alert(error.message + "\n다시 시도해 주세요");
+            });
         }
-    }
-</script>
-
-</body>
-
-
+      }
+    </script>
+  </body>
 </html>

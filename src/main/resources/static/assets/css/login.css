@@ -25,14 +25,19 @@ body {
     border-radius:5px;
 }
 .login-button {
-
+    display: flex; /* 플렉스 박스 사용 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    border: none; /* 기본 테두리 제거 */
+    cursor: pointer; /* 마우스 커서 변경 */
 }
+
 .popup {
     position:fixed;
-    top: 0px;
+    top: 50%;
     left:50%;
-    width: 30%;
-    height: 80%;
+    width: 450px;
+    height: 600px;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -40,7 +45,7 @@ body {
     justify-content: center;
     z-index: 20;
     opacity:0;
-    transform:translate(-50%,-120%) scale(1.25);
+    transform:translate(-50%,-200%) scale(1.25);
     padding:20px 30px;
     background:#fff;
     box-shadow:2px 2px 5px 5px rgba(0,0,0,0.15);
