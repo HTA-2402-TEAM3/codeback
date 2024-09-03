@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -49,8 +48,8 @@
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link rel="stylesheet" href="/assets/css/login.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
 
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
@@ -64,15 +63,11 @@
         <div class="logo_box">
             <img src="/images/codeback.png"/>
         </div>
-        <div class="text_box">
-            <a href="/">Home</a>
-            <a href="/review/">CodeReview</a>
-            <a href="#">ProjectReview</a>
-        </div>
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
         </div>
     </div>
+    <!-- 로그인 팝업 -->
     <div class="popup">
         <div class="close-btn">&times;</div>
         <!-- 로그인 폼 -->
@@ -80,14 +75,15 @@
             <h2>로그인</h2>
             <div class="form-element">
                 <label for="email">이메일 로그인</label>
-                <form>
-                    <input type="text" id="email" placeholder="Enter email"><br>
+                <form onsubmit="submitForm(event)">
+                    <label>
+                        <input type="email" name="email" id="email" placeholder="Enter email">
+                    </label><br>
                     <button class="login-button">로그인</button>
                 </form>
             </div>
             <div class="OAuth">
-                <label for="email">소셜 계정으로 로그인</label>
-
+                <label>소셜 계정으로 로그인</label>
                 <a href="#" class="OAuth-box">
                     <span class="icon fa-github"></span>
                 </a>
@@ -97,17 +93,20 @@
             </div>
             <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
         </div>
+
         <!-- 회원가입 폼 -->
         <div class="form signup-form" style="display: none;">
             <h2>회원가입</h2>
             <div class="form-element">
                 <label for="signup-email">이메일 회원가입</label>
-                <form>
-                    <input type="text" id="signup-email" placeholder="Enter email"><br>
+                <form onsubmit="submitForm(event)">
+                    <label>
+                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email">
+                    </label><br>
                     <button class="login-button">회원가입</button>
                 </form>
                 <div class="OAuth">
-                    <label for="email">소셜 계정으로 회원가입</label>
+                    <label>소셜 계정으로 회원가입</label>
                     <a href="#" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -122,8 +121,8 @@
         </div>
         <!--    로그인 js-->
         <script src="/js/popup.js"></script>
+        <script src="/js/submit.js"></script>
     </div>
-
 </header>
 
 </body>
@@ -145,109 +144,109 @@
                 </div>
             </header>
 
-        <hr class="major"/>
+            <hr class="major"/>
 
-        <div class="question-content">
-            <p th:utext="${codeReview.content}"></p>
-        </div>
-        <div class="inner_button">
-            <button class="button special disabled">#java</button>
-            <div class="icon_view">
-                <a class="icon fa-pencil"
-                   th:href="@{/review/write(id=${codeReview.id})}"></a>
-                <a class="icon fa-trash"
-                   th:reviewId="${codeReview.id}"
-                   th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
+            <div class="question-content">
+                <p th:utext="${codeReview.content}"></p>
             </div>
-        </div>
-        <hr class="major"/>
-
-        <h3>
-            <i class="fa fa-comments"></i>
-            <span th:text="${codeReview.codeReviewComments.size()}"></span>
-        </h3>
-        <div id="comment-container">
-            <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
-                <ul>
-                    <li>
-                        <div>
-                            <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
-<!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="icon fa-thumbs-up">
-                            <span class="label">thumbsUp</span>
-                            <span class="count">0</span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="comment_box">
-                    <div>
-                        <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
-                    </div>
-
-                </div>
-                <div th:id="${comments.id}">
-                    <p th:utext="${comments.comment}"></p>
-                </div>
-                <div class="comment_delete">
+            <div class="inner_button">
+                <button class="button special disabled">#java</button>
+                <div class="icon_view">
                     <a class="icon fa-pencil"
-                       th:id="'modify'+${comments.id}"
-                       th:commentId="${comments.id}"
-                       th:commentContent="${comments.comment}"
-                       th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                       th:href="@{/review/write(id=${codeReview.id})}"></a>
                     <a class="icon fa-trash"
-                       th:commentId="${comments.id}"
-                       th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
+                       th:reviewId="${codeReview.id}"
+                       th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
                 </div>
-                <hr class="major"/>
             </div>
-        </div>
+            <hr class="major"/>
+
+            <h3>
+                <i class="fa fa-comments"></i>
+                <span th:text="${codeReview.codeReviewComments.size()}"></span>
+            </h3>
+            <div id="comment-container">
+                <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
+                    <ul>
+                        <li>
+                            <div>
+                                <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+                                <!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="icon fa-thumbs-up">
+                                <span class="label">thumbsUp</span>
+                                <span class="count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="comment_box">
+                        <div>
+                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+                        </div>
+
+                    </div>
+                    <div th:id="${comments.id}">
+                        <p th:utext="${comments.comment}"></p>
+                    </div>
+                    <div class="comment_delete">
+                        <a class="icon fa-pencil"
+                           th:id="'modify'+${comments.id}"
+                           th:commentId="${comments.id}"
+                           th:commentContent="${comments.comment}"
+                           th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                        <a class="icon fa-trash"
+                           th:commentId="${comments.id}"
+                           th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
+                    </div>
+                    <hr class="major"/>
+                </div>
+            </div>
 
 
-        <div id="editor" style="margin-bottom: 20px;"></div>
-        <button class="button special" id="submit">댓글 작성</button>
+            <div id="editor" style="margin-bottom: 20px;"></div>
+            <button class="button special" id="submit">댓글 작성</button>
 
-        <!-- 에디터 js -->
-        <script>
-            const Editor = toastui.Editor;
-            let commentContent;
+            <!-- 에디터 js -->
+            <script>
+                const Editor = toastui.Editor;
+                let commentContent;
 
-            const editor = new Editor({
-                el: document.querySelector('#editor'),
-                height: '500px',
-                initialEditType: 'markdown',
-                previewStyle: 'vertical'
-            });
+                const editor = new Editor({
+                    el: document.querySelector('#editor'),
+                    height: '500px',
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical'
+                });
 
-            document.getElementById('submit').addEventListener('click', () => {
-                const content = editor.getHTML();
-                console.log(content);
-                commentContent = content;
+                document.getElementById('submit').addEventListener('click', () => {
+                    const content = editor.getHTML();
+                    console.log(content);
+                    commentContent = content;
 
-                getMemberInComment();
-            })
+                    getMemberInComment();
+                })
 
-            function deleteCodeReview(id) {
-                if (confirm("정말 삭제하시겠습니까?")) {
-                    fetch(`/api/review/delete/${id}`, {
-                        method: 'DELETE'
-                    })
-                        .then(resp => {
-                            if (resp.ok) {
-                                alert("삭제되었습니다.");
-                                window.location.href = '/review/';
-                            } else {
-                                throw new Error("err");
-                            }
-                        }).catch(error => {
-                        console.error(error);
-                    })
+                function deleteCodeReview(id) {
+                    if (confirm("정말 삭제하시겠습니까?")) {
+                        fetch(`/api/review/delete/${id}`, {
+                            method: 'DELETE'
+                        })
+                            .then(resp => {
+                                if (resp.ok) {
+                                    alert("삭제되었습니다.");
+                                    window.location.href = '/review/';
+                                } else {
+                                    throw new Error("err");
+                                }
+                            }).catch(error => {
+                            console.error(error);
+                        })
+                    }
                 }
-            }
-        </script>
-    </div>
+            </script>
+        </div>
 </section>
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>

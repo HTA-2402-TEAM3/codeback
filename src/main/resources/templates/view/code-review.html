@@ -15,18 +15,16 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body class="subpage">
-<div class="box_logo">
-    <div class="logo_box">
-        <img src="/images/codeback.png"/>
+<header id="header">
+    <div class="box_logo">
+        <div class="logo_box">
+            <img src="/images/codeback.png"/>
+        </div>
+        <div class="button_box">
+            <button class="button special" id="show-login">Login</button>
+        </div>
     </div>
-    <div class="text_box">
-        <a href="/">Home</a>
-        <a href="/review/">CodeReview</a>
-        <a href="#">ProjectReview</a>
-    </div>
-    <div class="button_box">
-        <button class="button special" id="show-login">Login</button>
-    </div>
+    <!-- 로그인 팝업 -->
     <div class="popup">
         <div class="close-btn">&times;</div>
         <!-- 로그인 폼 -->
@@ -34,14 +32,15 @@
             <h2>로그인</h2>
             <div class="form-element">
                 <label for="email">이메일 로그인</label>
-                <form>
-                    <input type="text" id="email" placeholder="Enter email"><br>
+                <form onsubmit="submitForm(event)">
+                    <label>
+                        <input type="email" name="email" id="email" placeholder="Enter email">
+                    </label><br>
                     <button class="login-button">로그인</button>
                 </form>
             </div>
             <div class="OAuth">
-                <label for="email">소셜 계정으로 로그인</label>
-
+                <label>소셜 계정으로 로그인</label>
                 <a href="#" class="OAuth-box">
                     <span class="icon fa-github"></span>
                 </a>
@@ -57,12 +56,14 @@
             <h2>회원가입</h2>
             <div class="form-element">
                 <label for="signup-email">이메일 회원가입</label>
-                <form>
-                    <input type="text" id="signup-email" placeholder="Enter email"><br>
+                <form onsubmit="submitForm(event)">
+                    <label>
+                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email">
+                    </label><br>
                     <button class="login-button">회원가입</button>
                 </form>
                 <div class="OAuth">
-                    <label for="email">소셜 계정으로 회원가입</label>
+                    <label>소셜 계정으로 회원가입</label>
                     <a href="#" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -77,12 +78,8 @@
         </div>
         <!--    로그인 js-->
         <script src="/js/popup.js"></script>
+        <script src="/js/submit.js"></script>
     </div>
-
-    <a href="#navPanel" class="navPanelToggle"
-    ><span class="fa fa-bars"></span
-    ></a>
-</div>
 </header>
 <section id="three" class="wrapper">
     <div class="inner">

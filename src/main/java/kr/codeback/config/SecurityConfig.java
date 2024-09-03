@@ -54,7 +54,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 				.requestMatchers(
-					"/","/review/{id}","/submit","/api/**","/registration","/api/submit").permitAll()
+					"/","/review/{id}","/submit","/api/**","/registration","/api/submit","/view/common/header").permitAll()
 				.anyRequest().permitAll()
 				// authenticated()
 			);

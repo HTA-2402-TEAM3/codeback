@@ -1,8 +1,15 @@
 function submitForm(event) {
     event.preventDefault(); // 기본 제출을 막습니다.
 
-    // 양식 데이터 수집
-    const email = document.getElementById('email').value;
+    let emailElement = document.getElementById('email');
+    let email = emailElement ? emailElement.value : null; // 'email' 요소가 있을 경우 값을 가져오기, 없으면 null 할당
+
+
+    if (email === "") {
+        // 'email' 값이 빈 문자열일 경우
+        let signupEmailElement = document.getElementById('signup-email');
+        email = signupEmailElement ? signupEmailElement.value : null; // 'signup-email'의 값을 이메일에 할당, 없으면 null
+    }
 
     // JSON 데이터 생성
     const jsonData = {
