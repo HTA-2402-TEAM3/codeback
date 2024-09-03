@@ -1,10 +1,9 @@
 package kr.codeback.service.impl;
 
-import java.util.Optional;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.repository.AuthorityRepository;
 import kr.codeback.service.interfaces.AuthorityService;
@@ -18,7 +17,10 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	public Authority findByName(String name) {
+
+		new ArrayList<>();
+
 		return authorityRepository.findByName(name)
-			.orElseThrow(() -> new IllegalArgumentException("Authority not found"));
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 권한입니다."));
 	}
 }

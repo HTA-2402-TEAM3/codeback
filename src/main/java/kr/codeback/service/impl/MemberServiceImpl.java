@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
+import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.member.MemberResponseDTO;
 import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
@@ -57,6 +58,13 @@ public class MemberServiceImpl implements MemberService {
 		);
 	}
 
+
+	@Override
+	public MemberSummaryResponseDTO getMemberSummary() {
+		return memberRepository.calculateSummary().orElseThrow(
+			() -> new IllegalStateException("잘못된 접근")
+		);
+	}
 
 	@Override
 	public Optional<Member> findMemberByNickname(String nickname) {

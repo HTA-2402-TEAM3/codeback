@@ -1,9 +1,11 @@
 package kr.codeback.service.interfaces;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 
@@ -38,5 +40,7 @@ public interface MemberService {
 
 	//id로 멤버 찾기
 	Member findById(UUID uuid);
+
+	MemberSummaryResponseDTO getMemberSummary();
 
 }

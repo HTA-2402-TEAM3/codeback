@@ -1,52 +1,61 @@
 package kr.codeback.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.ArrayList;
+import java.util.List;
 
-import kr.codeback.common.MessageResponseDTO;
-import kr.codeback.model.constant.SuccessMessage;
-import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewCommentSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
+import kr.codeback.service.interfaces.CodeReviewCommentService;
+import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 
-@RestController
-@RequestMapping("/api/admin")
+@Controller
 @RequiredArgsConstructor
 public class AdminController {
 
 	private final MemberService memberService;
+	private final CodeReviewService codeReviewService;
+	private final CodeReviewCommentService codeReviewCommentService;
+	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
-	@GetMapping("/members")
-	public ResponseEntity<MembersWithPageResponseDTO> findAllMembers(
-		@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
-		@RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize) {
+	@GetMapping("/admin/members")
+	public String moveMembers(Model model) {
 
-		// 쿠키로 이메일 가져오는 기능
+		model.addAttribute("initialMembers", new ArrayList<>());
 
-		memberService.validateAdminMemberByEmail("joosung@google.com");
-		MembersWithPageResponseDTO membersWithPageResponseDTO = memberService.findAllUnderAdmin(pageNum,
-			pageSize);
-
-		return ResponseEntity.status(HttpStatus.OK).body(membersWithPageResponseDTO);
+		return "/view/admin/members";
 	}
 
-	@DeleteMapping("/member/{email}")
-	public ResponseEntity<MessageResponseDTO> deleteMember(@PathVariable(name = "email") String deleteEmail) {
+	@GetMapping("/admin/summary")
+	public String moveSummary(Model model, @RequestParam(required = false) String searchDate) {
 
-		// 쿠키로 이메일 가져오는 기능
+		MemberSummaryResponseDTO memberSummaryResponseDTO = memberService.getMemberSummary();
+		List<CodeReviewSummaryByLanguageResponseDTO> codeReviewSummaryResponseDTOS = codeReviewService.calculateSummaryByLanguage();
+		List<CodeReviewSummaryByMonthResponseDTO> codeReviewSummaryByMonthResponseDTOS = codeReviewService.calculateSummaryByMonth(
+			searchDate);
+		List<CodeReviewCommentSummaryResponseDTO> codeReviewCommentSummaryResponseDTOS = codeReviewCommentService.calculateSummaryByMonth(
+			searchDate);
+		List<CodeReviewPreferenceSummaryResponseDTO> codeReviewPreferenceSummaryResponseDTOS = codeReviewPreferenceService.calculateSummaryByMonth(
+			searchDate);
 
-		memberService.validateAdminMemberByEmail("joosung@google.com");
+		model.addAttribute("memberSummary", memberSummaryResponseDTO);
+		model.addAttribute("codeReviewSummaryByLanguage", codeReviewSummaryResponseDTOS);
+		model.addAttribute("codeReviewSummaryByMonth", codeReviewSummaryByMonthResponseDTOS);
+		model.addAttribute("codeReviewCommentSummaryByMonth", codeReviewCommentSummaryResponseDTOS);
+		model.addAttribute("codeReviewPreferenceSummaryByMonth", codeReviewPreferenceSummaryResponseDTOS);
 
-		memberService.softDeleteByEmail(deleteEmail);
+		return "/view/admin/summary";
 
-		return ResponseEntity.status(HttpStatus.OK)
-			.body(new MessageResponseDTO(deleteEmail + SuccessMessage.DELETE.getMessage()));
 	}
 
 }
