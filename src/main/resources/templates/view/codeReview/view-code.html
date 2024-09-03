@@ -20,17 +20,17 @@
 <body class="subpage">
 <header id="header">
     <div class="inner_logo">
-        <a href="/" class="logo"></a>
+        <a href="/static" class="logo"></a>
         <img src="/images/codeback.png"/>
         <nav id="nav">
             <a href="/review/">CodeReview</a>
             <a href="#">ProjectReview</a>
             <button href="#" class="button special" id="show-login">Login</button>
         </nav>
-            </nav>
-            <a href="#navPanel" class="navPanelToggle">
-                <span class="fa fa-bars"></span>
-            </a>
+        </nav>
+        <a href="#navPanel" class="navPanelToggle">
+            <span class="fa fa-bars"></span>
+        </a>
         </a>
     </div>
 </header>
@@ -61,7 +61,7 @@
             <button class="button special disabled">#java</button>
             <div style="display: flex;gap:20px" class="icon_view">
                 <a class="icon fa-pencil"
-                   onclick="window.location.href='/review/write'"></a>
+                   th:href="@{/review/write(id=${codeReview.id})}"></a>
                 <a class="icon fa-trash"
                    th:reviewId="${codeReview.id}"
                    th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
@@ -69,14 +69,17 @@
         </div>
         <hr class="major"/>
 
-        <h3 th:text="${codeReview.codeReviewComments.size()} + comments">comments size</h3>
+        <h3>
+            <i class="fa fa-comments"></i>
+            <span th:text="${codeReview.codeReviewComments.size()}"></span>
+        </h3>
         <div id="comment-container">
-            <div th:each="comments : ${codeReview.codeReviewComments}">
+            <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
                 <ul>
                     <li>
                         <div>
                             <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
-                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+<!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                         </div>
                     </li>
                     <li>
@@ -86,8 +89,24 @@
                         </a>
                     </li>
                 </ul>
+                <div class="comment_box">
+                    <div>
+                        <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+                    </div>
+
+                </div>
                 <div id="comment1">
                     <p th:utext="${comments.comment}"></p>
+                </div>
+                <div class="comment_delete">
+                    <a class="icon fa-pencil"
+                       id="modifyIcon"
+                       th:commentId="${comments.id}"
+                       th:commentContent="${comments.comment}"
+                       th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                    <a class="icon fa-trash"
+                       th:commentId="${comments.id}"
+                       th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
                 </div>
                 <hr class="major"/>
             </div>
@@ -100,6 +119,7 @@
         <!-- 에디터 js -->
         <script>
             const Editor = toastui.Editor;
+            let commentContent;
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
@@ -111,44 +131,33 @@
             document.getElementById('submit').addEventListener('click', () => {
                 const content = editor.getHTML();
                 console.log(content);
+                commentContent = content;
+
+                getMemberInComment();
             })
+
+            function deleteCodeReview(id) {
+                if (confirm("정말 삭제하시겠습니까?")) {
+                    fetch(`/api/review/delete/${id}`, {
+                        method: 'DELETE'
+                    })
+                        .then(resp => {
+                            if (resp.ok) {
+                                alert("삭제되었습니다.");
+                                window.location.href = '/review/';
+                            } else {
+                                throw new Error("err");
+                            }
+                        }).catch(error => {
+                        console.error(error);
+                    })
+                }
+            }
         </script>
     </div>
 </section>
-<script>
-    function deleteCodeReview(id) {
-        if(confirm("정말 삭제하시겠습니까?")) {
-            fetch(`/api/review/delete/${id}`, {
-                method: 'DELETE'
-            })
-                .then(resp => {
-                    if(resp.ok) {
-                        alert("삭제되었습니다.");
-                        window.location.href = '/review/';
-                    } else {
-                        throw new Error("err");
-                    }
-                }).catch(error => {
-                    console.error(error);
-            })
-        }
-    }
-
-    function updateCodeReview(id) {
-        fetch(`/api/review/update/${id}`, {
-            method: 'PUT'
-        })
-            .then(resp => {
-                if(resp.ok) {
-                    alert("수정되었습니다.");
-                    window.location.href = '/review/';
-                } else {
-                    throw new Error("err");
-                }
-            }).catch(error => {
-            console.error(error);
-        })
-    }
-</script>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script src="/assets/js/comment.js"></script>
+<script src="/assets/js/write.js"></script>
 </body>
 </html>

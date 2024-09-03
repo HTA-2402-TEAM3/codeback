@@ -3,7 +3,13 @@ package kr.codeback.service.impl;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
+import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
+import kr.codeback.repository.CodeReviewRepository;
+import kr.codeback.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -25,6 +31,9 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
 	private final NotificationService notificationService;
+	private final MemberRepository memberRepository;
+	private final CodeReviewRepository codeReviewRepository;
+
 
 	@Override
 	@Transactional
@@ -65,8 +74,45 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	}
 
 	@Override
-	public List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
+	public CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO) {
+		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
+				.orElseThrow(()-> new IllegalArgumentException("no member..."));
+		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
+				.orElseThrow(()-> new IllegalArgumentException("no codeReview..."));
 
+		CodeReviewComment codeReviewComment = CodeReviewComment.builder()
+				.comment(commentDTO.getContent())
+				.id(UUID.randomUUID())
+				.member(member)
+				.codeReview(codeReview)
+				.build();
+		codeReviewCommentRepository.save(codeReviewComment);
+
+		CodeReviewComment savedComment = codeReviewCommentRepository.findById(codeReviewComment.getId())
+				.orElseThrow(()->new IllegalArgumentException("no comment..."+codeReviewComment.getId()));
+
+		return savedComment.toDTO();
+	}
+
+	@Override
+	public void deleteById(UUID codeReviewCommentId) {
+		CodeReviewComment comment = codeReviewCommentRepository.findById(codeReviewCommentId)
+				.orElseThrow(()->new IllegalArgumentException("no comments.."+codeReviewCommentId));
+
+		codeReviewCommentRepository.delete(comment);
+	}
+
+	@Override
+	public void update(CommentModifyRequestDTO commentDTO) {
+		CodeReviewComment comment = codeReviewCommentRepository.findById(commentDTO.getId())
+				.orElseThrow(()->new IllegalArgumentException("no Comment..."));
+
+		comment.updateCodeReviewComment(commentDTO);
+		codeReviewCommentRepository.save(comment);
+  }
+  
+  @Override
+	public List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
 		Date searchDate = null;
 		if (inputDate == null || inputDate.isEmpty()) {
 			searchDate = Date.valueOf(LocalDate.now());
@@ -82,6 +128,5 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 					((Number)row[1]).longValue()
 				))
 			.toList();
-
 	}
 }

@@ -8,6 +8,7 @@ import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/review")
@@ -47,26 +49,28 @@ public class CodeReviewController {
                 .preferenceCnt(codeReviewPreference.size())
                 .build());
 
-        return "view/view-code";
+        return "view/codeReview/view-code";
     }
 
     @GetMapping("/")
     public String checkReviews(Model model) {
-        List<CodeReviewListResponseDTO> reviews = codeReviewService.findAllWithPage(0, 10, "createDate").getContent();
+        Page<CodeReviewListResponseDTO> page = codeReviewService.findAllWithPage(0, 10, "createDate");
+        List<CodeReviewListResponseDTO> reviews = page.getContent();
         List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
 
-        model.addAttribute("totalPages", codeReviewService.findAllWithPage(0, 10, "createDate").getTotalPages());
+        model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("languages", languages);
         model.addAttribute("reviews", reviews);
 
-        return "/view/review-list";
+        return "/view/codeReview/review-list";
     }
 
     @GetMapping("/write")
-    public String writeReview(Model model) {
+    public String writeReview(@RequestParam(value = "id", required = false)UUID id, Model model) {
         List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
 
         model.addAttribute("languages", languageCategories);
-        return "/view/write";
+        return "/view/codeReview/write";
     }
+
 }

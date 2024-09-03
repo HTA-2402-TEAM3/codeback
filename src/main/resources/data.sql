@@ -12,7 +12,9 @@ VALUES (UUID(), 'Java'),
        (UUID(), 'Go'),
        (UUID(), 'Kotlin'),
        (UUID(), 'Rust'),
-       (UUID(), 'TypeScript');
+       (UUID(), 'TypeScript'),
+       (UUID(), 'C'),
+       (UUID(), 'Basic');
 
 INSERT INTO member (id, email, nickname, authority_id, is_delete)
 VALUES (UUID(), 'jiwonpark@google.com', '박지원', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false),
@@ -85,6 +87,7 @@ public class BFSExample10 {
         return path;
     }
 }
+
 </code></pre></div>', '2024-07-31 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 1), '반복적인 채우기 전략 질문입니다.', '<h2>BFS 예제 2: 반복적인 채우기 전략</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -369,6 +372,7 @@ public class BFSExample11 {
         }
     }
 }
+
 </code></pre></div>', '2024-06-22 10:15:32.000000', (SELECT id FROM code_language_category LIMIT 1 OFFSET 0)),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), '최단 경로 탐색을 위한 BFS', '<h2>BFS 예제 12: 최단 경로 탐색</h2>
 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -771,6 +775,7 @@ console.log(greet(user));
 
 
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, member_id)
+
 VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 0),
         (SELECT id FROM member LIMIT 1 OFFSET 20)),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
@@ -875,6 +880,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', 
         (SELECT id FROM member LIMIT 1 OFFSET 4));
 
 INSERT INTO code_review_preference (id, sender_member_id, entity_id, is_Like, create_date)
+
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1,
         '2024-08-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1,
@@ -895,6 +901,7 @@ VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_
         '2024-07-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 29), (SELECT id FROM code_review LIMIT 1 OFFSET 9), 1,
         '2024-08-30 10:15:32.000000');
+
 
 /*
 INSERT INTO notification (id, receiver_email, entity_id, is_read, create_date)

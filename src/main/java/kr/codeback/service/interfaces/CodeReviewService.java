@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 
-import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
 import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
@@ -14,33 +14,27 @@ import kr.codeback.model.entity.Member;
 
 public interface CodeReviewService {
 
-	// 모든 게시물 조회
-	Page<CodeReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort);
+    // 모든 게시물 조회
+    Page<CodeReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort);
 
-	// 언어 태그 별 게시물 조쇠
-	Page<CodeReviewListResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize, String sort);
+    // 언어 태그 별 게시물 조쇠
+    //Page<CodeReviewListResponseDTO> findCodeReviewByLanguage(UUID language, int pageNum, int pageSize, String sort);
 
-	// ID로 게시물 조회
-	CodeReview findById(UUID id);
+    // ID로 게시물 조회
+    CodeReview findById(UUID id);
 
-	// 작성자 이름으로 게시물 조회
-	List<CodeReview> findCodeReviewByAuthor(String author);
+    void deleteByMember(Member member);
 
-	// 제목으로 게시물 조회
-	List<CodeReview> findCodeReviewByTitle(String title);
+    List<CodeReview> findByMember(Member member);
 
-	// 게시물 삭제 (JpaRepository의 delete() 메서드 제공)
-	Boolean deleteCodeReviewById(String id);
+    void deleteCodeReviewById(UUID id);
 
-	void deleteByMember(Member member);
+    // 게시물 작성
+    void saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);
 
-	List<CodeReview> findByMember(Member member);
+    void updateCodeReview(CodeReviewRequestDTO reviewDTO);
 
-	Boolean deleteCodeReviewById(UUID id);
-
-	// 게시물 작성
-	CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);
-
+    Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize, String sort);
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
 	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);

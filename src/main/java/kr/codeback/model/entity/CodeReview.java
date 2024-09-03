@@ -1,12 +1,13 @@
 package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewModifyResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Builder;
@@ -41,6 +42,7 @@ public class CodeReview {
 	private CodeLanguageCategory codeLanguageCategory;
 
 	@OneToMany(mappedBy = "codeReview", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("createDate DESC")
 	private List<CodeReviewComment> comments;
 
 	@Builder
@@ -52,5 +54,19 @@ public class CodeReview {
 		this.content = content;
 		this.codeLanguageCategory = codeLanguageCategory;
 		this.comments = comments;
+	}
+
+	public void updateCodeReview(CodeReviewRequestDTO codeReviewDTO, CodeLanguageCategory clCategory) {
+		title = codeReviewDTO.getTitle();
+		content = codeReviewDTO.getContent();
+		codeLanguageCategory = clCategory;
+	}
+
+	public CodeReviewModifyResponseDTO toModifyDTO() {
+		return CodeReviewModifyResponseDTO.builder()
+				.codeLanguageCategory(codeLanguageCategory)
+				.title(title)
+				.content(content)
+				.build();
 	}
 }
