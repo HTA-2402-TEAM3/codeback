@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Boolean save(Member member) {
-		if(memberRepository.findByEmail(member.getEmail()).isEmpty()){
+		if (memberRepository.findByEmail(member.getEmail()).isEmpty()) {
 			memberRepository.save(member);
 			return true;
 		}
@@ -57,7 +57,6 @@ public class MemberServiceImpl implements MemberService {
 			)
 		);
 	}
-
 
 	@Override
 	public MemberSummaryResponseDTO getMemberSummary() {
@@ -134,7 +133,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member findById(UUID uuid){
+	public Member findById(UUID uuid) {
 		return memberRepository.findById(uuid).get();
 	}
 

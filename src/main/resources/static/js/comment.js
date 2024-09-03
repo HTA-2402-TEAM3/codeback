@@ -80,24 +80,22 @@ function commentSubmit(email) {
 }
 
 function getMemberInComment() {
-    commentSubmit("keyy1315@naver.com");
 
-
-    // fetch(`/api/member/info`)
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         console.log("data ::::", data.email);
-    //         email = data.email;
-    //         commentSubmit(email)
-    //     })
-    //     .catch(error => {
-    //         console.error('Fetch error:', error);
-    //     });
+    fetch(`/api/member/info`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("data ::::", data.email);
+            email = data.email;
+            commentSubmit(email)
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
 }
 
 function deleteComment(commentID) {

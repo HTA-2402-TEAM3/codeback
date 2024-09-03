@@ -48,7 +48,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (accessToken == null) {
 
             if(refreshToken==null) {
-                System.out.println("token null");
                 filterChain.doFilter(request, response);
                 return;
             }else{

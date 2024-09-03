@@ -14,73 +14,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body class="subpage">
-<header id="header">
-    <div class="box_logo">
-        <div class="logo_box">
-            <img src="/images/codeback.png"/>
-        </div>
-        <div class="button_box">
-            <button class="button special" id="show-login">Login</button>
-        </div>
-    </div>
-    <!-- 로그인 팝업 -->
-    <div class="popup">
-        <div class="close-btn">&times;</div>
-        <!-- 로그인 폼 -->
-        <div class="form login-form">
-            <h2>로그인</h2>
-            <div class="form-element">
-                <label for="email">이메일 로그인</label>
-                <form onsubmit="submitForm(event)">
-                    <label>
-                        <input type="email" name="email" id="email" placeholder="Enter email">
-                    </label><br>
-                    <button class="login-button">로그인</button>
-                </form>
-            </div>
-            <div class="OAuth">
-                <label>소셜 계정으로 로그인</label>
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-github"></span>
-                </a>
-                <a href="#" class="OAuth-box">
-                    <span class="icon fa-google"></span>
-                </a>
-            </div>
-            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
-        </div>
 
-        <!-- 회원가입 폼 -->
-        <div class="form signup-form" style="display: none;">
-            <h2>회원가입</h2>
-            <div class="form-element">
-                <label for="signup-email">이메일 회원가입</label>
-                <form onsubmit="submitForm(event)">
-                    <label>
-                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email">
-                    </label><br>
-                    <button class="login-button">회원가입</button>
-                </form>
-                <div class="OAuth">
-                    <label>소셜 계정으로 회원가입</label>
-                    <a href="#" class="OAuth-box">
-                        <span class="icon fa-github"></span>
-                    </a>
-                    <a href="#" class="OAuth-box">
-                        <span class="icon fa-google"></span>
-                    </a>
-                </div>
-                <p>이미 계정이 있으신가요?
-                    <!--로그인 버튼 누르면 닫게 해둠-->
-                    <a href="#" id="show-login-form">로그인</a></p>
-            </div>
-        </div>
-        <!--    로그인 js-->
-        <script src="/js/popup.js"></script>
-        <script src="/js/submit.js"></script>
-    </div>
-</header>
+<div th:replace="view/common/header :: header"></div>
+
+
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center"><h2>Code Review</h2>
@@ -270,6 +207,6 @@
 <script src="../../static/js/skel.min.js"></script>
 <script src="../../static/js/util.js"></script>
 <script src="../../static/js/main.js"></script>
-</body>
-</body></html>
+
+</html>
 

@@ -49,10 +49,9 @@ public class MemberRestController {
 	public ResponseEntity<Map<String, String>> getUserInfo(
 		@CookieValue(value = "access_token", required = false) String jwtToken) {
 		Map<String, String> response = new HashMap<>();
-		log.info("api/member/{id}");
 		if (jwtToken != null) {
 			String email = jwtUtil.extractEmail(jwtToken);
-			memberService.findByEmail(email);
+			response.put("email",email);
 			return ResponseEntity.ok(response);
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

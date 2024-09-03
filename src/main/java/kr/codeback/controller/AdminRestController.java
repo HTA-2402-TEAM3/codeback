@@ -68,7 +68,7 @@ public class AdminRestController {
 		Member member = memberService.findByEmail(email);
 
 		member.changeAuthority(authority);
-		memberService.save(member);
+		memberService.update(member);
 
 		return ResponseEntity.status(HttpStatus.OK)
 			.body(new AuthorityResponseDTO(member.getEmail(), authority.getName()));
