@@ -1,5 +1,7 @@
 package kr.codeback.service.impl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.repository.CodeLanguageCategoryRepository;
 import kr.codeback.repository.CodeReviewRepository;
@@ -153,5 +157,32 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 						.codeReviewComments(codeReview.getComments().size())
 						.build());
 	}
+
+	@Override
+	public List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage() {
+		return codeReviewRepository.calculateSummaryByLanguage();
+	}
+
+	@Override
+	public List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
+
+
+		Date searchDate = null;
+		if (inputDate == null || inputDate.isEmpty()) {
+			searchDate = Date.valueOf(LocalDate.now());
+		} else {
+			searchDate = Date.valueOf(LocalDate.parse(inputDate));
+		}
+
+		List<Object[]> results = codeReviewRepository.calculateSummaryByMonth(searchDate);
+
+		return results.stream()
+			.map(row -> new CodeReviewSummaryByMonthResponseDTO(
+				Integer.parseInt(row[0].toString()),
+				((Number)row[1]).longValue()
+			))
+			.toList();
+	}
+
 }
 

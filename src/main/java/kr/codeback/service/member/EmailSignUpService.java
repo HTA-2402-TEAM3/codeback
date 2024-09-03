@@ -14,8 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class EmailSignUpService {
-	private final JwtUtil jwtUtil;
-	private final MemberRepository memberRepository;
+
 	private final JavaMailSender emailSender;
 
 	@Value("${spring.mail.username}")
@@ -37,18 +36,6 @@ public class EmailSignUpService {
 
 		emailSender.send(mailMessage);
 	}
-/*
-
-	public boolean verifyMember(String token) {
-		if (jwtUtil.validateToken(token)) {
-			String email = jwtUtil.extractEmail(token);
-			Member member = memberRepository.findById(email);
-			memberRepository.save(member);
-			return true;
-		}
-		return false;
-	}
-*/
 
 	public String substringEmail(String email) {
 		int atIndex = email.indexOf('@');

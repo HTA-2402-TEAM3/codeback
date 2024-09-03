@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/oauth2")
+@RequestMapping("/oauth")
 @RequiredArgsConstructor
 @Controller
 public class OauthController {
@@ -21,6 +21,12 @@ public class OauthController {
 
 	@GetMapping("/github/callback")
 	public Map<String, String> githubCallback(@RequestParam Map<String, String> codemap) {
+
+		return null;
+	}
+
+	@GetMapping("/google/callback")
+	public Map<String, String> googleCallback(@RequestParam Map<String, String> codemap) {
 
 		return null;
 	}

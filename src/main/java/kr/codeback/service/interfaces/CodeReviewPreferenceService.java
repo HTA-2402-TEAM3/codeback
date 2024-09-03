@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
 import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.model.entity.Member;
 
@@ -26,4 +27,5 @@ public interface CodeReviewPreferenceService {
 	List<CodeReviewPreference> findById(UUID id);
 
 	void deleteAll(List<CodeReviewPreference> preferences);
+	List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
 }

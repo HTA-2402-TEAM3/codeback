@@ -1,7 +1,8 @@
-package kr.codeback.model.dto.response;
+package kr.codeback.model.dto.response.member;
 
 import java.util.List;
 
+import kr.codeback.model.dto.response.member.MemberResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 

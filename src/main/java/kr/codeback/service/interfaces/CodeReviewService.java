@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.Member;
@@ -32,9 +34,9 @@ public interface CodeReviewService {
 
     void updateCodeReview(CodeReviewRequestDTO reviewDTO);
 
-// Page<CodeReviewListResponseDTO> findBySearchKeyword(String search, int pageNum, int pageSize, String sort);
-
-//	Page<CodeReviewListResponseDTO> findByFullOption(String search, UUID language, int pageNum, int pageSize, String sort);
-
     Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize, String sort);
+	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
+
+	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
+
 }
