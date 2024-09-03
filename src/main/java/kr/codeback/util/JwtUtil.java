@@ -11,11 +11,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
-	private static final long accessTokenValidityInMilliseconds = 3600000; // 1시간 (액세스 토큰 유효 기간)
+	private static final long accessTokenValidityInMilliseconds = 360000000; // 1시간 (액세스 토큰 유효 기간)
 	private static final long refreshTokenValidityInMilliseconds = 604800000; // 7일 (리프레시 토큰 유효 기간)
 	private String secretKey;
 
@@ -31,8 +33,14 @@ public class JwtUtil {
 		return extractClaim(token, Claims::getSubject);
 	}
 
+	//닉네임 추출
 	public String extractNickname(String token) {
 		return extractClaim(token, claims -> claims.get("nickname", String.class));
+	}
+
+	//Role 추출
+	public String extractRole(String token) {
+		return extractClaim(token, claims -> claims.get("role", String.class));
 	}
 
 	//만료시간 추출
@@ -62,9 +70,10 @@ public class JwtUtil {
 		return createToken(claims, email,refreshTokenValidityInMilliseconds);
 	}
 
-	public String generateAccessToken(String email, String nickname) {
+	public String generateAccessToken(String email, String nickname,String role) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("nickname", nickname);
+		claims.put("role", role);
 		return createToken(claims, email,accessTokenValidityInMilliseconds);
 	}
 
@@ -87,11 +96,14 @@ public class JwtUtil {
 	//토큰 판별하기
 	public boolean validateToken(String token) {
 		try {
-			// Claims 객체 추출
-			Claims claims = extractAllClaims(token);
-			// 만료 여부 확인
+			if (token == null || token.isEmpty()) {
+				log.warn("Token is null or empty");
+				return false;
+			}
+
 			return !isTokenExpired(token);
 		} catch (Exception e) {
+			log.error("Token validation failed: {}", e.getMessage());
 			return false;
 		}
 	}

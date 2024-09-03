@@ -1,4 +1,4 @@
-package kr.codeback.model.dto.response;
+package kr.codeback.model.dto.response.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,4 +13,5 @@ import lombok.ToString;
 public class UserResponseDTO {
 	String email;
 	String nickname;
+	String role;
 }

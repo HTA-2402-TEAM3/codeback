@@ -2,6 +2,7 @@ package kr.codeback.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,9 +13,9 @@ import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
-import kr.codeback.model.dto.response.MemberResponseDTO;
 import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
-import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
+import kr.codeback.model.dto.response.member.MemberResponseDTO;
+import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
@@ -36,9 +37,12 @@ public class MemberServiceImpl implements MemberService {
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
-	public Boolean saveMember(Member member) {
-		memberRepository.save(member);
-		return null;
+	public Boolean save(Member member) {
+		if(memberRepository.findByEmail(member.getEmail()).isEmpty()){
+			memberRepository.save(member);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -54,11 +58,6 @@ public class MemberServiceImpl implements MemberService {
 		);
 	}
 
-	@Override
-	public Boolean save(Member member) {
-		memberRepository.save(member);
-		return true;
-	}
 
 	@Override
 	public MemberSummaryResponseDTO getMemberSummary() {
@@ -78,8 +77,9 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Boolean updateMember(Member member) {
-		return null;
+	public Boolean update(Member member) {
+		memberRepository.save(member);
+		return true;
 	}
 
 	@Override
@@ -131,6 +131,11 @@ public class MemberServiceImpl implements MemberService {
 				ErrorCode.WRONG_AUTHORITY.getMessage()
 			);
 		}
+	}
+
+	@Override
+	public Member findById(UUID uuid){
+		return memberRepository.findById(uuid).get();
 	}
 
 }

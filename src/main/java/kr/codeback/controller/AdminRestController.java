@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.codeback.model.dto.request.AuthorityRequestDTO;
 import kr.codeback.model.dto.response.AuthorityResponseDTO;
-import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
+import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 import kr.codeback.service.interfaces.AuthorityService;
