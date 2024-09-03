@@ -73,4 +73,12 @@ public class CodeReviewController {
         return "/view/codeReview/write";
     }
 
+    @GetMapping("/projectWrite")
+    public String writeProjectReview(@RequestParam(value = "id", required = false)UUID id, Model model) {
+        List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
+
+        model.addAttribute("languages", languageCategories);
+        return "/view/projectReview/write";
+    }
+
 }

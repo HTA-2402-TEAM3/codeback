@@ -80,6 +80,13 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 	}
 
 	@Override
+	public void deleteAll(List<CodeReviewPreference> preferences) {
+		if(preferences.isEmpty()) {
+			return;
+		}
+		codeReviewPreferenceRepository.deleteAll(preferences);
+	}
+	@Override
 	public List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
 
 

@@ -9,8 +9,7 @@
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <link rel="stylesheet" href="/assets/css/login.css"/>
+    <link rel="stylesheet" href="/css/main.css"/>
 
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
@@ -150,12 +149,12 @@
                     </div>
 
                 </div>
-                <div id="comment1">
+                <div th:id="${comments.id}">
                     <p th:utext="${comments.comment}"></p>
                 </div>
                 <div class="comment_delete">
                     <a class="icon fa-pencil"
-                       id="modifyIcon"
+                       th:id="'modify'+${comments.id}"
                        th:commentId="${comments.id}"
                        th:commentContent="${comments.comment}"
                        th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
@@ -212,7 +211,7 @@
     </div>
 </section>
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-<script src="/assets/js/comment.js"></script>
-<script src="/assets/js/write.js"></script>
+<script src="/js/comment.js"></script>
+<script src="/js/write.js"></script>
 </body>
 </html>

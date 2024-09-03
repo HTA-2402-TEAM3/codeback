@@ -80,4 +80,11 @@ public class NotificationServiceImpl implements NotificationService {
 		return notificationRepository.findByEntityID(entityID);
 	}
 
+	@Override
+	public void deleteAll(List<Notification> notifications) {
+		if(notifications.isEmpty()) {
+			return;
+		}
+		notificationRepository.deleteAll(notifications);
+	}
 }

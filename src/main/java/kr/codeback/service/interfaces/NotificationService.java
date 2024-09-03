@@ -32,4 +32,5 @@ public interface NotificationService {
 
 	List<Notification> findByEntityID(UUID entityID);
 
+    void deleteAll(List<Notification> notifications);
 }

@@ -26,5 +26,6 @@ public interface CodeReviewPreferenceService {
 
 	List<CodeReviewPreference> findById(UUID id);
 
+	void deleteAll(List<CodeReviewPreference> preferences);
 	List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
 }
