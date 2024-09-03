@@ -12,10 +12,15 @@ import kr.codeback.exception.member.WrongAuthorityException;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler({MemberNotFoundException.class, WrongAuthorityException.class})
-	public ResponseEntity<MessageResponseDTO> handleIllegalException(MemberException memberException) {
+	public ResponseEntity<MessageResponseDTO> handleMemberException(MemberException memberException) {
 
 		MessageResponseDTO errorResponse = new MessageResponseDTO(memberException.getMessage());
 		return ResponseEntity.status(memberException.getStatus()).body(errorResponse);
+	}
+
+	@ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+	public ResponseEntity<MessageResponseDTO> handleIllegalException(RuntimeException runtimeException) {
+		return ResponseEntity.badRequest().body(new MessageResponseDTO(runtimeException.getMessage()));
 	}
 
 }
