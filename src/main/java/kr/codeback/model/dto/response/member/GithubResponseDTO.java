@@ -8,7 +8,7 @@ public class GithubResponseDTO implements OAuth2ResponseDTO {
 
 	public GithubResponseDTO(Map<String, Object> attribute) {
 
-		this.attribute = (Map<String, Object>) attribute.get("response");
+		this.attribute = attribute;
 	}
 
 	@Override
@@ -20,7 +20,8 @@ public class GithubResponseDTO implements OAuth2ResponseDTO {
 	@Override
 	public String getProviderId() {
 
-		return attribute.get("id").toString();
+		Map<String, Object> id = (Map<String, Object>) attribute.get("id");
+		return id.get("value").toString();
 	}
 
 	@Override
@@ -32,6 +33,6 @@ public class GithubResponseDTO implements OAuth2ResponseDTO {
 	@Override
 	public String getName() {
 
-		return attribute.get("name").toString();
+		return attribute.get("login").toString();
 	}
 }

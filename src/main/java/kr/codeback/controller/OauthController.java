@@ -25,4 +25,10 @@ public class OauthController {
 		return null;
 	}
 
+	@GetMapping("/google/callback")
+	public Map<String, String> googleCallback(@RequestParam Map<String, String> codemap) {
+
+		return null;
+	}
+
 }

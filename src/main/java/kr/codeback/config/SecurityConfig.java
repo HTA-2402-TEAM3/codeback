@@ -55,7 +55,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 				.requestMatchers(
 					"/","/review/{id}","/submit","/api/**","/registration","/api/submit").permitAll()
-				.anyRequest().hasRole("USER")
+				.anyRequest().permitAll()
 				// authenticated()
 			);
 
@@ -73,6 +73,7 @@ public class SecurityConfig {
 		//oauth
 		http
 			.oauth2Login((oauth2) -> oauth2
+				.loginProcessingUrl("/oauth/*/callback")
 			.userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
 				.userService(oAuth2Service))
 				.successHandler(customSuccessHandler));

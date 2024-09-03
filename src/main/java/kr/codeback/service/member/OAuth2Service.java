@@ -2,6 +2,7 @@ package kr.codeback.service.member;
 
 
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -20,6 +21,7 @@ import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.AuthorityService;
+import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OAuth2Service extends DefaultOAuth2UserService {
 
+	private final MemberService memberService;
 	private final MemberRepository memberRepository;
 	private final AuthorityService authorityService;
 
@@ -37,7 +40,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 
 		System.out.println("ads");
-		log.info(oAuth2User.toString());
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		OAuth2ResponseDTO oAuth2ResponseDTO = null;
@@ -56,19 +58,20 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 		}
 
 		String username = oAuth2ResponseDTO.getName()+"#"+oAuth2ResponseDTO.getProvider();
-		Member existData = memberRepository.findByEmail(oAuth2ResponseDTO.getEmail()).get();
+		Optional<Member> existData = memberRepository.findByEmail(oAuth2ResponseDTO.getEmail());
 
 		Authority authority = authorityService.findByName("ROLE_USER");
 
-		if (existData == null) {
+		if (existData.isEmpty()) {
 
 			Member memberEntity = Member.builder()
+				.id(UUID.randomUUID())
 				.authority(authority)
 				.email(oAuth2ResponseDTO.getEmail())
-				.nickname(oAuth2ResponseDTO.getName())
+				.nickname(username)
 				.build();
 
-			memberRepository.save(memberEntity);
+			memberService.save(memberEntity);
 
 			OAuthProfile oAuthProfile = OAuthProfile.builder()
 				.role("ROLE_USER")
