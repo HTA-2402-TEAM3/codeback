@@ -6,6 +6,8 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 
 import kr.codeback.model.dto.request.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.Member;
@@ -38,5 +40,9 @@ public interface CodeReviewService {
 
 	// 게시물 작성
 	CodeReview saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);
+
+	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
+
+	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
 
 }

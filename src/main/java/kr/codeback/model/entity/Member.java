@@ -24,7 +24,7 @@ public class Member {
 	@Id
 	private UUID id;
 
-	@Column(name="email", nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	@Column(name = "nickname", nullable = false, unique = true)
@@ -58,11 +58,14 @@ public class Member {
 	}
 
 	public String getNickname() {
-		if(deleteSign) {
+		if (deleteSign) {
 			return "탈퇴한 회원";
 		}
 
 		return nickname;
 	}
 
+	public void changeAuthority(Authority authority) {
+		this.authority = authority;
+	}
 }

@@ -1,8 +1,10 @@
 package kr.codeback.service.interfaces;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Member;
 
@@ -36,5 +38,7 @@ public interface MemberService {
 	void validateAdminMemberByEmail(String email);
 
 	Boolean save(Member member);
+
+	MemberSummaryResponseDTO getMemberSummary();
 
 }
