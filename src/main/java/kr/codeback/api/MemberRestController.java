@@ -45,7 +45,7 @@ public class MemberRestController {
 
 
 	//유저 정보 가져오기
-	@GetMapping("/{id}")
+	@GetMapping("/info")
 	public ResponseEntity<Map<String, String>> getUserInfo(
 		@CookieValue(value = "access_token", required = false) String jwtToken) {
 		Map<String, String> response = new HashMap<>();
