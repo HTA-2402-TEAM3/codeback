@@ -1,4 +1,4 @@
-let checkboxValue;
+let checkboxValue = '';
 let searchKeyword = '';
 
 function selectOnlyOne(checkbox) {
@@ -153,19 +153,15 @@ function renderReviews(reviews) {
 
 // ==========================================
 
-function searchData(searchValue) {
-    if (searchValue === undefined) {
-        searchKeyword = '';
-    } else {
-        searchKeyword = searchValue;
-    }
+function searchData() {
+    searchKeyword = document.getElementById('search').value;
 
     console.log("searchData() : searchKeyword :: " + searchKeyword);
     console.log("searchData() : checkboxValue :: " + checkboxValue);
 
     let url;
     if (searchKeyword !== '' && checkboxValue === '') {
-        url = `/api/review/search?search=${searchValue}`
+        url = `/api/review/search?search=${searchKeyword}`
     } else if (searchKeyword === '' && checkboxValue !== '') {
         url = `/api/review/search?language=${checkboxValue}`
     } else {
