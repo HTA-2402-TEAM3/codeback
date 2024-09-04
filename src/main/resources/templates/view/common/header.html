@@ -13,7 +13,12 @@
 
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
+            <div style="display: none;">
+                <span id="user-email"></span>
+                <button class="button special" id="logout-button">Logout</button>
+            </div>
         </div>
+
     </div>
     <!-- 로그인 팝업 -->
     <div class="popup">
@@ -25,7 +30,7 @@
                 <label for="email">이메일 로그인</label>
                 <form onsubmit="submitForm(event)">
                     <label>
-                        <input type="email" name="email" id="email" placeholder="Enter email">
+                        <input type="email" name="email" id="email" placeholder="Enter email" style="width: 265px;">
                     </label><br>
                     <button class="login-button">로그인</button>
                 </form>
@@ -49,7 +54,7 @@
                 <label for="signup-email">이메일 회원가입</label>
                 <form onsubmit="submitForm(event)">
                     <label>
-                        <input type="email" id = "signup-email" name="signup-email" placeholder="Enter email">
+                        <input type="email" id = "signup-email" name="signup-email" placeholder="Enter email"  style="width: 265px;">
                     </label><br>
                     <button class="login-button">회원가입</button>
                 </form>
