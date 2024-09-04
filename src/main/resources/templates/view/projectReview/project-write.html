@@ -44,19 +44,34 @@
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
+                toolbarItems: [
+                    ['heading','bold','italic','strike'],
+                    ['hr','quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'link'],
+                    ['code', 'codeblock'],
+                    ['scrollSync'],
+                ],
                 height: '500px',
                 initialEditType: 'markdown',
-                previewStyle: 'vertical',
-                hooks: {
-                    addImageBlobHook: (blob, callback) => {
-                        callback(blob.name);
+                previewStyle: 'vertical'
 
-                        // fetch 로 데이터 넘긴다음에 response 로 받아온 imageurl 로 callback 하면 이미지 나옴!!!!!
-
-                    }
-                }
             });
         </script>
+
+        <div style="margin: 100px 0"></div>
+
+        <div class="upload-wrapper" style="display: flex; align-items: flex-start;">
+            <div id="image-upload" class="image-upload" style="align-content: center;">
+                click or
+                drag and drop your image!
+                <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+            </div>
+            <div class="image-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-left: 20px; margin-top: 20px;"></div>
+        </div>
+
+
+        <script src="/js/uploadImage.js"></script>
 
         <hr class="major"/>
         <h2># HashTag</h2>
