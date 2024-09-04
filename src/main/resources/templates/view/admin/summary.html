@@ -107,10 +107,10 @@
             <div>
                 <table>
                     <caption>좋아요</caption>
-                    <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
+                    <tbody th:each="preference:${codeReviewPreferenceSummaryByMonth}">
                     <tr>
-                        <td th:text="${codeReviewPreference.month} + '월'">name</td>
-                        <td th:text="${codeReviewPreference.count}">count</td>
+                        <td th:text="${preference.month} + '월'">name</td>
+                        <td th:text="${preference.count}">count</td>
                     </tr>
                     </tbody>
                 </table>
