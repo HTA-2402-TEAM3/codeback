@@ -8,138 +8,276 @@
             content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="/css/main.css"/>
+
     <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="/css/admin-summary.css"/>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <div th:replace="view/common/header :: header"></div>
 
-<body>
+<body class="subpage">
+<section id="three" class="wrapper">
 
-<div>
-    <ul>
-        <li th:text="'총 회원 수 : ' + ${memberSummary.getTotalCount()}">totalMemberCount</li>
-        <li th:text="'활성화 회원 수 : ' + ${memberSummary.getActiveCount()}">activeMemberCount</li>
-        <li th:text="'비활성화 회원 수 : ' + ${memberSummary.getInactiveCount()}">deletedMemberCount</li>
-    </ul>
+    <div class="doughnut-chart">
+        <div>
+            <canvas id="member-summary" width="500" height="500"></canvas>
 
-</div>
+            <div>
+                <ul>
+                    <li th:text="'총 회원 수 : ' + ${memberSummary.totalCount}">totalMemberCount</li>
+                    <li th:text="'활성화 회원 수 : ' + ${memberSummary.activeCount}">activeMemberCount</li>
+                    <li th:text="'비활성화 회원 수 : ' + ${memberSummary.inactiveCount}">deletedMemberCount</li>
+                </ul>
 
+            </div>
+        </div>
 
-<br>
+        <div>
+            <canvas id="code-review-language-summary" width="500" height="500"></canvas>
 
-<h2>언어별 코드 리뷰 게시글 수</h2>
-<div>
-    <table>
-        <thead>
-        <tr>Language Name</tr>
-        <tr>Count</tr>
-        </thead>
+            <h2>언어별 코드 리뷰 게시글 수</h2>
+            <div>
+                <table>
+                    <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
+                    <tr>
+                        <td th:text="${codeReviews.languageName}">name</td>
+                        <td th:text="${codeReviews.totalCount}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
-        <tr>
-            <td th:text="${codeReviews.languageName}">name</td>
-            <td th:text="${codeReviews.totalCount}">count</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    </div>
 
-<br>
+    <br>
 
-<label>
-    <input type="month" id="search-input">
-    <button type="button" onclick="search()">검색</button>
-</label>
-<br>
+    <div>
+        <div>
+            <label>
+                <input type="month" id="search-input">
+                <button type="button" onclick="search()">검색</button>
+            </label>
+        </div>
+        <br>
 
-<h2>코드 리뷰 게시글 요약</h2>
-<div>
-    <table>
-        <thead>
-        <tr>Month</tr>
-        <tr>Count</tr>
-        </thead>
+        <div>
+            <canvas id="month-summary" width="1370" height="500"></canvas>
+        </div>
 
-        <tbody th:each="codeReviews:${codeReviewSummaryByMonth}">
-        <tr>
-            <td th:text="${codeReviews.month} + '월'">name</td>
-            <td th:text="${codeReviews.count}">count</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+        <br>
 
-<br>
+        <div class="month-summary-table">
 
-<h2>댓글 요약</h2>
-<div>
-    <table>
-        <thead>
-        <tr>Month</tr>
-        <tr>Count</tr>
-        </thead>
+            <div>
+                <table>
+                    <caption>코드 리뷰 게시글</caption>
+                    <tbody th:each="codeReviews:${codeReviewSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviews.month} + '월'">name</td>
+                        <td th:text="${codeReviews.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <tbody th:each="codeReviewComments:${codeReviewCommentSummaryByMonth}">
-        <tr>
-            <td th:text="${codeReviewComments.month} + '월'">name</td>
-            <td th:text="${codeReviewComments.count}">count</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            <br>
 
-<br>
-<h2>좋아요 요약</h2>
-<div>
-    <table>
-        <thead>
-        <tr>Month</tr>
-        <tr>Count</tr>
-        </thead>
+            <div>
+                <table>
+                    <caption>코드 리뷰 댓글</caption>
+                    <tbody th:each="codeReviewComments:${codeReviewCommentSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviewComments.month} + '월'">name</td>
+                        <td th:text="${codeReviewComments.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
-        <tr>
-            <td th:text="${codeReviewPreference.month} + '월'">name</td>
-            <td th:text="${codeReviewPreference.count}">count</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            <br>
 
-<script>
-    function search() {
-        const searchInput = document.getElementById('search-input').value;
+            <div>
+                <table>
+                    <caption>좋아요</caption>
+                    <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviewPreference.month} + '월'">name</td>
+                        <td th:text="${codeReviewPreference.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-        if (searchInput) {
-            // 선택한 달의 마지막 날 구하기
-            const [year, month] = searchInput.split('-');
-            const lastDay = new Date(year, month, 0).getDate(); // 선택된 달의 마지막 날 계산
+    <script>
+        function search() {
+            const searchInput = document.getElementById('search-input').value;
 
-            // YYYY-MM-DD 형식으로 변환
-            const lastDateOfMonth = `${year}-${month}-${lastDay}`;
+            if (searchInput) {
+                // 선택한 달의 마지막 날 구하기
+                const [year, month] = searchInput.split('-');
+                const lastDay = new Date(year, month, 0).getDate(); // 선택된 달의 마지막 날 계산
 
-            // URL 생성 및 이동
-            const url = '/admin/summary?searchDate=' + lastDateOfMonth;
-            window.location.href = url;
+                // YYYY-MM-DD 형식으로 변환
+                const lastDateOfMonth = `${year}-${month}-${lastDay}`;
+
+                // URL 생성 및 이동
+                const url = '/admin/summary?searchDate=' + lastDateOfMonth;
+                window.location.href = url;
+            }
         }
-    }
 
-    // 페이지 로드 시 searchDate 값을 월로 설정
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchDate = urlParams.get('searchDate');
+        // 페이지 로드 시 searchDate 값을 월로 설정
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchDate = urlParams.get('searchDate');
 
-        if (searchDate) {
-            const date = new Date(searchDate);
-            const yearMonth = date.toISOString().substring(0, 7); // 'YYYY-MM' 형식으로 변환
-            document.getElementById('search-input').value = yearMonth;
+            if (searchDate) {
+                const date = new Date(searchDate);
+                const yearMonth = date.toISOString().substring(0, 7); // 'YYYY-MM' 형식으로 변환
+                document.getElementById('search-input').value = yearMonth;
+            }
+        };
+
+    </script>
+
+    <script th:inline="javascript">
+
+        const memberChart = document.getElementById('member-summary').getContext('2d');
+
+        let memberLabels = ['활성화 회원 수', '비활성화 회원 수'];
+        const activeCount = [[${memberSummary.activeCount}]];
+        const inactiveCount = [[${memberSummary.inactiveCount}]];
+
+        let memberData = [activeCount, inactiveCount];
+
+        new Chart(memberChart, {
+            type: 'doughnut',
+            data: {
+                labels: memberLabels,
+                datasets: [{
+                    data: memberData,
+                    borderWidth: 0,
+                    scaleBeginAtZero: true,
+                }
+                ]
+            },
+            options: {
+                responsive: false,
+                legend: {
+                    position: 'top',
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+
+        const codeReviewLanguageChart = document.getElementById('code-review-language-summary').getContext('2d');
+
+        let codeReviewLanguageSummary = [[${codeReviewSummaryByLanguage}]];
+
+        let codeReviewLanguageLabels = [];
+        let codeReviewLanguageDatas = [];
+
+        codeReviewLanguageSummary.forEach(function (eachCodeReview) {
+            codeReviewLanguageLabels.push(eachCodeReview.languageName);
+            codeReviewLanguageDatas.push(eachCodeReview.totalCount);
+        });
+
+        new Chart(codeReviewLanguageChart, {
+            type: 'doughnut',
+            data: {
+                labels: codeReviewLanguageLabels,
+                datasets: [{
+                    data: codeReviewLanguageDatas,
+                    borderWidth: 0,
+                    scaleBeginAtZero: true,
+                }
+                ]
+            },
+            options: {
+                responsive: false,
+                legend: {
+                    position: 'top',
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+
+        const monthChart = document.getElementById('month-summary').getContext('2d');
+
+        let codeReviewMonthSummary = [[${codeReviewSummaryByMonth}]];
+        let codeReviewCommentMonthSummary = [[${codeReviewCommentSummaryByMonth}]];
+        let preferenceMonthSummary = [[${codeReviewPreferenceSummaryByMonth}]];
+
+        let monthLabels = [];
+        let codeReviewMonthDatas = [];
+        let codeReviewCommentMonthDatas = [];
+        let preferenceMonthDatas = [];
+
+        for (let i = 0; i < codeReviewMonthSummary.length; i++) {
+            monthLabels.push(codeReviewMonthSummary[i].month);
+            codeReviewMonthDatas.push(codeReviewMonthSummary[i].count);
+            codeReviewCommentMonthDatas.push(codeReviewCommentMonthSummary[i].count);
+            preferenceMonthDatas.push(preferenceMonthSummary[i].count);
         }
-    };
-</script>
 
+        new Chart(monthChart, {
+            type: 'line',
+            data: {
+                labels: monthLabels,
+                datasets: [
+                    {
+                        label: '코드 리뷰 게시글',
+                        data: codeReviewMonthDatas,
+                        borderColor: 'rgba(75, 192, 192, 1)',  // 선 색상 설정
+                        fill: false,  // 채우기 비활성화
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(75, 192, 192, 1)',  // 점 색상 설정
+                    },
+                    {
+                        label: '코드 리뷰 댓글',
+                        data: codeReviewCommentMonthDatas,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        fill: false,
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    },
+                    {
+                        label: '좋아요',
+                        data: preferenceMonthDatas,
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        fill: false,
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+                    }
+                ]
+            },
+            options: {
+                responsive: false,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+
+
+    </script>
+</section>
 </body>
 </html>

@@ -13,14 +13,15 @@ import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
+import kr.codeback.model.dto.response.AuthorityResponseDTO;
 import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.member.MemberResponseDTO;
 import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
+import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
-import kr.codeback.service.interfaces.CodeReviewCommentService;
+import kr.codeback.service.interfaces.AuthorityService;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
-import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -31,10 +32,9 @@ public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
 
-	private final CodeReviewCommentService codeReviewCommentService;
-	private final CodeReviewService codeReviewService;
 	private final NotificationService notificationService;
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final AuthorityService authorityService;
 
 	@Override
 	public Boolean save(Member member) {
@@ -135,6 +135,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member findById(UUID uuid) {
 		return memberRepository.findById(uuid).get();
+	}
+
+	@Override
+	public AuthorityResponseDTO updateAuthority(String email, Authority authority) {
+
+		Member member = findByEmail(email);
+
+		member.changeAuthority(authority);
+		update(member);
+
+		return new AuthorityResponseDTO(member.getEmail(), authority.getName());
 	}
 
 }
