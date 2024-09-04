@@ -1,12 +1,13 @@
 package kr.codeback.service.interfaces;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.dto.response.AuthorityResponseDTO;
 import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
+import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 
 public interface MemberService {
@@ -43,4 +44,8 @@ public interface MemberService {
 
 	MemberSummaryResponseDTO getMemberSummary();
 
+	AuthorityResponseDTO updateAuthority(String email, Authority authority);
+
 }
+
+

@@ -16,7 +16,6 @@ import kr.codeback.model.dto.request.AuthorityRequestDTO;
 import kr.codeback.model.dto.response.AuthorityResponseDTO;
 import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Authority;
-import kr.codeback.model.entity.Member;
 import kr.codeback.service.interfaces.AuthorityService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.util.JwtUtil;
@@ -65,13 +64,10 @@ public class AdminRestController {
 		@RequestBody AuthorityRequestDTO authorityRequestDTO) {
 
 		Authority authority = authorityService.findByName(authorityRequestDTO.getAuthorityName());
-		Member member = memberService.findByEmail(email);
-
-		member.changeAuthority(authority);
-		memberService.update(member);
+		AuthorityResponseDTO authorityResponseDTO = memberService.updateAuthority(email, authority);
 
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(new AuthorityResponseDTO(member.getEmail(), authority.getName()));
+			.body(authorityResponseDTO);
 	}
 
 }
