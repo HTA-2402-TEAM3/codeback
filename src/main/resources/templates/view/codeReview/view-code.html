@@ -45,7 +45,7 @@
                 <p th:utext="${codeReview.content}"></p>
             </div>
             <div class="inner_button">
-                <button class="button special disabled">#java</button>
+                <button class="button special disabled" th:text="'#'+${codeReview.getCodeLanguageName()}">#java</button>
                 <div class="icon_view">
                     <a class="icon fa-pencil"
                        th:href="@{/review/write(id=${codeReview.id})}"></a>
@@ -99,8 +99,8 @@
                 </div>
             </div>
 
-
-            <div id="editor_test" style="margin-bottom: 20px;"></div>
+            <!--editor로 두면 스크롤 내려감 처리안됨-->
+            <div id="editor_box" style="margin-bottom: 20px;"></div>
             <button class="button special" id="submit">댓글 작성</button>
 
             <!-- 에디터 js -->
@@ -109,7 +109,8 @@
                 let commentContent;
 
                 const editor = new Editor({
-                    el: document.querySelector('#editor'),
+                    el: document.querySelector('#editor_box'),
+                    autofocus: false,
                     height: '500px',
                     initialEditType: 'markdown',
                     previewStyle: 'vertical'
