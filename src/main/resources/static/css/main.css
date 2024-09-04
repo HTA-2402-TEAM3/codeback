@@ -10,6 +10,9 @@
 
 /* Reset */
 
+/*add Css use at project review list*/
+/* Box */
+
 html,
 body,
 div,
@@ -1969,6 +1972,9 @@ hr.major {
     /*padding: 10px;*/
     max-width: 75em;
     margin: 0 auto;
+    button {
+        margin-right: 10px;
+    }
 }
 
 .text_box {
