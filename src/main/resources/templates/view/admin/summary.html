@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="/css/admin-summary.css"/>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -25,82 +26,95 @@
 <section id="three" class="wrapper">
 
     <div class="doughnut-chart">
-        <canvas id="member-summary" width="500" height="500"></canvas>
-
         <div>
-            <ul>
-                <li th:text="'총 회원 수 : ' + ${memberSummary.totalCount}">totalMemberCount</li>
-                <li th:text="'활성화 회원 수 : ' + ${memberSummary.activeCount}">activeMemberCount</li>
-                <li th:text="'비활성화 회원 수 : ' + ${memberSummary.inactiveCount}">deletedMemberCount</li>
-            </ul>
+            <canvas id="member-summary" width="500" height="500"></canvas>
 
+            <div>
+                <ul>
+                    <li th:text="'총 회원 수 : ' + ${memberSummary.totalCount}">totalMemberCount</li>
+                    <li th:text="'활성화 회원 수 : ' + ${memberSummary.activeCount}">activeMemberCount</li>
+                    <li th:text="'비활성화 회원 수 : ' + ${memberSummary.inactiveCount}">deletedMemberCount</li>
+                </ul>
+
+            </div>
         </div>
 
-        <canvas id="code-review-language-summary" width="500" height="500"></canvas>
-
-        <h2>언어별 코드 리뷰 게시글 수</h2>
         <div>
-            <table>
-                <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
-                <tr>
-                    <td th:text="${codeReviews.languageName}">name</td>
-                    <td th:text="${codeReviews.totalCount}">count</td>
-                </tr>
-                </tbody>
-            </table>
+            <canvas id="code-review-language-summary" width="500" height="500"></canvas>
+
+            <h2>언어별 코드 리뷰 게시글 수</h2>
+            <div>
+                <table>
+                    <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
+                    <tr>
+                        <td th:text="${codeReviews.languageName}">name</td>
+                        <td th:text="${codeReviews.totalCount}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 
     <br>
 
-    <label>
-        <input type="month" id="search-input">
-        <button type="button" onclick="search()">검색</button>
-    </label>
-    <br>
-
-    <canvas id="month-summary" width="1200" height="500"></canvas>
-
-
-    <div class="month-summary-table">
-        <h2>코드 리뷰 게시글 요약</h2>
+    <div>
         <div>
-            <table>
-                <tbody th:each="codeReviews:${codeReviewSummaryByMonth}">
-                <tr>
-                    <td th:text="${codeReviews.month} + '월'">name</td>
-                    <td th:text="${codeReviews.count}">count</td>
-                </tr>
-                </tbody>
-            </table>
+            <label>
+                <input type="month" id="search-input">
+                <button type="button" onclick="search()">검색</button>
+            </label>
+        </div>
+        <br>
+
+        <div>
+            <canvas id="month-summary" width="1370" height="500"></canvas>
         </div>
 
         <br>
 
-        <h2>댓글 요약</h2>
-        <div>
-            <table>
-                <tbody th:each="codeReviewComments:${codeReviewCommentSummaryByMonth}">
-                <tr>
-                    <td th:text="${codeReviewComments.month} + '월'">name</td>
-                    <td th:text="${codeReviewComments.count}">count</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="month-summary-table">
 
-        <br>
-        <h2>좋아요 요약</h2>
-        <div>
-            <table>
-                <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
-                <tr>
-                    <td th:text="${codeReviewPreference.month} + '월'">name</td>
-                    <td th:text="${codeReviewPreference.count}">count</td>
-                </tr>
-                </tbody>
-            </table>
+            <div>
+                <table>
+                    <caption>코드 리뷰 게시글</caption>
+                    <tbody th:each="codeReviews:${codeReviewSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviews.month} + '월'">name</td>
+                        <td th:text="${codeReviews.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+
+            <div>
+                <table>
+                    <caption>코드 리뷰 댓글</caption>
+                    <tbody th:each="codeReviewComments:${codeReviewCommentSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviewComments.month} + '월'">name</td>
+                        <td th:text="${codeReviewComments.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br>
+
+            <div>
+                <table>
+                    <caption>좋아요</caption>
+                    <tbody th:each="codeReviewPreference:${codeReviewPreferenceSummaryByMonth}">
+                    <tr>
+                        <td th:text="${codeReviewPreference.month} + '월'">name</td>
+                        <td th:text="${codeReviewPreference.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
