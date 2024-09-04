@@ -2437,8 +2437,9 @@ input[type="radio"] + label:before {
     border: solid 1px #dbdbdb;
     padding: 20px;
     flex-wrap: wrap;
-    width: 1350px;
-    margin-left: 85px;
+    width: auto;
+    margin-left: 80px;
+    margin-right: 80px;
     padding-right: 30px;
 }
 
