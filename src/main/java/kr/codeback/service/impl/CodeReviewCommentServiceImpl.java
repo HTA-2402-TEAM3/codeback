@@ -20,7 +20,7 @@ import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +30,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	private final CodeReviewCommentRepository codeReviewCommentRepository;
 
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final PreferenceService preferenceService;
 	private final NotificationService notificationService;
 	private final MemberRepository memberRepository;
 	private final CodeReviewRepository codeReviewRepository;
@@ -52,7 +52,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(codeReviewPreferenceService::deleteByEntityID);
+			.forEach(preferenceService::deleteByEntityID);
 
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
@@ -69,7 +69,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(codeReviewPreferenceService::deleteByEntityID);
+			.forEach(preferenceService::deleteByEntityID);
 
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
@@ -99,8 +99,8 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	public void deleteById(UUID commentId) {
 		CodeReviewComment comment = codeReviewCommentRepository.findById(commentId)
 				.orElseThrow(()->new IllegalArgumentException("no comments.."+commentId));
-		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(commentId);
-		codeReviewPreferenceService.deleteAll(preferences);
+		List<Preference> preferences = preferenceService.findByEntityID(commentId);
+		preferenceService.deleteAll(preferences);
 
 		List<Notification> notifications = notificationService.findByEntityID(commentId);
 		notificationService.deleteAll(notifications);

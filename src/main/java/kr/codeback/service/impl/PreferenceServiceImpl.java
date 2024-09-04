@@ -7,24 +7,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.model.entity.Preference;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
-import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.model.entity.Member;
-import kr.codeback.repository.CodeReviewPreferenceRepository;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.repository.PreferenceRepository;
+import kr.codeback.service.interfaces.PreferenceService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceService {
+public class PreferenceServiceImpl implements PreferenceService {
 
-	private final CodeReviewPreferenceRepository codeReviewPreferenceRepository;
+	private final PreferenceRepository preferenceRepository;
 
 	@Override
-	public Optional<CodeReviewPreference> addPreference(String email, String entityId) {
+	public Optional<Preference> addPreference(String email, String entityId) {
 		return Optional.empty();
 	}
 
@@ -34,45 +34,45 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 	}
 
 	@Override
-	public List<CodeReviewPreference> findByMember(Member member) {
-		return codeReviewPreferenceRepository.findByMember(member);
+	public List<Preference> findByMember(Member member) {
+		return preferenceRepository.findByMember(member);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByMember(Member member) {
 
-		List<CodeReviewPreference> codeReviewPreferences = findByMember(member);
+		List<Preference> preferences = findByMember(member);
 
-		if (codeReviewPreferences.isEmpty()) {
+		if (preferences.isEmpty()) {
 			return;
 		}
 
-		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+		preferenceRepository.deleteAll(preferences);
 	}
 
 	@Override
-	public List<CodeReviewPreference> findByEntityID(UUID entityID) {
-		return codeReviewPreferenceRepository.findByEntityID(entityID);
+	public List<Preference> findByEntityID(UUID entityID) {
+		return preferenceRepository.findByEntityID(entityID);
 	}
 
 	@Override
 	@Transactional
 	public void deleteByEntityID(UUID entityID) {
 
-		List<CodeReviewPreference> codeReviewPreferences = findByEntityID(entityID);
+		List<Preference> preferences = findByEntityID(entityID);
 
-		if (codeReviewPreferences.isEmpty()) {
+		if (preferences.isEmpty()) {
 			return;
 		}
 
-		codeReviewPreferenceRepository.deleteAll(codeReviewPreferences);
+		preferenceRepository.deleteAll(preferences);
 	}
 
 	@Override
-	public List<CodeReviewPreference> findById(UUID id) {
-		Optional<CodeReviewPreference> optionalCodeReviewPreference =
-			codeReviewPreferenceRepository.findById(id);
+	public List<Preference>  findById(UUID id) {
+		Optional<Preference> optionalCodeReviewPreference =
+			preferenceRepository.findById(id);
 
 		return optionalCodeReviewPreference.map(Collections::singletonList)
 			.orElseGet(Collections::emptyList);
@@ -80,11 +80,11 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 	}
 
 	@Override
-	public void deleteAll(List<CodeReviewPreference> preferences) {
+	public void deleteAll(List<Preference> preferences) {
 		if(preferences.isEmpty()) {
 			return;
 		}
-		codeReviewPreferenceRepository.deleteAll(preferences);
+		preferenceRepository.deleteAll(preferences);
 	}
 	@Override
 	public List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
@@ -97,7 +97,7 @@ public class CodeReviewPreferenceServiceImpl implements CodeReviewPreferenceServ
 			searchDate = Date.valueOf(LocalDate.parse(inputDate));
 		}
 
-		List<Object[]> results = codeReviewPreferenceRepository.calculateSummaryByMonth(searchDate);
+		List<Object[]> results = preferenceRepository.calculateSummaryByMonth(searchDate);
 
 		return results.stream().map(row ->
 				new CodeReviewPreferenceSummaryResponseDTO(

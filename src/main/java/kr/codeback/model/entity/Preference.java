@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "CODE_REVIEW_PREFERENCE")
 @NoArgsConstructor
 @Getter
-public class CodeReviewPreference {
+public class Preference {
 
 	@Id
 	private UUID id;
@@ -29,6 +29,7 @@ public class CodeReviewPreference {
 	@JoinColumn(name = "sender_member_id", nullable = false)
 	private Member member;
 
+//	게시글,댓글아이디가될수있다
 	@Column(name = "entity_id", nullable = false)
 	private UUID entityID;
 
@@ -40,7 +41,7 @@ public class CodeReviewPreference {
 	private Timestamp createDate;
 
 	@Builder
-	public CodeReviewPreference(UUID id, Member member, UUID entityID, boolean isLike) {
+	public Preference(UUID id, Member member, UUID entityID, boolean isLike) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;

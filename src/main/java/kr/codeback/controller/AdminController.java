@@ -14,7 +14,7 @@ import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryRespons
 import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
 import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class AdminController {
 	private final MemberService memberService;
 	private final CodeReviewService codeReviewService;
 	private final CodeReviewCommentService codeReviewCommentService;
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final PreferenceService preferenceService;
 
 	@GetMapping("/admin/members")
 	public String moveMembers(Model model) {
@@ -45,7 +45,7 @@ public class AdminController {
 			searchDate);
 		List<CodeReviewCommentSummaryResponseDTO> codeReviewCommentSummaryResponseDTOS = codeReviewCommentService.calculateSummaryByMonth(
 			searchDate);
-		List<CodeReviewPreferenceSummaryResponseDTO> codeReviewPreferenceSummaryResponseDTOS = codeReviewPreferenceService.calculateSummaryByMonth(
+		List<CodeReviewPreferenceSummaryResponseDTO> codeReviewPreferenceSummaryResponseDTOS = preferenceService.calculateSummaryByMonth(
 			searchDate);
 
 		model.addAttribute("memberSummary", memberSummaryResponseDTO);
