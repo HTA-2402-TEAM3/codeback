@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Generic - Projection by TEMPLATED</title>
+    <meta charset="utf-8"/>
+    <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css"/>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css"/>
+
+    <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
+</head>
+
+<div th:replace="view/common/header :: header"></div>
+<body class="subpage">
+<section id="main" class="wrapper">
+    <div class="inner">
+        <div class="inner">
+            <header class="align-center">
+                <h2 th:text="${codeReview.title}"></h2>
+
+                <div class="content">
+                    <h4 th:text="${codeReview.member}"></h4>
+                    <div class="year_icon">
+                        <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
+                        <a class="icon fa-thumbs-up">
+                            <span class="label">thumbsUp</span>
+                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <hr class="major"/>
+
+            <div class="question-content">
+                <p th:utext="${codeReview.content}"></p>
+            </div>
+            <div class="inner_button">
+                <button class="button special disabled" th:text="'#'+${codeReview.getCodeLanguageName()}">#java</button>
+                <div class="icon_view">
+                    <a class="icon fa-pencil"
+                       th:href="@{/review/write(id=${codeReview.id})}"></a>
+                    <a class="icon fa-trash"
+                       th:reviewId="${codeReview.id}"
+                       th:onclick="deleteCodeReview(this.getAttribute('reviewId'))"></a>
+                </div>
+            </div>
+            <hr class="major"/>
+
+            <h3>
+                <i class="fa fa-comments"></i>
+                <span th:text="${codeReview.codeReviewComments.size()}"></span>
+            </h3>
+            <div id="comment-container">
+                <div th:each="comments : ${codeReview.codeReviewComments}" id="commentElements">
+                    <ul>
+                        <li>
+                            <div>
+                                <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+                                <!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#" class="icon fa-thumbs-up">
+                                <span class="label">thumbsUp</span>
+                                <span class="count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="comment_box">
+                        <div>
+                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>
+                        </div>
+
+                    </div>
+                    <div th:id="${comments.id}">
+                        <p th:utext="${comments.comment}"></p>
+                    </div>
+                    <div class="comment_delete">
+                        <a class="icon fa-pencil"
+                           th:id="'modify'+${comments.id}"
+                           th:commentId="${comments.id}"
+                           th:commentContent="${comments.comment}"
+                           th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                        <a class="icon fa-trash"
+                           th:commentId="${comments.id}"
+                           th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
+                    </div>
+                    <hr class="major"/>
+                </div>
+            </div>
+
+            <!--editor로 두면 스크롤 내려감 처리안됨-->
+            <div id="editor_box" style="margin-bottom: 20px;"></div>
+            <button class="button special" id="submit">댓글 작성</button>
+
+            <!-- 에디터 js -->
+            <script>
+                const Editor = toastui.Editor;
+                let commentContent;
+
+                const editor = new Editor({
+                    el: document.querySelector('#editor_box'),
+                    autofocus: false,
+                    height: '500px',
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical'
+                });
+
+                document.getElementById('submit').addEventListener('click', () => {
+                    const content = editor.getHTML();
+                    console.log(content);
+                    commentContent = content;
+
+                    getMemberInComment();
+                })
+
+                function deleteCodeReview(id) {
+                    if (confirm("정말 삭제하시겠습니까?")) {
+                        fetch(`/api/review/delete/${id}`, {
+                            method: 'DELETE'
+                        })
+                            .then(resp => {
+                                if (resp.ok) {
+                                    alert("삭제되었습니다.");
+                                    window.location.href = '/review/';
+                                } else {
+                                    throw new Error("err");
+                                }
+                            }).catch(error => {
+                            console.error(error);
+                        })
+                    }
+                }
+            </script>
+        </div>
+    </div>
+</section>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script src="/js/comment.js"></script>
+<script src="/js/write.js"></script>
+</body>
+</html>

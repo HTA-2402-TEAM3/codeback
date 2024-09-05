@@ -1,0 +1,22 @@
+
+.doughnut-chart {
+    display: flex;
+}
+
+.month-summary-table {
+    display: flex;
+}
+
+div {
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 30px;
+}
+
+table {
+    width: 400px;
+}
+
+canvas {
+    padding-left: 20px;
+}
