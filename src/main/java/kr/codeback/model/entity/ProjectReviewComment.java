@@ -22,6 +22,10 @@ public class ProjectReviewComment {
 	@Id
 	private UUID id;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
+
 	@Column
 	private String content;
 
@@ -30,8 +34,9 @@ public class ProjectReviewComment {
 	private ProjectReview projectReview;
 
 	@Builder
-	public ProjectReviewComment(UUID id, String content, ProjectReview projectReview) {
+	public ProjectReviewComment(UUID id, Member member, String content, ProjectReview projectReview) {
 		this.id = id;
+		this.member = member;
 		this.content = content;
 		this.projectReview = projectReview;
 	}
