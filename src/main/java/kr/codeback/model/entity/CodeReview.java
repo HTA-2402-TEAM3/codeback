@@ -4,16 +4,12 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.*;
+import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewModifyResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,8 +23,8 @@ public class CodeReview {
 	@Id
 	private UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "email", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
 	@Column(name = "title", nullable = false)
@@ -41,20 +37,36 @@ public class CodeReview {
 	@CreationTimestamp
 	private Timestamp createDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "language_id", nullable = false)
 	private CodeLanguageCategory codeLanguageCategory;
 
-	@OneToMany(mappedBy = "codeReview")
+	@OneToMany(mappedBy = "codeReview", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("createDate DESC")
 	private List<CodeReviewComment> comments;
 
 	@Builder
 	private CodeReview(UUID id, Member member, String title, String content,
-		CodeLanguageCategory codeLanguageCategory) {
+		CodeLanguageCategory codeLanguageCategory, List<CodeReviewComment> comments) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
 		this.content = content;
 		this.codeLanguageCategory = codeLanguageCategory;
+		this.comments = comments;
+	}
+
+	public void updateCodeReview(CodeReviewRequestDTO codeReviewDTO, CodeLanguageCategory clCategory) {
+		title = codeReviewDTO.getTitle();
+		content = codeReviewDTO.getContent();
+		codeLanguageCategory = clCategory;
+	}
+
+	public CodeReviewModifyResponseDTO toModifyDTO() {
+		return CodeReviewModifyResponseDTO.builder()
+				.codeLanguageCategory(codeLanguageCategory)
+				.title(title)
+				.content(content)
+				.build();
 	}
 }

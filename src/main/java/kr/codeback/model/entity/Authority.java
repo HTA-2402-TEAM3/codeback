@@ -9,11 +9,13 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "AUTHORITY")
 @NoArgsConstructor
 @Getter
+@ToString
 public class Authority {
 
 	@Id
