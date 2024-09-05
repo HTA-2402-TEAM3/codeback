@@ -25,8 +25,8 @@ public class CodeReviewCommentRestController {
         return ResponseEntity.ok().body(comment);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteComment(@PathVariable UUID id) {
-        codeReviewCommentService.deleteById(id);
+    public ResponseEntity<Object> deleteComment(@PathVariable UUID id, @RequestParam String memberEmail) {
+        codeReviewCommentService.deleteById(id, memberEmail);
         return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
     @PutMapping("/update")

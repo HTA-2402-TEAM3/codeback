@@ -14,7 +14,7 @@ import lombok.Getter;
 public class CodeReviewResponseDTO {
 
 	private final UUID id;
-	private final String member;
+	private final Member member;
 	private final String title;
 	private final String content;
 	private final Timestamp createDate;
@@ -24,7 +24,7 @@ public class CodeReviewResponseDTO {
 	private final Integer preferenceCnt;
 
 	@Builder
-	private CodeReviewResponseDTO(UUID id, String member, String title, String content, Timestamp createDate,
+	private CodeReviewResponseDTO(UUID id, Member member, String title, String content, Timestamp createDate,
                                   String codeLanguageName, List<CodeReviewComment> codeReviewComments, Integer preferenceCnt) {
 		this.id = id;
 		this.member = member;

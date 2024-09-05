@@ -40,7 +40,7 @@ public class CodeReviewController {
 
         model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
                 .id(codeReview.getId())
-                .member(codeReview.getMember().getNickname())
+                .member(codeReview.getMember())
                 .title(codeReview.getTitle())
                 .content(codeReview.getContent())
                 .createDate(codeReview.getCreateDate())
@@ -71,14 +71,6 @@ public class CodeReviewController {
 
         model.addAttribute("languages", languageCategories);
         return "/view/codeReview/write";
-    }
-
-    @GetMapping("/projectWrite")
-    public String writeProjectReview(@RequestParam(value = "id", required = false)UUID id, Model model) {
-        List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
-
-        model.addAttribute("languages", languageCategories);
-        return "/view/projectReview/write";
     }
 
 }

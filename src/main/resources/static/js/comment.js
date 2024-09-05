@@ -1,10 +1,13 @@
 let review_uuid = '';
 const commentContainer = document.getElementById('comment-container');
+let loginEmail = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     const pathSegments = window.location.pathname.split('/'); // 경로를 '/'로 나누기
     // 마지막 요소가 UUID
     review_uuid = pathSegments[pathSegments.length - 1];
+
+    getMemberInComment()
 });
 
 function renderComment(data) {
@@ -51,36 +54,60 @@ function renderComment(data) {
     }
 }
 
-function commentSubmit(email) {
-    console.log("email", email);
+function commentSubmit() {
+    console.log("email", loginEmail);
     console.log("commentContent", commentContent);
     console.log("reviewId", review_uuid);
 
-    fetch(`/api/review/comment/save`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            codeReviewId: review_uuid,
-            content: commentContent,
-            memberEmail: email
-        })
-    }).then(resp => {
-        if (!resp.ok) {
-            throw new Error("fail to fetch");
+    if(loginEmail === '' || loginEmail === undefined) {
+        alert("로그인 해주세요");
+    } else {
+        fetch(`/api/review/comment/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                codeReviewId: review_uuid,
+                content: commentContent,
+                memberEmail: loginEmail
+            })
+        }).then(resp => {
+            if (!resp.ok) {
+                throw new Error("fail to fetch");
+            }
+            return resp.json();
+        }).then(resp => {
+            renderComment(resp)
+            editor.setHTML('');
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+}
+
+function hiddenIcon() {
+    const codeReviewWriterEmail = document.getElementById("codeReviewWriter").dataset.email;
+    console.log("hiddenIcon() email val: ", codeReviewWriterEmail);
+
+    if(codeReviewWriterEmail === loginEmail) {
+        const codeReviewIcon = document.querySelector('.icon_view');
+        codeReviewIcon.removeAttribute("hidden");
+    }
+
+    const comments = document.querySelectorAll('#commentElements')
+    comments.forEach(comment => {
+        const memberInfo = comment.querySelector('.memberInfo').dataset.email;
+        console.log("memberInfo.value: ", memberInfo);
+        if(memberInfo === loginEmail) {
+            const IconElement = comment.querySelector('.comment_delete');
+            IconElement.removeAttribute("hidden");
+            console.log(IconElement);
         }
-        return resp.json();
-    }).then(resp => {
-        renderComment(resp)
-        editor.setHTML('');
-    }).catch(error => {
-        console.error(error);
-    });
+    })
 }
 
 function getMemberInComment() {
-
     fetch(`/api/member/info`)
         .then(response => {
             if (!response.ok) {
@@ -89,9 +116,9 @@ function getMemberInComment() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data.email);
-            email = data.email;
-            commentSubmit(email)
+            console.log("data ::::", data);
+            loginEmail = data.email;
+            hiddenIcon();
         })
         .catch(error => {
             console.error('Fetch error:', error);
@@ -101,7 +128,7 @@ function getMemberInComment() {
 function deleteComment(commentID) {
     console.log("commentID", commentID);
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
-        fetch(`/api/review/comment/${commentID}`, {
+        fetch(`/api/review/comment/${commentID}?memberEmail=${loginEmail}`, {
             method: 'DELETE'
         }).then(resp => {
             if (!resp.ok) {
@@ -131,6 +158,7 @@ function updateComments(commentId, content) {
         body: JSON.stringify({
             id: commentId,
             content: content,
+            memberEmail: loginEmail
         })
     }).then(resp => {
         if (!resp.ok) {

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.member.MemberNotFoundException;
+import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.entity.*;
 import kr.codeback.repository.specification.CodeReviewSpecification;
 import kr.codeback.service.interfaces.NotificationService;
@@ -88,9 +91,16 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public void deleteCodeReviewById(UUID id) {
+	public void deleteCodeReviewById(UUID id, String memberEmail) {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
 			new IllegalArgumentException("no CodeReview : " + id));
+
+		if(!codeReview.getMember().getEmail().equals(memberEmail)) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
 
 		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(id);
 		codeReviewPreferenceService.deleteAll(preferences);
@@ -129,6 +139,13 @@ public class CodeReviewServiceImpl implements CodeReviewService {
     public void updateCodeReview(CodeReviewRequestDTO reviewDTO) {
 		CodeReview codeReview = codeReviewRepository.findById(reviewDTO.getId())
 				.orElseThrow(()->new IllegalArgumentException("no codeReivew"));
+
+		if(!reviewDTO.getMemberEmail().equals(codeReview.getMember().getEmail())) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
 
 		CodeLanguageCategory clCategory =
 				codeLanguageCategoryRepository.findById(reviewDTO.getCodeLanguageCategoryId())
