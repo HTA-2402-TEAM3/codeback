@@ -6,10 +6,16 @@ import java.util.UUID;
 
 import org.aspectj.weaver.ast.Not;
 
+import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
+import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 
 public interface NotificationService {
+
+	void save(CodeReviewComment codeReviewComment);
+
+	// void save(CodeReviewCommentRequestDTO codeReviewCommentRequestDTO){}
 
 	// 모든 알림 조회
 	List<Notification> getAllNotifications();
@@ -25,9 +31,6 @@ public interface NotificationService {
 
 	// 알림 읽음 처리 (이건 구현할 때 수정해야할 것 같습니다!)
 	Notification markNotificationAsRead(Long notificationId);
-
-	// 알림 삭제
-	Boolean deleteNotification(UUID notificationId);
 
 	// 알림 생성
 	void addNotification(Notification notification);

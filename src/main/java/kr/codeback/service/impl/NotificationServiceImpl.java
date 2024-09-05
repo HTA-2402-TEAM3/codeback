@@ -1,6 +1,5 @@
 package kr.codeback.service.impl;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -8,6 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.repository.NotificationRepository;
@@ -17,7 +17,21 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
+
 	private final NotificationRepository notificationRepository;
+
+	@Override
+	public void save(CodeReviewComment codeReviewComment) {
+		Notification notification = Notification.builder()
+			.id(UUID.randomUUID())
+			.member(codeReviewComment.getCodeReview().getMember())
+			.entityID(codeReviewComment.getId())
+			.isRead(false)
+			.message(codeReviewComment.getMember().getNickname()+"님이 "+codeReviewComment.getCodeReview().getTitle()+" 글에 댓글을 작성하였습니다.")
+			.build();
+
+		notificationRepository.save(notification);
+	}
 
 	@Override
 	public List<Notification> getAllNotifications() {
@@ -44,12 +58,6 @@ public class NotificationServiceImpl implements NotificationService {
 		return null;
 	}
 
-	@Override
-	public Boolean deleteNotification(UUID notificationId) {
-		return null;
-	}
-
-	@Override
 	public void addNotification(Notification notification) {
 		if (notificationRepository.findById(notification.getId()).isEmpty()) {
 			notificationRepository.save(notification);
