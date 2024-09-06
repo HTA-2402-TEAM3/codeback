@@ -77,7 +77,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	}
 
 	@Override
-	public CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO) {
+	public CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO) {
 		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
 				.orElseThrow(()-> new IllegalArgumentException("no member..."));
 		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
@@ -94,7 +94,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 		CodeReviewComment savedComment = codeReviewCommentRepository.findById(codeReviewComment.getId())
 				.orElseThrow(()->new IllegalArgumentException("no comment..."+codeReviewComment.getId()));
 
-		return savedComment.toDTO();
+		return savedComment;
 	}
 
 	@Override

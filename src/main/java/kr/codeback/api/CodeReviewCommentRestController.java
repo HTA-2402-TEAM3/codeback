@@ -6,6 +6,7 @@ import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
+import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.impl.CodeReviewCommentServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,8 @@ public class CodeReviewCommentRestController {
     private final CodeReviewCommentServiceImpl codeReviewCommentService;
     @PostMapping("/save")
     public ResponseEntity<Object> writeReviewComment (@RequestBody CodeReviewCommentRequestDTO commentDTO) {
-        CodeReviewCommentResponseDTO comment = codeReviewCommentService.saveComment(commentDTO);
-        return ResponseEntity.ok().body(comment);
+        CodeReviewComment comment = codeReviewCommentService.saveComment(commentDTO);
+        return ResponseEntity.ok().body(comment.toDTO());
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteComment(@PathVariable UUID id, @RequestParam String memberEmail) {
