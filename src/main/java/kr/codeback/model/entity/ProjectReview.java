@@ -66,4 +66,11 @@ public class ProjectReview {
 		this.projectReviewTags = projectReviewTags;
 		this.comments = comments;
 	}
+
+	public ProjectReview addSet(Set<ProjectReviewImage> imageSet, Set<ProjectReviewTag> tagSet) {
+		return ProjectReview.builder()
+				.projectReviewImages(imageSet)
+				.projectReviewTags(tagSet)
+				.build();
+	}
 }

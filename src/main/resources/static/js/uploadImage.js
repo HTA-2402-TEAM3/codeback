@@ -2,6 +2,8 @@ const content = document.querySelector('.image-upload');
 const fileInput = document.getElementById('fileInput');
 const imageContainer = document.querySelector('.image-container');
 
+const formData = new FormData();
+
 content.addEventListener("dragover", dragOver);
 content.addEventListener("dragleave", dragOver);
 content.addEventListener("drop", uploadFiles);
@@ -34,7 +36,6 @@ function uploadFiles(e) {
 
 function handleFiles(event) {
     const files = event.target.files;
-
     const fileNames = [];
 
     if (files.length > 0) {
@@ -48,12 +49,15 @@ function handleFiles(event) {
                 img.style.height = 'auto'; // 비율 유지
                 img.style.objectFit = 'cover'; // 이미지 잘림 방지
                 imageContainer.appendChild(img);
+
+                formData.append('imageFiles',files[i]);
             } else {
                 alert('이미지가 아닙니다.');
                 return;
             }
         }
     }
+    console.log("formData in uploadImages.js : ",formData);
     console.log(fileNames);
 }
 

@@ -33,17 +33,17 @@
 <section id="main" class="wrapper">
     <div class="inner">
         <header class="align-center">
-            <label for="titleInput"></label>
-            <input type="text" id="titleInput" placeholder="제목을 입력하세요">
+            <label for="projectTitle"></label>
+            <input type="text" id="projectTitle" placeholder="제목을 입력하세요">
         </header>
-        <div id="editor"></div>
+        <div id="projectEditor"></div>
 
         <!-- 에디터 js -->
         <script>
             const Editor = toastui.Editor;
 
-            const editor = new Editor({
-                el: document.querySelector('#editor'),
+            const ProjectEditor = new Editor({
+                el: document.querySelector('#projectEditor'),
                 toolbarItems: [
                     ['heading','bold','italic','strike'],
                     ['hr','quote'],
@@ -104,15 +104,15 @@
                 console.log('Tag removed:', e.detail.data.value);
             });
 
-
         </script>
 
         <div style="margin-bottom: 80px;"></div>
         <div class="inner_button">
             <button class="special button" onclick="window.location.href='/project/'">취소</button>
-            <button class="button special" onclick="getMemberInfo()">쓰기/수정</button>
+            <button class="button special" onclick="saveProjectReview()">쓰기/수정</button>
         </div>
     </div>
+    <script src="/js/projectWrite.js"></script>
     <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 
 </section>
