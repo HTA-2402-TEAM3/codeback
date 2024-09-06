@@ -13,6 +13,10 @@ public interface PreferenceService {
     // 좋아요 추가
     Optional<Preference> addPreference(String email, String entityId);
 
+    int getCount(UUID entityId);
+
+    void save(Member member, String entityId);
+
     // 좋아요 제거
     Boolean removePreference(String email, String entityId);
 

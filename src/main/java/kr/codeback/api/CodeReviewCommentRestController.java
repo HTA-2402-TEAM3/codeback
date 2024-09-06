@@ -8,6 +8,7 @@ import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.impl.CodeReviewCommentServiceImpl;
+import kr.codeback.service.interfaces.CodeReviewCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @RequestMapping("/api/review/comment")
 @RequiredArgsConstructor
 public class CodeReviewCommentRestController {
-    private final CodeReviewCommentServiceImpl codeReviewCommentService;
+    private final CodeReviewCommentService codeReviewCommentService;
     @PostMapping("/save")
     public ResponseEntity<Object> writeReviewComment (@RequestBody CodeReviewCommentRequestDTO commentDTO) {
         CodeReviewCommentResponseDTO comment = codeReviewCommentService.saveComment(commentDTO);

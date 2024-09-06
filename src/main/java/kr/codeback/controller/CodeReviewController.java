@@ -36,7 +36,8 @@ public class CodeReviewController {
         UUID id = UUID.fromString(inputID);
 
         CodeReview codeReview = codeReviewService.findById(id);
-        List<Preference> preference = preferenceService.findById(id);
+        int preferenceCnt = preferenceService.getCount(id);
+
 
         model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
                 .id(codeReview.getId())
@@ -46,7 +47,7 @@ public class CodeReviewController {
                 .createDate(codeReview.getCreateDate())
                 .codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
                 .codeReviewComments(codeReview.getComments())
-                .preferenceCnt(preference.size())
+                .preferenceCnt(preferenceCnt)
                 .build());
 
         return "view/codeReview/view-code";

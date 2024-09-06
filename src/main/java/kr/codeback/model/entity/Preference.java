@@ -40,6 +40,10 @@ public class Preference {
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	public void changeLike() {
+		this.isLike = !isLike;
+	}
+
 	@Builder
 	public Preference(UUID id, Member member, UUID entityID, boolean isLike) {
 		this.id = id;
