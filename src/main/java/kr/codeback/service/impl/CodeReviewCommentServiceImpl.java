@@ -48,7 +48,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
@@ -65,7 +65,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
@@ -99,8 +99,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(commentId);
 		codeReviewPreferenceService.deleteAll(preferences);
 
-		List<Notification> notifications = notificationService.findByEntityID(commentId);
-		notificationService.deleteAll(notifications);
+		notificationService.deleteByEntityId(commentId);
 
 		codeReviewCommentRepository.delete(comment);
 	}

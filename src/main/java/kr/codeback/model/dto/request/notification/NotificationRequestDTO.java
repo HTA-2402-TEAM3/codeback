@@ -1,24 +1,21 @@
 package kr.codeback.model.dto.request.notification;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
-import kr.codeback.model.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class NotificationRequestDTO {
 
-	String memberEmail;
-	private String message;
-	private UUID entityID;
-	private boolean isRead;
+	LinkedHashMap<String, UUID> type;
 
 	@Builder
-	public NotificationRequestDTO(String memberEmail, String message, UUID entityID, boolean isRead) {
-		this.memberEmail = memberEmail;
-		this.message = message;
-		this.entityID = entityID;
-		this.isRead = isRead;
+	public NotificationRequestDTO(LinkedHashMap<String, UUID> type) {
+		this.type = type;
 	}
+
 }

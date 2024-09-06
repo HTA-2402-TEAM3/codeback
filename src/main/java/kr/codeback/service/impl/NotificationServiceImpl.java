@@ -1,5 +1,7 @@
 package kr.codeback.service.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -21,6 +23,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationRepository notificationRepository;
 
 	@Override
+	@Transactional
 	public void save(CodeReviewComment codeReviewComment) {
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
@@ -34,72 +37,51 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public List<Notification> getAllNotifications() {
-		return notificationRepository.findAll();
-	}
-
-	@Override
 	public Notification getNotificationById(UUID id) {
 		return notificationRepository.findById(id).get();
 	}
 
-	@Override
-	public List<Notification> getNotificationsByEmail(String email) {
-		return null;
-	}
-
-	@Override
-	public Optional<Notification> createNotification(Notification notification) {
-		return Optional.empty();
-	}
-
-	@Override
-	public Notification markNotificationAsRead(Long notificationId) {
-		return null;
-	}
-
-	public void addNotification(Notification notification) {
-		if (notificationRepository.findById(notification.getId()).isEmpty()) {
-			notificationRepository.save(notification);
-		}
-	}
 
 	@Override
 	@Transactional
 	public void deleteByMember(Member member) {
-		List<Notification> notifications = findByMember(member);
+		List<Notification> notifications = getNotifications(member);
 		if (notifications.isEmpty()) {
 			return;
 		}
 		notificationRepository.deleteAll(notifications);
+	}
+
+
+	@Override
+	public List<Notification> getNotifications(Member member) {
+		List<Notification> notifications = notificationRepository.findAllByMember(member);
+		Collections.sort(notifications, Comparator.comparing(Notification::getCreateDate).reversed());
+		return notifications;
+
 	}
 
 	@Override
 	@Transactional
-	public void deleteByEntityID(UUID entityID) {
-		List<Notification> notifications = findByEntityID(entityID);
-		if (notifications.isEmpty()) {
-			return;
-		}
-		notificationRepository.deleteAll(notifications);
-	}
-
-	@Override
-	public List<Notification> findByMember(Member member) {
-		return notificationRepository.findByMember(member);
-	}
-
-	@Override
 	public List<Notification> findByEntityID(UUID entityID) {
 		return notificationRepository.findByEntityID(entityID);
 	}
 
 	@Override
-	public void deleteAll(List<Notification> notifications) {
-		if (notifications.isEmpty()) {
-			return;
-		}
-		notificationRepository.deleteAll(notifications);
+	@Transactional
+	public void deleteAll(Member member) {
+
+		List<Notification> notifications = notificationRepository.findAllByMember(member);
+		notifications.forEach(notification -> delete(notification.getId()));
+
+	}
+
+	@Override
+	@Transactional
+	public void deleteByEntityId(UUID entityId){
+
+		List<Notification> notifications = notificationRepository.findByEntityID(entityId);
+		notifications.forEach(notification -> delete(notification.getId()));
 	}
 
 	@Override
@@ -110,18 +92,24 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
+	@Transactional
 	public void markAsRead(Notification notification) {
 		notification.hasRead();
+		update(notification);
 	}
 
 	@Override
-	public void markAll(){
+	public void delete(UUID id) {
+		notificationRepository.deleteById(id);
+	}
 
-		List<Notification> notifications = notificationRepository.findAll();
+	@Override
+	@Transactional
+	public void markAll(Member member){
 
-		for (Notification notification : notifications) {
-			notification.hasRead();
-		}
+		List<Notification> notifications = notificationRepository.findAllByMember(member);
+		notifications.forEach(this::markAsRead);
+
 	}
 
 }

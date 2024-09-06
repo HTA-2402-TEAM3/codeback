@@ -42,8 +42,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessToken = CookieUtil.getCookieValue(request,"access_token");
         String refreshToken = CookieUtil.getCookieValue(request,"refresh_token");
 
-        log.info(accessToken);
-
         //Authorization 헤더 검증
         if (accessToken == null) {
 

@@ -17,37 +17,23 @@ public interface NotificationService {
 
 	// void save(CodeReviewCommentRequestDTO codeReviewCommentRequestDTO){}
 
-	// 모든 알림 조회
-	List<Notification> getAllNotifications();
-
 	// ID로 알림 조회
 	Notification getNotificationById(UUID id);
 
-	// 특정 사용자 이메일로 알림 조회
-	List<Notification> getNotificationsByEmail(String email);
-
-	// 알림 저장
-	Optional<Notification> createNotification(Notification notification);
-
-	// 알림 읽음 처리 (이건 구현할 때 수정해야할 것 같습니다!)
-	Notification markNotificationAsRead(Long notificationId);
-
-	// 알림 생성
-	void addNotification(Notification notification);
-
 	void deleteByMember(Member member);
-
-	void deleteByEntityID(UUID entityID);
 
 	void update(Notification notification);
 
-	List<Notification> findByMember(Member member);
+	List<Notification> getNotifications(Member member);
 
 	List<Notification> findByEntityID(UUID entityID);
 
-    void deleteAll(List<Notification> notifications);
+    void deleteAll(Member member);
+
+	void deleteByEntityId(UUID entityId);
 
 	void markAsRead(Notification notification);
 
-	void markAll();
+	void delete(UUID id);
+	void markAll(Member member);
 }

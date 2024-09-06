@@ -1,44 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTTP Polling Alert Example</title>
-    <script>
-        function fetchNotifications() {
-            fetch('/notifications')
-                .then(response => response.json())
-                .then(notifications => {
-                    const notificationsDiv = document.getElementById('notifications');
-                    notificationsDiv.innerHTML = ''; // 기존 알림 지우기
-                    notifications.forEach(notification => {
-                        notificationsDiv.innerHTML += `
-                            <p>
-                                <strong>메시지:</strong> ${notification.message} -
-                                <strong>시간:</strong> ${new Date(notification.createDate).toLocaleString()} -
-                                <strong>읽음 여부:</strong> ${notification.isRead ? '읽음' : '안 읽음'}
-                            </p>`;
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching notifications:', error);
-                });
-        }
-
-        setInterval(fetchNotifications, 5000); // 5초마다 알림 요청
-    </script>
+    <title>Notifications</title>
 </head>
 <body>
-<h1>HTTP Polling 알림 예제</h1>
-<div id="notifications">
-    <ul>
-        <li th:each="notification : ${notifications}">
-            <span th:text="'메시지: ' + ${notification.message}">알림 내용</span> -
-            <span th:text="'시간: ' + ${#temporals.format(notification.createDate, 'yyyy-MM-dd HH:mm:ss')}">날짜</span> -
-            <span th:text="'읽음 여부: ' + (${notification.isRead} ? '읽음' : '안 읽음')">읽음 여부</span>
-        </li>
-    </ul>
-</div>
-<button onclick="fetch('/notifications', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: '새로운 알림!', isRead: false }) })">알림 추가</button>
+
+<h1>Notification List</h1>
+<ul id="notificationList"></ul>
+
+<script src="/js/notice.js"></script>
+<script>getNotification();</script>
+
 </body>
 </html>
