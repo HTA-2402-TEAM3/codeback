@@ -78,6 +78,7 @@ function commentSubmit() {
             }
             return resp.json();
         }).then(resp => {
+            console.log(resp);
             renderComment(resp)
             editor.setHTML('');
         }).catch(error => {

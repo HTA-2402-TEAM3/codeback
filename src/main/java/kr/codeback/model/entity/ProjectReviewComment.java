@@ -1,5 +1,6 @@
 package kr.codeback.model.entity;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_COMMENT")
@@ -28,6 +30,10 @@ public class ProjectReviewComment {
 
 	@Column
 	private String content;
+
+	@Column(name = "create_date" ,updatable = false)
+	@CreationTimestamp
+	private Timestamp createDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_review_id")

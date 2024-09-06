@@ -2,20 +2,13 @@ package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,11 +46,17 @@ public class ProjectReview {
 		orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<ProjectReviewTag> projectReviewTags = new LinkedHashSet<>();
 
+	@OneToMany(mappedBy = "projectReview", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy("createDate DESC")
+	private List<ProjectReviewComment> comments;
+
+
 	//TODO : 리뷰 답글 양방향 맵핑 고려
 
 	@Builder
 	public ProjectReview(UUID id, Member member, String title, String githubURL, String content,
-		Set<ProjectReviewImage> projectReviewImages, Set<ProjectReviewTag> projectReviewTags) {
+		Set<ProjectReviewImage> projectReviewImages, Set<ProjectReviewTag> projectReviewTags
+	,List<ProjectReviewComment> comments) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
@@ -65,5 +64,6 @@ public class ProjectReview {
 		this.content = content;
 		this.projectReviewImages = projectReviewImages;
 		this.projectReviewTags = projectReviewTags;
+		this.comments = comments;
 	}
 }
