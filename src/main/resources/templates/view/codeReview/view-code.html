@@ -33,7 +33,7 @@
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
                         <a class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
-                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
+                            <span class="count" th:text="${codeReview.preferenceCnt}"></span>
                         </a>
                     </div>
                 </div>
@@ -70,10 +70,10 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="icon fa-thumbs-up">
+                            <button onclick = changePreference() class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
-                                <span class="count">0</span>
-                            </a>
+                                <span class="count" th:text="${codeReview.preferenceCnt}"></span>
+                            </button>
                         </li>
                     </ul>
                     <div class="comment_box">
@@ -145,6 +145,15 @@
         </div>
     </div>
 </section>
+
+<script>
+
+    const changePreference = function changePreference () {
+
+    }
+
+</script>
+
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>
 <script src="/js/write.js"></script>
