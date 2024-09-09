@@ -80,7 +80,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	public CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO) {
 		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
 				.orElseThrow(()-> new IllegalArgumentException("no member..."));
-		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
+		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getReviewId())
 				.orElseThrow(()-> new IllegalArgumentException("no codeReview..."));
 
 		CodeReviewComment codeReviewComment = CodeReviewComment.builder()

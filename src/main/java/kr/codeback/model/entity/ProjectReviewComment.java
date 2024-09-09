@@ -10,10 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
+import kr.codeback.model.dto.response.review.ProjectReviewCommentResponseDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.w3c.dom.Text;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_COMMENT")
@@ -29,9 +32,10 @@ public class ProjectReviewComment {
 	private Member member;
 
 	@Column
+			(length = 65535)
 	private String content;
 
-	@Column(name = "create_date" ,updatable = false)
+	@Column(name = "create_date", updatable = false)
 	@CreationTimestamp
 	private Timestamp createDate;
 
@@ -45,5 +49,18 @@ public class ProjectReviewComment {
 		this.member = member;
 		this.content = content;
 		this.projectReview = projectReview;
+	}
+	public ProjectReviewCommentResponseDTO toDTO() {
+		return ProjectReviewCommentResponseDTO.builder()
+				.id(id)
+				.projectReviewId(projectReview.getId())
+				.commentContent(content)
+				.memberNickname(member.getNickname())
+				.createDate(createDate)
+				.build();
+	}
+
+	public void updateProjectReviewComment(CommentModifyRequestDTO commentDTO) {
+		content = commentDTO.getContent();
 	}
 }

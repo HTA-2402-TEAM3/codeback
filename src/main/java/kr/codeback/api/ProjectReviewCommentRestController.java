@@ -4,9 +4,15 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
+import kr.codeback.model.dto.request.review.ProjectReviewCommentRequestDTO;
 import kr.codeback.model.entity.CodeReviewComment;
+import kr.codeback.model.entity.Member;
+import kr.codeback.model.entity.ProjectReview;
+import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.service.impl.CodeReviewCommentServiceImpl;
+import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.ProjectReviewCommentService;
+import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,29 +20,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/review/comment")
+@RequestMapping("/api/project/comment")
 @RequiredArgsConstructor
 public class ProjectReviewCommentRestController {
-//        private final ProjectReviewCommentService projectReviewCommentService;
-//        @PostMapping("/save")
-//        public ResponseEntity<Object> writeReviewComment (@RequestBody CodeReviewCommentRequestDTO commentDTO) {
-//            CodeReviewComment comment = projectReviewCommentService.saveComment(commentDTO);
-//            return ResponseEntity.ok().body(comment.toDTO());
-//        }
-//        @DeleteMapping("/{id}")
-//        public ResponseEntity<Object> deleteComment(@PathVariable UUID id, @RequestParam String memberEmail) {
-//            codeReviewCommentService.deleteById(id, memberEmail);
-//            return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
-//        }
-//        @PutMapping("/update")
-//        public ResponseEntity<Object> updateComment(@RequestBody CommentModifyRequestDTO commentDTO) {
-//            codeReviewCommentService.update(commentDTO);
-//            return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
-//        }
+    private final ProjectReviewCommentService projectReviewCommentService;
+    private final MemberService memberService;
+    private final ProjectReviewService projectReviewService;
 
+    @PostMapping("/save")
+    public ResponseEntity<Object> writeReviewComment(@RequestBody ProjectReviewCommentRequestDTO commentDTO) {
+        Member member = memberService.findByEmail(commentDTO.getMemberEmail());
+        ProjectReview projectReview = projectReviewService.findById(commentDTO.getReviewId());
+        ProjectReviewComment comment = projectReviewCommentService.saveComment(commentDTO, member, projectReview);
+        return ResponseEntity.ok().body(comment.toDTO());
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteReviewComment(@PathVariable UUID id, @RequestParam String memberEmail) {
+        projectReviewCommentService.deleteById(id, memberEmail);
+        return ResponseEntity.ok().body(new MessageResponseDTO(id + SuccessMessage.DELETE.getMessage()));
+    }
 
-
-
-
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateReviewComment(@RequestBody CommentModifyRequestDTO commentDTO) {
+        projectReviewCommentService.update(commentDTO);
+        return ResponseEntity.ok().body(new MessageResponseDTO(commentDTO.getId() + SuccessMessage.UPDATE.getMessage()));
+    }
 }

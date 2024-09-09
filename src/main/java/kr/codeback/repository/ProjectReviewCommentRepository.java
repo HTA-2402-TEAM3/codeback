@@ -9,4 +9,6 @@ import kr.codeback.model.entity.ProjectReviewComment;
 
 @Repository
 public interface ProjectReviewCommentRepository extends JpaRepository<ProjectReviewComment, UUID> {
+
+	void deleteAllByProjectReviewId(UUID projectReviewId);
 }
