@@ -92,10 +92,12 @@
                            th:id="'modify'+${comments.id}"
                            th:commentId="${comments.id}"
                            th:commentContent="${comments.comment}"
-                           th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                           th:review = "review"
+                           th:onclick="modifyComment(this.getAttribute('review'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
                         <a class="icon fa-trash"
                            th:commentId="${comments.id}"
-                           th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
+                           th:review = "review"
+                           th:onclick="deleteComment(this.getAttribute('review'),this.getAttribute('commentId'))"></a>
                     </div>
                     <hr class="major"/>
                 </div>

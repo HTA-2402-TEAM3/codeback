@@ -63,11 +63,10 @@
 
         <div class="upload-wrapper" style="display: flex; align-items: flex-start;">
             <div id="image-upload" class="image-upload" style="align-content: center;">
-                click or
-                drag and drop your image!
+                click or drag and drop your image!
                 <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
             </div>
-            <div class="image-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-left: 20px; margin-top: 20px;"></div>
+            <div class="image-container" style="display: flex; flex-wrap: wrap; gap: 10px; margin-left: 20px; margin-top: 20px; justify-content: flex-start;"></div>
         </div>
 
 
@@ -113,6 +112,7 @@
         </div>
     </div>
     <script src="/js/projectWrite.js"></script>
+    <script src="/js/uploadImage.js"></script>
     <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 
 </section>

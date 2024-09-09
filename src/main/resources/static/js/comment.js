@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
     getMemberInComment()
 });
 
-function renderComment(data) {
+function renderComment(mapping, data) {
+    console.log(mapping);
+
+
     const commentID = data.id;
     const commentContent = data.commentContent;
 
@@ -41,9 +44,9 @@ function renderComment(data) {
     </div>
     <div class="comment_delete">
         <a class="icon fa-pencil" id="modify${data.id}"
-           onClick="modifyComment('${commentID}', '${commentContent}')"></a>
+           onClick="modifyComment('${mapping}','${commentID}', '${commentContent}')"></a>
         <a class="icon fa-trash"
-           onclick="deleteComment('${commentID}')"></a>
+           onclick="deleteComment('${mapping}','${commentID}')"></a>
     </div>
     <hr class="major"/>`;
 
@@ -69,7 +72,7 @@ function commentSubmit(mapping) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                codeReviewId: review_uuid,
+                reviewId: review_uuid,
                 content: commentContent,
                 memberEmail: loginEmail
             })
@@ -80,7 +83,7 @@ function commentSubmit(mapping) {
             return resp.json();
         }).then(resp => {
             console.log(resp);
-            renderComment(resp)
+            renderComment(mapping, resp)
             editor.setHTML('');
         }).catch(error => {
             console.error(error);
@@ -104,7 +107,7 @@ function hiddenIcon() {
         if(memberInfo === loginEmail) {
             const IconElement = comment.querySelector('.comment_delete');
             IconElement.removeAttribute("hidden");
-            console.log(IconElement);
+
         }
     })
 }
@@ -127,19 +130,18 @@ function getMemberInComment() {
         });
 }
 
-function deleteComment(commentID) {
+function deleteComment(mapping,commentID) {
+    console.log(mapping);
+
     console.log("commentID", commentID);
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
-        fetch(`/api/review/comment/${commentID}?memberEmail=${loginEmail}`, {
-            method: 'DELETE'
-        }).then(resp => {
-            if (!resp.ok) {
-                throw new Error("fail to fetch");
-            }
-            return resp.json();
+        fetch(`/api/${mapping}/comment/${commentID}?memberEmail=${loginEmail}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json', // 필요한 경우
+            },
         }).then(resp => {
             console.log(resp);
-
             alert(resp.message);
             location.reload();
         }).catch(error => {
@@ -148,11 +150,13 @@ function deleteComment(commentID) {
     }
 }
 
-function updateComments(commentId, content) {
+function updateComments(mapping,commentId, content) {
+    console.log(mapping);
+
     console.log("updateComments() : ", commentId);
     console.log("updateComments() : ", content);
 
-    fetch(`/api/review/comment/update`, {
+    fetch(`/api/${mapping}/comment/update`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -180,7 +184,9 @@ function updateComments(commentId, content) {
 let lastCommentId;
 let lastCommentContent;
 
-function modifyComment(commentId, commentContent) {
+function modifyComment(mapping, commentId, commentContent) {
+    console.log(mapping);
+
     console.log("commentID : " + commentId);
     console.log("commentContent : " + commentContent);
 
@@ -211,6 +217,14 @@ function modifyComment(commentId, commentContent) {
 
     const editorAtComment = new commentEditor({
         el: document.querySelector('#commentEditor'),
+        toolbarItems: [
+            ['heading', 'bold', 'italic', 'strike'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task', 'indent', 'outdent'],
+            ['table', 'link'],
+            ['code', 'codeblock'],
+            ['scrollSync'],
+        ],
         height: '300px',
         initialEditType: 'markdown',
         previewStyle: 'vertical'
@@ -220,6 +234,6 @@ function modifyComment(commentId, commentContent) {
 
     modifyIcon.onclick = function () {
         const newContent = editorAtComment.getHTML();
-        updateComments(commentId, newContent);
+        updateComments(mapping, commentId, newContent);
     }
 }
