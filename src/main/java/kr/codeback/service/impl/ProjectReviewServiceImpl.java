@@ -7,10 +7,12 @@ import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
 import kr.codeback.model.entity.*;
+import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewImageRepository;
 import kr.codeback.repository.ProjectReviewRepository;
 import kr.codeback.service.S3Service;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewTagService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 public class ProjectReviewServiceImpl implements ProjectReviewService {
     private final ProjectReviewRepository projectReviewRepository;
     private final ProjectReviewImageRepository projectReviewImageRepository;
+    private final ProjectReviewCommentService projectReviewCommentService;
 
     private final ProjectReviewImageService projectReviewImageService;
     private final ProjectReviewTagService projectReviewTagService;
@@ -113,5 +116,16 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
         reviewObj.addSet(imageSet, tagSet);
 
         return projectReviewRepository.save(reviewObj);
+    }
+
+
+
+    @Override
+    @Transactional
+    public void deleteAllById(UUID projectID) {
+        projectReviewImageService.deleteAllByProjectReviewId(projectID);
+        projectReviewTagService.deleteAllByProjectReviewId(projectID);
+        projectReviewCommentService.deleteAllByProjectReviewId(projectID);
+        projectReviewRepository.deleteById(projectID);
     }
 }

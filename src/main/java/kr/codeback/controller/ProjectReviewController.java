@@ -1,5 +1,6 @@
 package kr.codeback.controller;
 
+import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
@@ -11,8 +12,10 @@ import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,4 +65,5 @@ public class ProjectReviewController {
 
         return "/view/projectReview/project-view";
     }
+
 }

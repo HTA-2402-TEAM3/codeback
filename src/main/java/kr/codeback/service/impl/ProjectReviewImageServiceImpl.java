@@ -49,4 +49,30 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
         }
         return imageSet;
     }
+
+    @Override
+    @Transactional
+    public void deleteAllByProjectReviewId(UUID projectReviewId) {
+        List<ProjectReviewImage> images = findAllByProjectReviewId(projectReviewId);
+        List<String> filenames = getFilenames(images);
+        s3Service.deleteS3Files(filenames);
+    }
+
+    @Override
+    public List<String> getFilenames(List<ProjectReviewImage> projectReviewImages) {
+
+        List<String> filenames = new ArrayList<>();
+
+        for (ProjectReviewImage projectReviewImage : projectReviewImages) {
+            filenames.add(projectReviewImage.getFileName());
+        }
+
+        return filenames;
+    }
+
+    @Override
+    public List<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId) {
+        return projectReviewImageRepository.findAllByProjectReviewId(projectReviewId);
+    }
+
 }

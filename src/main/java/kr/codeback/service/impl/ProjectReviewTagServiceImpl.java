@@ -35,4 +35,11 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
 
         return tagSet;
     }
+
+    //프로젝트 리뷰 삭제시 달려있는 모든 태그 삭제
+    @Override
+    public void deleteAllByProjectReviewId(UUID projectReviewID) {
+        projectReviewTagRepository.deleteAllByProjectReviewId(projectReviewID);
+    }
+
 }

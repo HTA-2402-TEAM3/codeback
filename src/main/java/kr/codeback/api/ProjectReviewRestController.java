@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/project")
@@ -29,6 +30,12 @@ public class ProjectReviewRestController {
         Member member = memberService.findByEmail(projectReviewRequestDTO.getMemberEmail());
         ProjectReview projectReview = projectReviewService.save(member, projectReviewRequestDTO);
         return ResponseEntity.ok().body(new MessageResponseDTO(projectReview+ SuccessMessage.CREATE.getMessage()));
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteProjectReview(@PathVariable UUID id){
+        projectReviewService.deleteAllById(id);
+        return ResponseEntity.ok(new MessageResponseDTO(projectReviewService.findById(id)+SuccessMessage.DELETE.getMessage()));
     }
 
 }

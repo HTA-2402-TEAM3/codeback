@@ -19,4 +19,6 @@ public interface ProjectReviewService {
 //    ProjectReview uploadFiles(List<MultipartFile> multipartFiles) throws IOException;
 
     ProjectReview save(Member member, ProjectReviewRequestDTO projectReviewRequestDTO) throws IOException;
+
+    void deleteAllById(UUID projectID);
 }

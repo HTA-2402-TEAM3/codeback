@@ -3,6 +3,8 @@ package kr.codeback.service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.DeleteObjectsRequest;
+import com.amazonaws.services.s3.model.DeleteObjectsResult;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class S3Service {
@@ -35,5 +38,15 @@ public class S3Service {
 
     public void delete (String fileName) throws AmazonServiceException{
         amazonS3.deleteObject(bucket, fileName);
+    }
+
+    public void deleteS3Files(List<String> fileNames) throws AmazonServiceException {
+
+        // 삭제 요청 생성
+        DeleteObjectsRequest deleteRequest = new DeleteObjectsRequest(bucket)
+            .withKeys(fileNames.toArray(new String[0]));
+
+        // 객체 삭제
+        amazonS3.deleteObjects(deleteRequest);
     }
 }
