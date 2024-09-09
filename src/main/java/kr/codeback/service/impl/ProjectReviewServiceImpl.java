@@ -2,15 +2,19 @@ package kr.codeback.service.impl;
 
 import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import jakarta.transaction.Transactional;
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
 import kr.codeback.model.entity.*;
+import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewImageRepository;
 import kr.codeback.repository.ProjectReviewRepository;
 import kr.codeback.service.S3Service;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewTagService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import kr.codeback.service.interfaces.ProjectReviewService;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,6 +39,7 @@ import java.util.stream.Collectors;
 public class ProjectReviewServiceImpl implements ProjectReviewService {
     private final ProjectReviewRepository projectReviewRepository;
     private final ProjectReviewImageRepository projectReviewImageRepository;
+    private final ProjectReviewCommentService projectReviewCommentService;
 
     private final ProjectReviewImageService projectReviewImageService;
     private final ProjectReviewTagService projectReviewTagService;
@@ -65,8 +71,8 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
 
     @Override
     public ProjectReview findById(UUID projectID) {
-        Optional<ProjectReview> projectReview = projectReviewRepository.findById(projectID);
-        return projectReview.orElseThrow(()->new IllegalArgumentException("no projectReview... :" +projectID));
+        return projectReviewRepository.findById(projectID)
+                .orElseThrow(()->new IllegalArgumentException("no projectReview... :" +projectID));
     }
 
     @Override
@@ -87,5 +93,35 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
         reviewObj.addSet(imageSet, tagSet);
 
         return projectReviewRepository.save(reviewObj);
+    }
+
+
+
+    @Override
+    @Transactional
+    public void deleteAllById(UUID projectID) {
+        projectReviewImageService.deleteAllByProjectReviewId(projectID);
+        projectReviewTagService.deleteAllByProjectReviewId(projectID);
+        projectReviewCommentService.deleteAllByProjectReviewId(projectID);
+        projectReviewRepository.deleteById(projectID);
+    }
+
+    @Override
+    public void updateProjectReview(UUID reviewId, ProjectReviewRequestDTO projectDTO) {
+        ProjectReview projectReview = projectReviewRepository.findById(reviewId)
+                .orElseThrow(()->new IllegalArgumentException("no projectReview..."));
+
+        if(!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
+            throw new ReviewNotAuthorizedException(
+                    ErrorCode.NOT_EXIST_USER.getStatus(),
+                    ErrorCode.NOT_EXIST_USER.getMessage()
+            );
+        }
+        Set<ProjectReviewImage> images = projectReviewImageService.updateImages(projectDTO.getImageFiles());
+//        List<MultipartFile>
+        Set<ProjectReviewTag> tags = projectReviewTagService.updateTags(projectDTO.getTags(), projectReview);
+//        List<String>
+        projectReview.updateProjectReview(projectDTO, images, tags);
+        projectReviewRepository.save(projectReview);
     }
 }

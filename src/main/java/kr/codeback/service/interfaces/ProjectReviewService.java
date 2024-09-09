@@ -22,4 +22,8 @@ public interface ProjectReviewService {
     ProjectReview save(Member member, ProjectReviewRequestDTO projectReviewRequestDTO) throws IOException;
 
     Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort);
+
+    void deleteAllById(UUID projectID);
+
+    void updateProjectReview(UUID reviewId, ProjectReviewRequestDTO projectReviewRequestDTO);
 }

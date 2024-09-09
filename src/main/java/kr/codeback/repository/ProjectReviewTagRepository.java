@@ -9,4 +9,6 @@ import kr.codeback.model.entity.ProjectReviewTag;
 
 @Repository
 public interface ProjectReviewTagRepository extends JpaRepository<ProjectReviewTag, UUID> {
+
+	public void deleteAllByProjectReviewId(UUID id);
 }

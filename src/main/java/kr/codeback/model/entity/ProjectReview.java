@@ -5,13 +5,20 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
+import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
+import kr.codeback.model.dto.response.review.ProjectReviewModifyResponseDTO;
+import kr.codeback.model.dto.response.review.set.ProjectReviewImageDTO;
+import kr.codeback.model.dto.response.review.set.ProjectReviewTagDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 @Entity
 @Table(name = "PROJECT_REVIEW")
@@ -31,7 +38,7 @@ public class ProjectReview {
 	@Column(name = "github_url", nullable = false)
 	private String githubURL;
 
-	@Column(name = "content", nullable = false)
+	@Column(name = "content", nullable = false, length = 65535)
 	private String content;
 
 	@Column(name = "create_date", updatable = false)
@@ -72,5 +79,34 @@ public class ProjectReview {
 				.projectReviewImages(imageSet)
 				.projectReviewTags(tagSet)
 				.build();
+	}
+
+	public ProjectReviewModifyResponseDTO toModifyDTO() {
+		Set<ProjectReviewTagDTO> tagDTO = projectReviewTags.stream().map(tag->ProjectReviewTagDTO.builder()
+				.id(tag.getId())
+				.tag(tag.getTag())
+				.build()).collect(Collectors.toSet());
+		Set<ProjectReviewImageDTO> imageDTO = projectReviewImages.stream().map(image->ProjectReviewImageDTO.builder()
+				.url(image.getUrl())
+				.fileName(image.getFileName())
+				.id(image.getId())
+				.build()).collect(Collectors.toSet());
+
+
+		return ProjectReviewModifyResponseDTO.builder()
+				.tags(tagDTO)
+				.images(imageDTO)
+				.title(title)
+				.content(content)
+				.githubUrl(githubURL)
+				.build();
+	}
+
+    public void updateProjectReview(ProjectReviewRequestDTO projectDTO, Set<ProjectReviewImage> images, Set<ProjectReviewTag> tags) {
+		title = projectDTO.getTitle();
+		content = projectDTO.getContent();
+		githubURL = projectDTO.getGithubUrl();
+		projectReviewImages = images;
+		projectReviewTags = tags;
 	}
 }

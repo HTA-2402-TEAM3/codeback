@@ -1,24 +1,30 @@
 package kr.codeback.controller;
 
+import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReviewPreference;
 import kr.codeback.model.entity.ProjectReview;
+import kr.codeback.model.entity.ProjectReviewImage;
 import kr.codeback.service.impl.ProjectReviewServiceImpl;
 import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Controller
@@ -27,11 +33,13 @@ import java.util.UUID;
 public class ProjectReviewController {
     private final ProjectReviewServiceImpl projectReviewService;
     private final CodeReviewPreferenceService preferenceService;
+    private final ProjectReviewImageService imageService;
 
     @GetMapping("/write")
-    public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id) {
+    public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
         return "/view/projectReview/project-write";
     }
+
     @GetMapping("/")
     public String projectReview(Model model) {
         Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0,10,"createDate");
@@ -64,4 +72,5 @@ public class ProjectReviewController {
 
         return "/view/projectReview/project-view";
     }
+
 }
