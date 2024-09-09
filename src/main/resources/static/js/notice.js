@@ -25,7 +25,7 @@ function getNotification() {
                 deleteButton.textContent = '삭제'; // 버튼 텍스트 설정
                 // 버튼 클릭 이벤트 리스너 추가
                 console.log(notificationID);
-                deleteButton.addEventListener('click', function() {
+                deleteButton.addEventListener('click', function () {
                     // 클릭한 버튼의 부모 요소인 li 삭제
                     deleteNotice(notificationID);
                     listItem.remove();
@@ -33,10 +33,12 @@ function getNotification() {
 
                 const fadeButton = document.createElement('button');
                 fadeButton.textContent = '읽음'; // 버튼 텍스트 설정
-                fadeButton.addEventListener('click', function() {
+                fadeButton.addEventListener('click', function () {
+                    console.log("success");
                     readNotice(notificationID);
-                    listItem.classList.toggle('faded'); // 흐리게 상태 토글
+                    listItem.classList.add('blurred')
                 });
+
 
                 //날짜 파싱
                 const isoDate = `${notification.createDate}`;
@@ -88,6 +90,7 @@ function deleteNotice(id) {
 }
 
 function readNotice(id) {
+    console.log("first")
     fetch(`/api/notification/${id}`, {
         method: 'PATCH', // PATCH 메소드로 변경
         headers: {
@@ -96,7 +99,7 @@ function readNotice(id) {
     })
         .then(response => {
             if (response.ok) {
-                console.log(`리소스가 성공적으로 업데이트되었습니다.`);
+                console.log("HERE");
             } else {
                 console.error(`업데이트 실패: ${response.status} - ${response.statusText}`);
             }

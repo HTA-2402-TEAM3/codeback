@@ -1,0 +1,4 @@
+.blurred {
+    color: gray; /* 블러 효과 설정 */
+    transition: filter 0.3s ease; /* 부드러운 전환 효과 */
+}
