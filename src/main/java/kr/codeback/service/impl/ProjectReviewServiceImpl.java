@@ -58,6 +58,7 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                             .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
                             .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
                             .preferenceCnt(codeReviewPreferenceService.findByEntityID(projectReview.getId()).size())
+                            .projectReviewComments(projectReview.getComments().size())
                             .build();
                 });
     }
@@ -109,8 +110,8 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
         Set<ProjectReviewImage> imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
         Set<ProjectReviewTag> tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
 
-        ProjectReview projectReview = reviewObj.addSet(imageSet, tagSet);
+        reviewObj.addSet(imageSet, tagSet);
 
-        return projectReviewRepository.save(projectReview);
+        return projectReviewRepository.save(reviewObj);
     }
 }
