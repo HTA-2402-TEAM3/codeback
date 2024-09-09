@@ -23,10 +23,12 @@ public class ProjectReviewResponseDTO {
     private final List<ProjectReviewComment> projectReviewComments;
     private final Set<ProjectReviewImage> projectReviewImages;
     private final Integer preferenceCnt;
+    private final String githubURL;
+
     @Builder
     public ProjectReviewResponseDTO(UUID id, Member member, String title, String content, Timestamp createDate,
                                     Set<ProjectReviewTag> projectReviewTags, List<ProjectReviewComment> projectReviewComments,
-                                    Set<ProjectReviewImage> projectReviewImages, Integer preferenceCnt) {
+                                    Set<ProjectReviewImage> projectReviewImages, Integer preferenceCnt, String githubURL) {
         this.id = id;
         this.member = member;
         this.title = title;
@@ -36,5 +38,6 @@ public class ProjectReviewResponseDTO {
         this.projectReviewComments = projectReviewComments;
         this.projectReviewImages = projectReviewImages;
         this.preferenceCnt = preferenceCnt;
+        this.githubURL = githubURL;
     }
 }

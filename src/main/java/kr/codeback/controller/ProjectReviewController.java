@@ -61,6 +61,8 @@ public class ProjectReviewController {
                         .projectReviewComments(projectReview.getComments())
                         .projectReviewImages(projectReview.getProjectReviewImages())
                         .preferenceCnt(projectReviewPrefer.size())
+                        .githubURL(projectReview.getGithubURL())
+
                 .build());
 
         return "/view/projectReview/project-view";
