@@ -1,12 +1,12 @@
 package kr.codeback.service.interfaces;
 
+import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
+import kr.codeback.model.entity.Member;
+import kr.codeback.model.entity.Preference;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
-import kr.codeback.model.entity.Preference;
-import kr.codeback.model.entity.Member;
 
 public interface PreferenceService {
 
@@ -15,7 +15,7 @@ public interface PreferenceService {
 
     int getCount(UUID entityId);
 
-    void save(Member member, String entityId);
+    Preference save(Member member, String entityId);
 
     // 좋아요 제거
     Boolean removePreference(String email, String entityId);

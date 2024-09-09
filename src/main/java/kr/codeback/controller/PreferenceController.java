@@ -1,17 +1,14 @@
 package kr.codeback.controller;
 
+import kr.codeback.model.dto.response.PreferenceResponseDTO;
 import kr.codeback.model.entity.Member;
-import kr.codeback.repository.PreferenceRepository;
+import kr.codeback.model.entity.Preference;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,18 +19,13 @@ public class PreferenceController {
     private final MemberService memberService;
     private final JwtUtil jwtUtil;
 
-
     @PutMapping("/like/{entityID}")
-    public ResponseEntity<Integer> saveOrChange(@RequestParam(name = "entityID") String entityID,
-    @CookieValue(name = "access_token") String accessToken) {
+    public ResponseEntity<PreferenceResponseDTO> saveOrChange(@PathVariable(name = "entityID") String entityID, @CookieValue(name = "access_token") String accessToken) {
 
         String email = jwtUtil.extractEmail(accessToken);
         Member member = memberService.findByEmail(email);
-        preferenceService.save(member, entityID);
+        Preference preference = preferenceService.save(member, entityID);
 
-        return ResponseEntity.ok(preferenceService.getCount(UUID.fromString(entityID)));
+        return ResponseEntity.ok().body(PreferenceResponseDTO.builder().entityID(preference.getEntityID()).likeSign(preference.isLike()).build());
     }
 }
-
-
-

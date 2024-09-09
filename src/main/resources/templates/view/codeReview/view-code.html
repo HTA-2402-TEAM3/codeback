@@ -31,10 +31,15 @@
                     <h4 th:text="${codeReview.member}"></h4>
                     <div class="year_icon">
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
-                        <a class="icon fa-thumbs-up">
+
+                        <a th:titleID="${codeReview.id}"
+                           th:onclick="changePreference(this.getAttribute('titleID'))"
+                           class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
-                            <span class="count" th:text="${codeReview.preferenceCnt}"></span>
+                            <span class="count" th:id="'count_' + ${codeReview.id}"
+                                  th:text="${codeReview.preferenceCnt}">0</span>
                         </a>
+
                     </div>
                 </div>
             </header>
@@ -70,10 +75,15 @@
                             </div>
                         </li>
                         <li>
-                            <a onclick = changePreference() class="icon fa-thumbs-up">
+
+                            <a th:commentID="${comments.id}"
+                               th:onclick="changePreference(this.getAttribute('commentID'))"
+                               class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
-                                <span class="count" th:text="${codeReview.preferenceCnt}"></span>
+                                <span class="count" th:id="'count_' + ${comments.id}"
+                                      th:text="${codeReview.preferenceCnt}">0</span>
                             </a>
+
                         </li>
                     </ul>
                     <div class="comment_box">
@@ -148,10 +158,41 @@
     </div>
 </section>
 
-<script>
+<script th:inline="javascript">
+    function changePreference(entityID) {
 
-    const changePreference = function changePreference () {
+        console.log(entityID);
 
+        fetch(`/like/${entityID}`, {
+            method: 'PUT',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return new Error("Preference Fail")
+                }
+
+                return response.json();
+            })
+            .then((data) => {
+
+                console.log(data);
+                const countTag = document.getElementById('count_' + data.entityID);
+
+                let count = parseInt(countTag.textContent);
+
+                if (data.likeSign) {
+                    count += 1;
+                } else {
+                    count -= 1;
+                }
+
+                countTag.textContent = count;
+
+            })
+            .catch((error) => {
+                console.error(error.message);
+            })
+        ;
     }
 
 </script>

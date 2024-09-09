@@ -879,8 +879,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', 
     }저도요', '2024-08-31 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 9),
         (SELECT id FROM member LIMIT 1 OFFSET 4));
 
-INSERT INTO code_review_preference (id, sender_member_id, entity_id, is_Like, create_date)
-
+INSERT preference (id, sender_member_id, entity_id, is_Like, create_date)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1,
         '2024-08-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1,

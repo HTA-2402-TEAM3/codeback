@@ -35,7 +35,7 @@ public class PreferenceServiceImpl implements PreferenceService {
     }
 
     @Override
-    public void save(Member member, String inputEntityId) {
+    public Preference save(Member member, String inputEntityId) {
         // inputEntityId 타입 변경
         UUID entityId = UUID.fromString(inputEntityId);
 
@@ -47,14 +47,19 @@ public class PreferenceServiceImpl implements PreferenceService {
             Preference preference = optionalPreference.get();
             preference.changeLike();
             preferenceRepository.save(preference);
+            return preference;
+
             // ID가 없으니 새로생성 함
         } else {
-            Preference.builder()
+            Preference newPreference = Preference.builder()
+                    .id(UUID.randomUUID())
                     .member(member)
+                    .entityID(entityId)
                     .isLike(true)
-                    .entityID(entityId);
+                    .build();
+            preferenceRepository.save(newPreference);
+            return newPreference;
         }
-
     }
 
     @Override

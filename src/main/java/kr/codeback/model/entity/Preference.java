@@ -3,6 +3,7 @@ package kr.codeback.model.entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -17,9 +18,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CODE_REVIEW_PREFERENCE")
+@Table(name = "PREFERENCE")
 @NoArgsConstructor
 @Getter
+@ToString
 public class Preference {
 
 	@Id

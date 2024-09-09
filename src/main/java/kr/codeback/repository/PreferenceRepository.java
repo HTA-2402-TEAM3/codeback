@@ -40,7 +40,7 @@ public interface PreferenceRepository extends JpaRepository<Preference, UUID> {
                       UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
                      ) m
                          LEFT JOIN
-                     code_review_preference crp
+                     Preference crp
                      ON
                          m.month = MONTH(crp.create_date)
                              AND crp.create_date BETWEEN DATE_SUB(:searchDate, INTERVAL 5 MONTH) AND :searchDate
@@ -62,7 +62,6 @@ public interface PreferenceRepository extends JpaRepository<Preference, UUID> {
                 where p.entityID = :entityID
                 and p.isLike = true
             """)
-
     int calculateLikeCountByEntityID(UUID entityID);
 
 }
