@@ -103,16 +103,29 @@
         }
     }
 
-    .tag-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 0px;
+    /*.tag-info {*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*    width: 100%;*/
+    /*    margin-bottom: 0px;*/
 
-        p {
-            margin-bottom: 0px;
-        }
+    /*    p {*/
+    /*        margin-bottom: 0px;*/
+    /*    }*/
+    /*}*/
+    .tag-info {
+        display: flex; /* Flexbox 사용 */
+        justify-content: space-between; /* 양쪽 끝으로 정렬 */
+        align-items: center; /* 수직 가운데 정렬 */
+    }
+
+    #tag {
+        margin-right: 10px; /* 태그와 아이콘 사이의 간격 */
+    }
+
+    .icon {
+        margin-left: 10px; /* 아이콘 간격 */
     }
 }
 

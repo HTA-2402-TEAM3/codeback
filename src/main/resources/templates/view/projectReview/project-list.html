@@ -45,15 +45,18 @@
         <div class="boxes" th:each="review: ${reviews}">
             <a class="box" th:href="@{/project/{id}(id=${review.id})}">
                 <div>
-                    <img th:src="${review.projectReviewThumbnails != null ? review.projectReviewThumbnails : '/images/test.jpg'}" alt="Pic 01" class="project-img"/>
-<!--                    <img src="/images/test.jpg"  alt="img"/>-->
+                    <img th:src="${review.projectReviewThumbnails != null ? review.projectReviewThumbnails : '/images/test.jpg'}"
+                         alt="Pic 01" class="project-img"/>
+                    <!--                    <img src="/images/test.jpg"  alt="img"/>-->
                     <h4 th:text="${review.title}">title2</h4>
                     <div class="writer-info">
                         <p th:text="${review.member}">김다영</p>
                         <p th:text="${#dates.format(review.createDate, 'yyyy-MM-dd HH:mm')}">2024.09.03</p>
                     </div>
                     <div class="tag-info">
-                        <p th:text="${review.projectReviewTags.toArray()}">#spring_boot #java #JPA</p>
+                        <div id="tag">
+                            <p th:each="tag: ${review.projectReviewTags}" th:text="'#' + ${tag}"></p>
+                        </div>
                         <div>
                             <icon class="icon fa-thumbs-up" th:text="${review.preferenceCnt}">1</icon>
                             <icon class="icon fa-comment" th:text="${review.projectReviewComments}">2</icon>
@@ -67,7 +70,7 @@
 <div id="pagingContainer">
     <nav aria-label="Page navigation">
         <ul class="pagination" id="pagingUl">
-            <li class="page-item" >
+            <li class="page-item">
                 <a class="page-link" aria-label="Previous" onclick="fetchAllProjects(0); return false;">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -77,16 +80,16 @@
                    th:pageNum="${pageStat.count - 1}"
                    th:onclick="fetchAllProjects(this.getAttribute('pageNum'))" th:text="${pageStat.count}"></a>
             </li>
-            <li class="page-item" >
+            <li class="page-item">
                 <a class="page-link"
                    th:totalpage="${totalPages}"
-                   th:onclick="fetchAllProjects(this.getAttribute('totalPage'))" >
+                   th:onclick="fetchAllProjects(this.getAttribute('totalPage'))">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
     </nav>
 </div>
-<script src="/js/project-list.js"></script>
+<script src="/js/project-list.js?ver=1"></script>
 </body>
 </html>
