@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/project")
@@ -36,6 +37,14 @@ public class ProjectReviewRestController {
         return ResponseEntity.ok().body(new MessageResponseDTO(projectReview+ SuccessMessage.CREATE.getMessage()));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<Object> updateProjectReview(
+            @RequestParam UUID reviewId,
+            @ModelAttribute ProjectReviewRequestDTO projectReviewRequestDTO) throws Exception {
+        projectReviewService.updateProjectReview(reviewId, projectReviewRequestDTO);
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
+    }
+
     @GetMapping("/")
     public ResponseEntity<Object> allPages(@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
                                            @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
@@ -49,5 +58,15 @@ public class ProjectReviewRestController {
                 .build();
 
         return ResponseEntity.ok().body(reviews);
+    }
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteProjectReview(@PathVariable UUID id){
+        projectReviewService.deleteAllById(id);
+        return ResponseEntity.ok(new MessageResponseDTO(id+SuccessMessage.DELETE.getMessage()));
+    }
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Object> viewProjectReview(@PathVariable UUID id) {
+        ProjectReview projectReview = projectReviewService.findById(id);
+        return ResponseEntity.ok().body(projectReview.toModifyDTO());
     }
 }
