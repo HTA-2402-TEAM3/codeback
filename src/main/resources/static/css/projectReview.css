@@ -163,4 +163,8 @@
     background-color: gray;
 }
 
+.inner_button_project {
+    max-width: 75em;
+    margin: 0 auto;
+}
 

@@ -54,7 +54,8 @@ function renderComment(data) {
     }
 }
 
-function commentSubmit() {
+function commentSubmit(mapping) {
+
     console.log("email", loginEmail);
     console.log("commentContent", commentContent);
     console.log("reviewId", review_uuid);
@@ -62,7 +63,7 @@ function commentSubmit() {
     if(loginEmail === '' || loginEmail === undefined) {
         alert("로그인 해주세요");
     } else {
-        fetch(`/api/review/comment/save`, {
+        fetch(`/api/${mapping}/comment/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

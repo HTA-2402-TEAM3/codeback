@@ -112,6 +112,14 @@
 
                 const editor = new Editor({
                     el: document.querySelector('#editor_box'),
+                    toolbarItems: [
+                        ['heading','bold','italic','strike'],
+                        ['hr','quote'],
+                        ['ul', 'ol', 'task', 'indent', 'outdent'],
+                        ['table', 'link'],
+                        ['code', 'codeblock'],
+                        ['scrollSync'],
+                    ],
                     autofocus: false,
                     height: '500px',
                     initialEditType: 'markdown',
@@ -123,7 +131,7 @@
                     console.log(content);
                     commentContent = content;
 
-                    commentSubmit();
+                    commentSubmit("review");
                 })
 
                 function deleteCodeReview(id) {
