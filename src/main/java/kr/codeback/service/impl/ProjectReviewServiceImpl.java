@@ -69,32 +69,6 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
         return projectReview.orElseThrow(()->new IllegalArgumentException("no projectReview... :" +projectID));
     }
 
-//    TEST TEST TEST TEST TEST TEST TEST
-//    public ProjectReview uploadFiles(List<MultipartFile> multipartFiles) throws IOException {
-//        List<String> imageUrlList = new ArrayList<>();
-//        Set<ProjectReviewImage> projectReviewImages = new LinkedHashSet<>();;
-//        ProjectReview projectReview = projectReviewRepository.findById(UUID.fromString("ea4c48e4-6b58-11ef-8e2a-0242ac140002"))
-//                .orElseThrow(()->new IllegalArgumentException("no projectReview"));
-//
-//        for(MultipartFile multipartFile : multipartFiles) {
-//            String fileName = UUID.randomUUID().toString().substring(0,4) + multipartFile.getOriginalFilename();
-//            String url = s3Service.upload(multipartFile, fileName);
-//            imageUrlList.add(fileName);
-//
-//            ProjectReviewImage projectReviewImage = ProjectReviewImage.builder()
-//                    .fileName(fileName)
-//                    .id(UUID.randomUUID())
-//                    .projectReview(projectReview)
-//                    .url(url)
-//                    .build();
-//
-//            projectReviewImageRepository.save(projectReviewImage);
-//
-//            projectReviewImages.add(projectReviewImage);
-//        }
-//        return projectReview;
-//    }
-
     @Override
     @Transactional
     public ProjectReview save(Member member, ProjectReviewRequestDTO pjRequestDTO) throws IOException {
