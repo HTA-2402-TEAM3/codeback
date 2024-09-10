@@ -48,7 +48,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
@@ -65,7 +65,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
@@ -75,7 +75,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	}
 
 	@Override
-	public CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO) {
+	public CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO) {
 		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
 				.orElseThrow(()-> new IllegalArgumentException("no member..."));
 		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
@@ -89,10 +89,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 				.build();
 		codeReviewCommentRepository.save(codeReviewComment);
 
-		CodeReviewComment savedComment = codeReviewCommentRepository.findById(codeReviewComment.getId())
-				.orElseThrow(()->new IllegalArgumentException("no comment..."+codeReviewComment.getId()));
-
-		return savedComment.toDTO();
+		return codeReviewComment;
 	}
 
 	@Override
@@ -102,8 +99,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 		List<Preference> preferences = preferenceService.findByEntityID(commentId);
 		preferenceService.deleteAll(preferences);
 
-		List<Notification> notifications = notificationService.findByEntityID(commentId);
-		notificationService.deleteAll(notifications);
+		notificationService.deleteByEntityId(commentId);
 
 		codeReviewCommentRepository.delete(comment);
 	}

@@ -777,7 +777,7 @@ console.log(greet(user));
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, member_id)
 
 VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 0),
-        (SELECT id FROM member LIMIT 1 OFFSET 20)),
+       (SELECT id FROM member LIMIT 1 OFFSET 20)),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -881,7 +881,7 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', 
 
 INSERT preference (id, sender_member_id, entity_id, is_Like, create_date)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1,
-        '2024-08-30 10:15:32.000000'),
+    '2024-08-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1,
         '2024-07-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), (SELECT id FROM code_review LIMIT 1 OFFSET 2), 1,
@@ -916,6 +916,5 @@ VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFS
        (UUID(), 'minjicho@naver.com', (SELECT id FROM code_review LIMIT 1 OFFSET 0), 0, NOW());
 
  */
-
 
 

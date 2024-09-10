@@ -39,8 +39,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 
 		OAuth2User oAuth2User = super.loadUser(userRequest);
 
-		System.out.println("ads");
-
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		OAuth2ResponseDTO oAuth2ResponseDTO = null;
 

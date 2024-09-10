@@ -39,11 +39,19 @@ public class Notification {
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	@Column(name = "message")
+	private String message;
+
 	@Builder
-	public Notification(UUID id, Member member, UUID entityID, boolean isRead) {
+	public Notification(UUID id, Member member, UUID entityID, boolean isRead, String message) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;
 		this.isRead = isRead;
+		this.message= message;
+	}
+
+	public void hasRead(){
+		this.isRead = true;
 	}
 }
