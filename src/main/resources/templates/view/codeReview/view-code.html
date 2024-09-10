@@ -70,7 +70,7 @@
                     <ul>
                         <li>
                             <div>
-                                <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+                                <h4 th:text="${comments.getNickname()}" style="margin: 0;"></h4>
                                 <!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                             </div>
                         </li>
@@ -81,7 +81,7 @@
                                class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
                                 <span class="count" th:id="'count_' + ${comments.id}"
-                                      th:text="${codeReview.preferenceCnt}">0</span>
+                                      th:text="${comments.preferenceCnt}">0</span>
                             </a>
 
                         </li>
@@ -93,13 +93,13 @@
 
                     </div>
                     <div th:id="${comments.id}">
-                        <p th:utext="${comments.comment}"></p>
+                        <p th:utext="${comments.commentContent}"></p>
                     </div>
                     <div class="comment_delete">
                         <a class="icon fa-pencil"
                            th:id="'modify'+${comments.id}"
                            th:commentId="${comments.id}"
-                           th:commentContent="${comments.comment}"
+                           th:commentContent="${comments.commentContent}"
                            th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
                         <a class="icon fa-trash"
                            th:commentId="${comments.id}"

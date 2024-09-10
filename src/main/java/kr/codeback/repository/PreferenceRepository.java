@@ -64,4 +64,16 @@ public interface PreferenceRepository extends JpaRepository<Preference, UUID> {
             """)
     int calculateLikeCountByEntityID(UUID entityID);
 
+    @Query("""
+                select
+                p.entityID,
+                count(p)
+                from
+                Preference p
+                where p.entityID in (:entityIDs)
+                and p.isLike = true
+                group by p.entityID
+            """)
+    List<Object[]> countByEntityIDs(List<UUID> entityIDs);
+
 }

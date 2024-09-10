@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.codeback.model.entity.CodeReviewComment;
-import kr.codeback.model.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,13 +16,13 @@ public class CodeReviewResponseDTO {
 	private final String content;
 	private final Timestamp createDate;
 	private final String codeLanguageName;
-//	Json 시리얼화 추후에 DTO 변경
-	private final List<CodeReviewComment> codeReviewComments;
+	private final List<CodeReviewCommentResponseDTO> codeReviewComments;
 	private final int preferenceCnt;
 
 	@Builder
 	private CodeReviewResponseDTO(UUID id, String member, String title, String content, Timestamp createDate,
-                                  String codeLanguageName, List<CodeReviewComment> codeReviewComments, Integer preferenceCnt) {
+		String codeLanguageName, List<CodeReviewCommentResponseDTO> codeReviewComments,
+		Integer preferenceCnt) {
 		this.id = id;
 		this.member = member;
 		this.title = title;
@@ -33,6 +30,6 @@ public class CodeReviewResponseDTO {
 		this.createDate = createDate;
 		this.codeLanguageName = codeLanguageName;
 		this.codeReviewComments = codeReviewComments;
-        this.preferenceCnt = preferenceCnt;
-    }
+		this.preferenceCnt = preferenceCnt;
+	}
 }

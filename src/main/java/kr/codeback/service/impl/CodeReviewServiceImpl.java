@@ -56,7 +56,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 				.createDate(codeReview.getCreateDate())
 				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
 				.codeReviewComments(codeReview.getComments().size())
-				.preferenceCnt(preferenceService.findByEntityID(codeReview.getId()).size())
 				.build()
 			);
 	}
@@ -151,7 +150,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 						.content(codeReview.getContent())
 						.createDate(codeReview.getCreateDate())
 						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-						.preferenceCnt(preferenceService.findById(codeReview.getId()).size())
+						.preferenceCnt(preferenceService.countByEntityIDs(codeReview.getId()).size())
 						.codeReviewComments(codeReview.getComments().size())
 						.build());
 	}
