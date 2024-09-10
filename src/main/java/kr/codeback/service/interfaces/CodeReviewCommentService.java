@@ -19,7 +19,7 @@ public interface CodeReviewCommentService {
 	void deleteByCodeReview(CodeReview codeReview);
 
 
-    CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO);
+    CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO);
 
 	void deleteById(UUID codeReviewCommentId);
 

@@ -7,12 +7,16 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.member.WrongAuthorityException;
+import kr.codeback.model.constant.CustomOAuth2User;
 import kr.codeback.model.dto.response.AuthorityResponseDTO;
 import kr.codeback.model.dto.response.MemberSummaryResponseDTO;
 import kr.codeback.model.dto.response.member.MemberResponseDTO;
@@ -31,10 +35,28 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
-
 	private final NotificationService notificationService;
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
-	private final AuthorityService authorityService;
+
+	@Override
+	public String extractEmail() {
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		if (principal instanceof OAuth2User) {
+			CustomOAuth2User oauth2User = (CustomOAuth2User) principal;
+			return oauth2User.getName(); // OAuth2 서비스에서 제공하는 속성명.
+		} else {
+			UserDetails userDetails = (UserDetails) principal;
+			return userDetails.getUsername();
+		}
+
+	}
+
+	@Override
+	public Member extractMember() {
+		return memberRepository.findByEmail(extractEmail()).get();
+	}
 
 	@Override
 	public Boolean save(Member member) {

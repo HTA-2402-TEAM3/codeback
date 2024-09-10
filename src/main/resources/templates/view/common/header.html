@@ -1,5 +1,4 @@
-
-<header id="header">
+<header id="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="box_logo">
         <div class="logo_box">
             <img src="/images/codeback.png"/>
@@ -13,10 +12,13 @@
 
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
-            <div style="display: none;">
-                <span id="user-email"></span>
+            <span sec:authorize="isAuthenticated()">
                 <button class="button special" id="logout-button">Logout</button>
-            </div>
+                <script>
+                                const loginButton = document.getElementById("show-login");
+                                loginButton.style.display = "none"; // 숨기기
+                </script>
+            </span>
         </div>
 
     </div>
@@ -54,7 +56,8 @@
                 <label for="signup-email">이메일 회원가입</label>
                 <form onsubmit="submitForm(event)">
                     <label>
-                        <input type="email" id = "signup-email" name="signup-email" placeholder="Enter email"  style="width: 265px;">
+                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email"
+                               style="width: 265px;">
                     </label><br>
                     <button class="login-button">회원가입</button>
                 </form>

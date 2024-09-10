@@ -95,8 +95,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(id);
 		codeReviewPreferenceService.deleteAll(preferences);
 
-		List<Notification> notifications = notificationService.findByEntityID(id);
-		notificationService.deleteAll(notifications);
+		notificationService.deleteByEntityId(id);
 
 		codeReviewRepository.delete(codeReview);
 	}
