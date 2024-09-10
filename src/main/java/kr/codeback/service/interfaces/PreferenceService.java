@@ -5,6 +5,7 @@ import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Preference;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,9 +29,11 @@ public interface PreferenceService {
 
     List<Preference> findByMember(Member member);
 
-    List<Preference> findById(UUID id);
+    List<Preference> findByEntityIDs(UUID id);
 
     void deleteAll(List<Preference> preferences);
 
     List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
+
+	Map<UUID, Long> findByEntityIDs(List<UUID> reviewIds);
 }

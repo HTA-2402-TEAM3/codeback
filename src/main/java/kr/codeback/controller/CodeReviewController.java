@@ -1,85 +1,90 @@
 package kr.codeback.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
-import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.model.entity.Preference;
-import kr.codeback.service.interfaces.CodeLanguageCategoryService;
-import kr.codeback.service.interfaces.PreferenceService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
-import kr.codeback.model.entity.CodeReview;
-import kr.codeback.service.interfaces.CodeReviewService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
+import kr.codeback.model.entity.CodeLanguageCategory;
+import kr.codeback.model.entity.CodeReview;
+import kr.codeback.service.interfaces.CodeLanguageCategoryService;
+import kr.codeback.service.interfaces.CodeReviewService;
+import kr.codeback.service.interfaces.PreferenceService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/review")
 @RequiredArgsConstructor
 public class CodeReviewController {
 
-    private final CodeReviewService codeReviewService;
-    private final CodeLanguageCategoryService codeLanguageCategoryService;
-    private final PreferenceService preferenceService;
+	private final CodeReviewService codeReviewService;
+	private final CodeLanguageCategoryService codeLanguageCategoryService;
+	private final PreferenceService preferenceService;
 
-    @GetMapping("/{id}")
-    public String checkDetail(@PathVariable(name = "id") String inputID, Model model) {
+	@GetMapping("/{id}")
+	public String checkDetail(@PathVariable(name = "id") String inputID, Model model) {
 
-        UUID id = UUID.fromString(inputID);
+		UUID id = UUID.fromString(inputID);
 
-        CodeReview codeReview = codeReviewService.findById(id);
-        int preferenceCnt = preferenceService.getCount(id);
+		CodeReview codeReview = codeReviewService.findById(id);
+		int preferenceCnt = preferenceService.getCount(id);
 
+		model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
+			.id(codeReview.getId())
+			.member(codeReview.getMember().getNickname())
+			.title(codeReview.getTitle())
+			.content(codeReview.getContent())
+			.createDate(codeReview.getCreateDate())
+			.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
+			.codeReviewComments(codeReview.getComments())
+			.preferenceCnt(preferenceCnt)
+			.build());
 
-        model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
-                .id(codeReview.getId())
-                .member(codeReview.getMember().getNickname())
-                .title(codeReview.getTitle())
-                .content(codeReview.getContent())
-                .createDate(codeReview.getCreateDate())
-                .codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-                .codeReviewComments(codeReview.getComments())
-                .preferenceCnt(preferenceCnt)
-                .build());
+		return "view/codeReview/view-code";
+	}
 
-        return "view/codeReview/view-code";
-    }
+	@GetMapping("/")
+	public String checkReviews(Model model) {
+		Page<CodeReviewListResponseDTO> page = codeReviewService.findAllWithPage(0, 10, "createDate");
+		List<CodeReviewListResponseDTO> reviews = page.getContent();
 
-    @GetMapping("/")
-    public String checkReviews(Model model) {
-        Page<CodeReviewListResponseDTO> page = codeReviewService.findAllWithPage(0, 10, "createDate");
-        List<CodeReviewListResponseDTO> reviews = page.getContent();
-        List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
+		Map<UUID, Long> preferenceCnt = preferenceService.findByEntityIDs(
+			reviews.stream().map(CodeReviewListResponseDTO::getId)
+				.toList());
+		reviews.forEach(review -> review.setPreferenceCnt(preferenceCnt.getOrDefault(review.getId(), 0L)));
 
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("languages", languages);
-        model.addAttribute("reviews", reviews);
+		List<CodeLanguageCategory> languages = codeLanguageCategoryService.findAll();
 
-        return "/view/codeReview/review-list";
-    }
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("languages", languages);
+		model.addAttribute("reviews", reviews);
 
-    @GetMapping("/write")
-    public String writeReview(@RequestParam(value = "id", required = false)UUID id, Model model) {
-        List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
+		return "/view/codeReview/review-list";
+	}
 
-        model.addAttribute("languages", languageCategories);
-        return "/view/codeReview/write";
-    }
+	@GetMapping("/write")
+	public String writeReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
+		List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
 
-    @GetMapping("/projectWrite")
-    public String writeProjectReview(@RequestParam(value = "id", required = false)UUID id, Model model) {
-        List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
+		model.addAttribute("languages", languageCategories);
+		return "/view/codeReview/write";
+	}
 
-        model.addAttribute("languages", languageCategories);
-        return "/view/projectReview/write";
-    }
+	@GetMapping("/projectWrite")
+	public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
+		List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
+
+		model.addAttribute("languages", languageCategories);
+		return "/view/projectReview/write";
+	}
 
 }
