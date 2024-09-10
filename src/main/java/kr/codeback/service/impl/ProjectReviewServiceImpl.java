@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
+import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
@@ -107,7 +108,8 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     }
 
     @Override
-    public void updateProjectReview(UUID reviewId, ProjectReviewRequestDTO projectDTO) {
+    @Transactional
+    public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws IOException {
         ProjectReview projectReview = projectReviewRepository.findById(reviewId)
                 .orElseThrow(()->new IllegalArgumentException("no projectReview..."));
 
@@ -117,11 +119,9 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                     ErrorCode.NOT_EXIST_USER.getMessage()
             );
         }
-        Set<ProjectReviewImage> images = projectReviewImageService.updateImages(projectDTO.getImageFiles());
-//        List<MultipartFile>
-        Set<ProjectReviewTag> tags = projectReviewTagService.updateTags(projectDTO.getTags(), projectReview);
-//        List<String>
-        projectReview.updateProjectReview(projectDTO, images, tags);
-        projectReviewRepository.save(projectReview);
+        ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
+
+        updateImageProjectReview.updateProjectReview(projectDTO);
+        projectReviewRepository.save(updateImageProjectReview);
     }
 }

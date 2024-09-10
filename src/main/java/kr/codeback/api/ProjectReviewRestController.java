@@ -2,6 +2,7 @@ package kr.codeback.api;
 
 import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
+import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
@@ -40,7 +41,7 @@ public class ProjectReviewRestController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateProjectReview(
             @RequestParam UUID reviewId,
-            @ModelAttribute ProjectReviewRequestDTO projectReviewRequestDTO) throws Exception {
+            @ModelAttribute ProjectReviewModifyRequestDTO projectReviewRequestDTO) throws Exception {
         projectReviewService.updateProjectReview(reviewId, projectReviewRequestDTO);
         return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
     }

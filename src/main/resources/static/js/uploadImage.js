@@ -1,13 +1,13 @@
-const content = document.querySelector('.image-upload');
+const imgContent = document.querySelector('.image-upload');
 const fileInput = document.getElementById('fileInput');
 const imageContainer = document.querySelector('.image-container');
 
 let formData = new FormData();
 
-content.addEventListener("dragover", dragOver);
-content.addEventListener("dragleave", dragOver);
-content.addEventListener("drop", uploadFiles);
-content.addEventListener("click", () => fileInput.click());
+imgContent.addEventListener("dragover", dragOver);
+imgContent.addEventListener("dragleave", dragOver);
+imgContent.addEventListener("drop", uploadFiles);
+imgContent.addEventListener("click", () => fileInput.click());
 fileInput.addEventListener("change", handleFiles);
 
 function dragOver(e) {
@@ -68,15 +68,22 @@ function handleFiles(event) {
             }
         }
     }
-    console.log("formData in uploadImages.js : ",formData);
+    console.log("formData in uploadImages.js : ");
+    for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value.name || value}`);
+    }
     console.log(fileNames);
 }
-
 function deleteImg(index) {
     console.log(index);
-
     const fileName = files[index].name;
-    formData.delete('imageFiles', fileName);
+
+    if(projectReviewId !== null && projectReviewId !== ''){
+        console.log('delete:'+fileName);
+    }else {
+        formData.delete('imageFiles', fileName);
+    }
+
     const imgElement = document.getElementById(index+"img");
     imgElement.remove();
 }

@@ -11,6 +11,4 @@ public interface ProjectReviewTagService {
     Set<ProjectReviewTag> save(List<String> tags, ProjectReview reviewObj);
 
     void deleteAllByProjectReviewId(UUID projectReviewID);
-
-    Set<ProjectReviewTag> updateTags(List<String> tags, ProjectReview projectReview);
 }

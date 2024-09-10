@@ -1,6 +1,7 @@
 let projectReviewId = '';
 let loginEmail = '';
 
+const renderFormData = new FormData();
 
 document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
@@ -51,16 +52,13 @@ function renderProjectData(data) {
         img.src = image.url;
         img.className = "appendImg";
         img.id = image.id;
-        img.onclick = () => deleteDataImage(img.id);
+        img.onclick = () => deleteDataImage(image.fileName, img.id);
         img.style.width = '180px'; // 이미지 너비 고정
         img.style.height = '180px'; // 이미지 높이 고정
         img.style.objectFit = 'cover'; // 이미지 잘림 방지
         img.style.transition = 'transform 0.2s'; // 부드러운 크기 변화
 
         imageContainer.appendChild(img);
-
-        const file = image.file;
-        formData.append('imageFiles', file);
     })
 
 //     tag 설정
@@ -74,9 +72,10 @@ function renderProjectData(data) {
 //     github 설정
     document.getElementById('github-url').value = data.githubUrl;
 }
-
-function deleteDataImage(imgId) {
-    console.log("deleteDataImage(imgId) : " + imgId);
+let deleteFileNames = [];
+function deleteDataImage(fileName, imgId) {
+    console.log("deleteDataImage(imgId) : " + fileName);
+    deleteFileNames.push(fileName);
 
     const imgElement = document.getElementById(imgId);
     imgElement.remove();
@@ -113,13 +112,12 @@ function projectModify(formData) {
     fetch(`/api/project/update?reviewId=${projectReviewId}`, {
         method: 'PUT',
         body: formData
-    })
-        .then(resp => {
-            if (!resp.ok) {
-                throw new Error("fail to fetch");
-            }
-            return resp.json();
-        }).then(resp => {
+    }).then(resp => {
+        if (!resp.ok) {
+            throw new Error("fail to fetch");
+        }
+        return resp.json();
+    }).then(resp => {
         window.location.href = '/project/';
     }).catch(error => {
         console.error(error);
@@ -137,12 +135,14 @@ function saveProjectReview() {
     console.log("이메일: " + loginEmail);
     console.log("태그들 : " + tags);
     console.log("깃헙 주소 : ", githubUrl);
+    console.log("삭제 이미지들 이름: ",deleteFileNames);
 
     formData.append('memberEmail', loginEmail);
     formData.append('title', title);
     formData.append('content', content);
     formData.append('githubUrl', githubUrl);
     tags.forEach(tag => formData.append('tags', tag));
+    deleteFileNames.forEach(fileName => formData.append('fileNames',fileName));
 
     console.log("폼데이터: ", +formData);
     for (const [key, value] of formData.entries()) {
@@ -166,5 +166,4 @@ function saveProjectReview() {
             console.error(error);
         });
     }
-
 }

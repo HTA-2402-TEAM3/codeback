@@ -42,10 +42,4 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
         projectReviewTagRepository.deleteAllByProjectReviewId(projectReviewID);
     }
 
-    @Override
-    public Set<ProjectReviewTag> updateTags(List<String> tags, ProjectReview projectReview) {
-        Set<ProjectReviewTag> tagSet = null;
-        return tagSet;
-    }
-
 }

@@ -1,5 +1,6 @@
 package kr.codeback.repository;
 
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,6 @@ import kr.codeback.model.entity.ProjectReviewTag;
 public interface ProjectReviewTagRepository extends JpaRepository<ProjectReviewTag, UUID> {
 
 	public void deleteAllByProjectReviewId(UUID id);
+
+	Set<ProjectReviewTag> findAllByProjectReviewId(UUID id);
 }

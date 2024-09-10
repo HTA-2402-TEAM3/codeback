@@ -1,13 +1,11 @@
 package kr.codeback.model.entity;
 
 import java.sql.Timestamp;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
+import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewModifyResponseDTO;
 import kr.codeback.model.dto.response.review.set.ProjectReviewImageDTO;
@@ -102,11 +100,25 @@ public class ProjectReview {
 				.build();
 	}
 
-    public void updateProjectReview(ProjectReviewRequestDTO projectDTO, Set<ProjectReviewImage> images, Set<ProjectReviewTag> tags) {
+    public void updateProjectReview(ProjectReviewModifyRequestDTO projectDTO) {
 		title = projectDTO.getTitle();
 		content = projectDTO.getContent();
 		githubURL = projectDTO.getGithubUrl();
-		projectReviewImages = images;
-		projectReviewTags = tags;
+	}
+
+	public void deleteProjectReviewImages(List<ProjectReviewImage> deleteImages) {
+
+		deleteImages.forEach(image -> {
+			this.projectReviewImages.remove(image);
+			image.dissociateReview();
+		});
+
+	}
+
+	public void addProjectReviewImages(List<ProjectReviewImage> addImages) {
+		addImages.forEach(image -> {
+			this.projectReviewImages.add(image);
+			image.setProjectReview(this);
+		});
 	}
 }

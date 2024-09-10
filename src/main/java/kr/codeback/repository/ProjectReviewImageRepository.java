@@ -1,6 +1,7 @@
 package kr.codeback.repository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ public interface ProjectReviewImageRepository extends JpaRepository<ProjectRevie
 
 	void deleteAllByProjectReviewId(UUID projectReviewId);
 
-	List<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId);
+	Set<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId);
 }

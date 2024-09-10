@@ -14,9 +14,9 @@ public interface ProjectReviewImageService {
 
     void deleteAllByProjectReviewId(UUID projectReviewId);
 
-    List<String> getFilenames(List<ProjectReviewImage> projectReviewImages);
+    List<String> getFilenames(Set<ProjectReviewImage> projectReviewImages);
 
-    List<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId);
+    Set<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId);
 
-    Set<ProjectReviewImage> updateImages(List<MultipartFile> imageFiles);
+    ProjectReview updateImages(ProjectReview review, List<String> imageUrls, List<MultipartFile> imageFiles);
 }

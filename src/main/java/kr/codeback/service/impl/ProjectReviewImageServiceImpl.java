@@ -1,5 +1,6 @@
 package kr.codeback.service.impl;
 
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewImage;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,13 +55,13 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
     @Override
     @Transactional
     public void deleteAllByProjectReviewId(UUID projectReviewId) {
-        List<ProjectReviewImage> images = findAllByProjectReviewId(projectReviewId);
+        Set<ProjectReviewImage> images = findAllByProjectReviewId(projectReviewId);
         List<String> filenames = getFilenames(images);
         s3Service.deleteS3Files(filenames);
     }
 
     @Override
-    public List<String> getFilenames(List<ProjectReviewImage> projectReviewImages) {
+    public List<String> getFilenames(Set<ProjectReviewImage> projectReviewImages) {
 
         List<String> filenames = new ArrayList<>();
 
@@ -71,14 +73,32 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
     }
 
     @Override
-    public List<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId) {
+    public Set<ProjectReviewImage> findAllByProjectReviewId(UUID projectReviewId) {
         return projectReviewImageRepository.findAllByProjectReviewId(projectReviewId);
     }
 
     @Override
-    public Set<ProjectReviewImage> updateImages(List<MultipartFile> imageFiles) {
-//        모르겟음...ㅠㅠㅠ
-        return null;
+    public ProjectReview updateImages(ProjectReview review, List<String> fileNames, List<MultipartFile> imageFiles) {
+        Set<ProjectReviewImage> imageSet = projectReviewImageRepository.findAllByProjectReviewId(review.getId());
+//        기존 저장되어 있던 images
+
+        List<ProjectReviewImage> deleteImages = new ArrayList<>();
+        for (ProjectReviewImage projectReviewImage : imageSet) {
+            if (fileNames.contains(projectReviewImage.getFileName())) {
+                deleteImages.add(projectReviewImage);
+                imageSet.remove(projectReviewImage);
+                s3Service.delete(projectReviewImage.getFileName());
+            }
+        }
+//        저장된 images 와 fileName 비교해 같은 것 s3에서 삭제 후 db 삭제 용 list 에 image 객체 추가
+
+        review.deleteProjectReviewImages(deleteImages);
+//        연관성 삭제
+        List<ProjectReviewImage> addImages = addProjectReviewImages(imageFiles);
+
+        review.addProjectReviewImages(addImages);
+        return review;
     }
+
 
 }

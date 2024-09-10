@@ -1,5 +1,6 @@
 package kr.codeback.service.interfaces;
 
+import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
@@ -25,5 +26,5 @@ public interface ProjectReviewService {
 
     void deleteAllById(UUID projectID);
 
-    void updateProjectReview(UUID reviewId, ProjectReviewRequestDTO projectReviewRequestDTO);
+    void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectReviewRequestDTO) throws IOException;
 }
