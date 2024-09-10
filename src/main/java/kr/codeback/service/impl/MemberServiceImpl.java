@@ -24,10 +24,9 @@ import kr.codeback.model.dto.response.member.MembersWithPageResponseDTO;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
-import kr.codeback.service.interfaces.AuthorityService;
-import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;
+import kr.codeback.service.interfaces.PreferenceService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -37,8 +36,6 @@ public class MemberServiceImpl implements MemberService {
 	private final MemberRepository memberRepository;
 	private final NotificationService notificationService;
 	private final PreferenceService preferenceService;
-	private final AuthorityService authorityService;
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
 	public String extractEmail() {
@@ -46,10 +43,10 @@ public class MemberServiceImpl implements MemberService {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		if (principal instanceof OAuth2User) {
-			CustomOAuth2User oauth2User = (CustomOAuth2User) principal;
+			CustomOAuth2User oauth2User = (CustomOAuth2User)principal;
 			return oauth2User.getName(); // OAuth2 서비스에서 제공하는 속성명.
 		} else {
-			UserDetails userDetails = (UserDetails) principal;
+			UserDetails userDetails = (UserDetails)principal;
 			return userDetails.getUsername();
 		}
 
@@ -59,7 +56,6 @@ public class MemberServiceImpl implements MemberService {
 	public Member extractMember() {
 		return memberRepository.findByEmail(extractEmail()).get();
 	}
-
 
 	@Override
 	public Boolean save(Member member) {

@@ -40,7 +40,7 @@ public interface PreferenceRepository extends JpaRepository<Preference, UUID> {
                       UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
                      ) m
                          LEFT JOIN
-                     Preference crp
+                     preference crp
                      ON
                          m.month = MONTH(crp.create_date)
                              AND crp.create_date BETWEEN DATE_SUB(:searchDate, INTERVAL 5 MONTH) AND :searchDate
@@ -50,7 +50,7 @@ public interface PreferenceRepository extends JpaRepository<Preference, UUID> {
             GROUP BY
                 jcrp.yearMonth
             ORDER BY
-                jcrp.yearMonth DESC
+                jcrp.yearMonth
             """, nativeQuery = true)
     List<Object[]> calculateSummaryByMonth(Date searchDate);
 
