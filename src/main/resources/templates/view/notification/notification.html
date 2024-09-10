@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
     <link rel="stylesheet" href="/css/notice.css"/>
+
+
 </head>
-<body>
+<body class="subpage">
+    <div th:replace="view/common/header :: header"></div>
+    <section id="main" class="wrapper">
+        <h1>notificationList</h1>
+        <ul id="notificationList"></ul>
 
-<h1>Notification List</h1>
-<ul id="notificationList"></ul>
+    </section>
 
-<script src="/js/notice.js"></script>
-<script>getNotification();</script>
+    <script src="/js/notice.js"></script>
+    <script>getNotification();</script>
 
 </body>
 </html>
