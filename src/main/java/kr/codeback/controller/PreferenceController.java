@@ -15,6 +15,7 @@ import kr.codeback.model.dto.response.PreferenceResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Preference;
 import kr.codeback.service.interfaces.MemberService;
+import kr.codeback.service.interfaces.NotificationService;
 import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class PreferenceController {
 	private final PreferenceService preferenceService;
 	private final MemberService memberService;
 	private final JwtUtil jwtUtil;
+	private final NotificationService notificationService;
 
 	@PutMapping("/like/{entityID}")
 	public ResponseEntity<PreferenceResponseDTO> saveOrChange(
@@ -40,6 +42,7 @@ public class PreferenceController {
 		String email = jwtUtil.extractEmail(accessToken);
 		Member member = memberService.findByEmail(email);
 		Preference preference = preferenceService.save(member, entityID);
+		notificationService.save(preference, preferenceRequestDTO.getType());
 
 		return ResponseEntity.ok()
 			.body(PreferenceResponseDTO.builder()

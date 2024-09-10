@@ -12,8 +12,15 @@ import jakarta.transaction.Transactional;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
+import kr.codeback.model.entity.Preference;
+import kr.codeback.repository.CodeReviewCommentRepository;
+import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.NotificationRepository;
+import kr.codeback.repository.ProjectReviewCommentRepository;
+import kr.codeback.repository.ProjectReviewRepository;
+import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.NotificationService;
+import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,6 +28,10 @@ import lombok.RequiredArgsConstructor;
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
+	private final CodeReviewRepository codeReviewRepository;
+	private final CodeReviewCommentRepository codeReviewCommentRepository;
+	private final ProjectReviewRepository projectReviewRepository;
+	private final ProjectReviewCommentRepository projectReviewCommentRepository;
 
 	@Override
 	@Transactional
@@ -37,8 +48,36 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
+	@Transactional
+	public void save(Preference preference,String type) {
+		Notification notification = Notification.builder()
+			.id(UUID.randomUUID())
+			.member(preference.getMember())
+			.entityID(preference.getId())
+			.isRead(false)
+			.message(generateMessage(preference,type))
+			.build();
+
+		notificationRepository.save(notification);
+	}
+
+	public String generateMessage(Preference preference, String type){
+		String message = preference.getMember().getNickname()+"님이 ";
+		if(type.equals("codeReview")){
+			return message + codeReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("codeReviewComment")) {
+			return message + codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("projectCodeReview")) {
+			return message + projectReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("projectCodeReviewComment")) {
+			return message + projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getProjectReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+		}
+		return message;
+	}
+
+	@Override
 	public Notification getNotificationById(UUID id) {
-		return notificationRepository.findById(id).get();
+		return notificationRepository.findById(id).orElse(null);
 	}
 
 
