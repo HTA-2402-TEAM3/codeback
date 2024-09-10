@@ -32,8 +32,8 @@
                     <div class="year_icon">
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
 
-                        <a th:titleID="${codeReview.id}"
-                           th:onclick="changePreference(this.getAttribute('titleID'))"
+                        <a th:reviewID="${codeReview.id}"
+                           th:onclick="reviewLike([[${codeReview.id}]])"
                            class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
                             <span class="count" th:id="'count_' + ${codeReview.id}"
@@ -77,7 +77,7 @@
                         <li>
 
                             <a th:commentID="${comments.id}"
-                               th:onclick="changePreference(this.getAttribute('commentID'))"
+                               th:onclick="commentLike([[${comments.id}]])"
                                class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
                                 <span class="count" th:id="'count_' + ${comments.id}"
@@ -159,12 +159,23 @@
 </section>
 
 <script th:inline="javascript">
-    function changePreference(entityID) {
+
+
+    function changePreference(entityID, type) {
 
         console.log(entityID);
+        console.log(type);
+
+        const likeType = {
+            type : type
+        };
 
         fetch(`/like/${entityID}`, {
             method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(likeType)
         })
             .then((response) => {
                 if (!response.ok) {
@@ -193,6 +204,14 @@
                 console.error(error.message);
             })
         ;
+    }
+
+    function reviewLike(entityID) {
+        changePreference(entityID, "codeReview");
+    }
+
+    function commentLike(entityID) {
+        changePreference(entityID, "codeReviewComment");
     }
 
 </script>
