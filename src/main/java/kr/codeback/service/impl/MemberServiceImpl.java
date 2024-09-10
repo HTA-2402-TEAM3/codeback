@@ -25,7 +25,7 @@ import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.AuthorityService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +36,8 @@ public class MemberServiceImpl implements MemberService {
 
 	private final MemberRepository memberRepository;
 	private final NotificationService notificationService;
+	private final PreferenceService preferenceService;
+	private final AuthorityService authorityService;
 	private final CodeReviewPreferenceService codeReviewPreferenceService;
 
 	@Override
@@ -57,6 +59,7 @@ public class MemberServiceImpl implements MemberService {
 	public Member extractMember() {
 		return memberRepository.findByEmail(extractEmail()).get();
 	}
+
 
 	@Override
 	public Boolean save(Member member) {
@@ -135,7 +138,7 @@ public class MemberServiceImpl implements MemberService {
 		Member deleteMember = findByEmail(email);
 
 		notificationService.deleteByMember(deleteMember);
-		codeReviewPreferenceService.deleteByMember(deleteMember);
+		preferenceService.deleteByMember(deleteMember);
 
 		deleteMember.deleteMember();
 		memberRepository.save(deleteMember);

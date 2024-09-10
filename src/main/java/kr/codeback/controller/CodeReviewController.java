@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Preference;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +28,7 @@ public class CodeReviewController {
 
     private final CodeReviewService codeReviewService;
     private final CodeLanguageCategoryService codeLanguageCategoryService;
-    private final CodeReviewPreferenceService codeReviewPreferenceService;
+    private final PreferenceService preferenceService;
 
     @GetMapping("/{id}")
     public String checkDetail(@PathVariable(name = "id") String inputID, Model model) {
@@ -36,7 +36,8 @@ public class CodeReviewController {
         UUID id = UUID.fromString(inputID);
 
         CodeReview codeReview = codeReviewService.findById(id);
-        List<CodeReviewPreference> codeReviewPreference = codeReviewPreferenceService.findById(id);
+        int preferenceCnt = preferenceService.getCount(id);
+
 
         model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
                 .id(codeReview.getId())
@@ -46,7 +47,7 @@ public class CodeReviewController {
                 .createDate(codeReview.getCreateDate())
                 .codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
                 .codeReviewComments(codeReview.getComments())
-                .preferenceCnt(codeReviewPreference.size())
+                .preferenceCnt(preferenceCnt)
                 .build());
 
         return "view/codeReview/view-code";

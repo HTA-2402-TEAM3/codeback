@@ -21,7 +21,7 @@ public class CodeReviewResponseDTO {
 	private final String codeLanguageName;
 //	Json 시리얼화 추후에 DTO 변경
 	private final List<CodeReviewComment> codeReviewComments;
-	private final Integer preferenceCnt;
+	private final int preferenceCnt;
 
 	@Builder
 	private CodeReviewResponseDTO(UUID id, String member, String title, String content, Timestamp createDate,
