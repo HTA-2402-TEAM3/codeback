@@ -107,7 +107,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 	}
 
 	@Override
-	public List<Preference> findByEntityIDs(UUID id) {
+	public List<Preference> countByEntityIDs(UUID id) {
 		Optional<Preference> optionalCodeReviewPreference = preferenceRepository.findById(id);
 
 		return optionalCodeReviewPreference.map(Collections::singletonList).orElseGet(Collections::emptyList);
@@ -142,7 +142,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 	}
 
 	@Override
-	public Map<UUID, Long> findByEntityIDs(List<UUID> reviewIds) {
+	public Map<UUID, Long> countByEntityIDs(List<UUID> reviewIds) {
 
 		List<Object[]> results = preferenceRepository.countByEntityIDs(reviewIds);
 

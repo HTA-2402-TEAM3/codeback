@@ -150,7 +150,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 						.content(codeReview.getContent())
 						.createDate(codeReview.getCreateDate())
 						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-						.preferenceCnt(preferenceService.findByEntityIDs(codeReview.getId()).size())
+						.preferenceCnt(preferenceService.countByEntityIDs(codeReview.getId()).size())
 						.codeReviewComments(codeReview.getComments().size())
 						.build());
 	}

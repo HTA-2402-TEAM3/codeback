@@ -29,11 +29,11 @@ public interface PreferenceService {
 
     List<Preference> findByMember(Member member);
 
-    List<Preference> findByEntityIDs(UUID id);
+    List<Preference> countByEntityIDs(UUID id);
 
     void deleteAll(List<Preference> preferences);
 
     List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
 
-	Map<UUID, Long> findByEntityIDs(List<UUID> reviewIds);
+	Map<UUID, Long> countByEntityIDs(List<UUID> reviewIds);
 }

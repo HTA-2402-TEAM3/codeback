@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
 import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.PreferenceService;
@@ -36,7 +38,23 @@ public class CodeReviewController {
 		UUID id = UUID.fromString(inputID);
 
 		CodeReview codeReview = codeReviewService.findById(id);
-		int preferenceCnt = preferenceService.getCount(id);
+		int preferenceCnt = preferenceService.getCount(codeReview.getId());
+
+		List<CodeReviewComment> codeReviewComments = codeReview.getComments();
+		Map<UUID, Long> preferenceCounts = preferenceService.countByEntityIDs(
+			codeReviewComments.stream()
+				.map(CodeReviewComment::getId)
+				.toList());
+
+		List<CodeReviewCommentResponseDTO> codeReviewCommentResponseDTOs = codeReviewComments.stream()
+			.map(comment -> CodeReviewCommentResponseDTO.builder()
+				.id(comment.getId())
+				.nickname(comment.getMember().getNickname())
+				.commentContent(comment.getComment())
+				.createDate(comment.getCreateDate())
+				.preferenceCnt(preferenceCounts.getOrDefault(comment.getId(), 0L))
+				.build()
+			).toList();
 
 		model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
 			.id(codeReview.getId())
@@ -45,7 +63,7 @@ public class CodeReviewController {
 			.content(codeReview.getContent())
 			.createDate(codeReview.getCreateDate())
 			.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-			.codeReviewComments(codeReview.getComments())
+			.codeReviewComments(codeReviewCommentResponseDTOs)
 			.preferenceCnt(preferenceCnt)
 			.build());
 
@@ -57,7 +75,7 @@ public class CodeReviewController {
 		Page<CodeReviewListResponseDTO> page = codeReviewService.findAllWithPage(0, 10, "createDate");
 		List<CodeReviewListResponseDTO> reviews = page.getContent();
 
-		Map<UUID, Long> preferenceCnt = preferenceService.findByEntityIDs(
+		Map<UUID, Long> preferenceCnt = preferenceService.countByEntityIDs(
 			reviews.stream().map(CodeReviewListResponseDTO::getId)
 				.toList());
 		reviews.forEach(review -> review.setPreferenceCnt(preferenceCnt.getOrDefault(review.getId(), 0L)));
