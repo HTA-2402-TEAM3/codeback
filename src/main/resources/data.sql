@@ -918,3 +918,41 @@ VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFS
  */
 
 
+-- 프로젝트 리뷰 더미 데이터
+INSERT INTO project_review (id, member_id, title, github_url, content, create_date)
+VALUES
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 10), 'JSP 프로젝트 리뷰', 'https://github.com/HTA-2402-TEAM3/OHBooN', '이 프로젝트는 JSP를 사용하여 구현되었습니다. <br>채팅이 안되요ㅠㅠ. <br>프론트도 너무 쓰레기 같습니다..', '2023-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), 'Spring Boot 프로젝트 리뷰', 'https://github.com/jiwonpark/spring-boot-project', '이 프로젝트는 Spring Boot를 사용하여 구현되었습니다.', '2023-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 12), 'React 프로젝트 리뷰', 'https://github.com/seungwookim/react-project', 'React와 Redux를 사용하여 프론트엔드 애플리케이션을 개발했습니다.', '2023-08-15 14:30:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 13), 'Machine Learning 프로젝트 리뷰', 'https://github.com/hayounglee/ml-project', '이 프로젝트는 머신러닝 모델을 구축하고 평가하는 것을 목표로 했습니다.', '2023-08-20 09:45:00');
+
+-- 프로젝트 리뷰 이미지 더미 데이터
+INSERT INTO project_review_image (id, file_name, url, project_review_id)
+VALUES
+    (UUID(), 'ohboon_003.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_003.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_002.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_002.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_001.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_001.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'react_ui.png', 'https://example.com/images/react_ui.png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
+    (UUID(), 'ml_model.png', 'https://example.com/images/ml_model.png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
+
+-- 프로젝트 리뷰 태그 더미 데이터
+INSERT INTO project_review_tag (id, project_review_id, tag)
+VALUES
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'JSP'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'Backend'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'MariaDB'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'JAVA'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'), 'React'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'), 'Frontend'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'), 'Machine Learning'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'), 'AI');
+
+-- 프로젝트 리뷰 댓글 더미 데이터
+INSERT INTO project_review_comment (id, member_id,  content, project_review_id)
+VALUES
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), '카카오 맵 api는 왜 쓰신거죠??', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
+
+

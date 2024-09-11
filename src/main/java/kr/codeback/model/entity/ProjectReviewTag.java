@@ -35,4 +35,11 @@ public class ProjectReviewTag {
 		this.projectReview = projectReview;
 		this.tag = tag;
 	}
+
+	public void dissociateReview() {
+		this.projectReview = null;
+	}
+	public void setProjectReview(ProjectReview projectReview) {
+		this.projectReview = projectReview;
+	}
 }

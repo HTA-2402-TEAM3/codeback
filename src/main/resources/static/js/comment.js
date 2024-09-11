@@ -1,13 +1,19 @@
 let review_uuid = '';
 const commentContainer = document.getElementById('comment-container');
+let loginEmail = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     const pathSegments = window.location.pathname.split('/'); // 경로를 '/'로 나누기
     // 마지막 요소가 UUID
     review_uuid = pathSegments[pathSegments.length - 1];
+
+    getMemberInComment()
 });
 
-function renderComment(data) {
+function renderComment(mapping, data) {
+    console.log(mapping);
+
+
     const commentID = data.id;
     const commentContent = data.commentContent;
 
@@ -38,9 +44,9 @@ function renderComment(data) {
     </div>
     <div class="comment_delete">
         <a class="icon fa-pencil" id="modify${data.id}"
-           onClick="modifyComment('${commentID}', '${commentContent}')"></a>
+           onClick="modifyComment('${mapping}','${commentID}', '${commentContent}')"></a>
         <a class="icon fa-trash"
-           onclick="deleteComment('${commentID}')"></a>
+           onclick="deleteComment('${mapping}','${commentID}')"></a>
     </div>
     <hr class="major"/>`;
 
@@ -51,36 +57,62 @@ function renderComment(data) {
     }
 }
 
-function commentSubmit(email) {
-    console.log("email", email);
+function commentSubmit(mapping) {
+
+    console.log("email", loginEmail);
     console.log("commentContent", commentContent);
     console.log("reviewId", review_uuid);
 
-    fetch(`/api/review/comment/save`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            codeReviewId: review_uuid,
-            content: commentContent,
-            memberEmail: email
-        })
-    }).then(resp => {
-        if (!resp.ok) {
-            throw new Error("fail to fetch");
+    if(loginEmail === '' || loginEmail === undefined) {
+        alert("로그인 해주세요");
+    } else {
+        fetch(`/api/${mapping}/comment/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                reviewId: review_uuid,
+                content: commentContent,
+                memberEmail: loginEmail
+            })
+        }).then(resp => {
+            if (!resp.ok) {
+                throw new Error("fail to fetch");
+            }
+            return resp.json();
+        }).then(resp => {
+            console.log(resp);
+            renderComment(mapping, resp)
+            editor.setHTML('');
+        }).catch(error => {
+            console.error(error);
+        });
+    }
+}
+
+function hiddenIcon() {
+    const codeReviewWriterEmail = document.getElementById("codeReviewWriter").dataset.email;
+    console.log("hiddenIcon() email val: ", codeReviewWriterEmail);
+
+    if(codeReviewWriterEmail === loginEmail) {
+        const codeReviewIcon = document.querySelector('.icon_view');
+        codeReviewIcon.removeAttribute("hidden");
+    }
+
+    const comments = document.querySelectorAll('#commentElements')
+    comments.forEach(comment => {
+        const memberInfo = comment.querySelector('.memberInfo').dataset.email;
+        console.log("memberInfo.value: ", memberInfo);
+        if(memberInfo === loginEmail) {
+            const IconElement = comment.querySelector('.comment_delete');
+            IconElement.removeAttribute("hidden");
+
         }
-        return resp.json();
-    }).then(resp => {
-        renderComment(resp)
-        editor.setHTML('');
-    }).catch(error => {
-        console.error(error);
-    });
+    })
 }
 
 function getMemberInComment() {
-
     fetch(`/api/member/info`)
         .then(response => {
             if (!response.ok) {
@@ -89,28 +121,27 @@ function getMemberInComment() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data.email);
-            email = data.email;
-            commentSubmit(email)
+            console.log("data ::::", data);
+            loginEmail = data.email;
+            hiddenIcon();
         })
         .catch(error => {
             console.error('Fetch error:', error);
         });
 }
 
-function deleteComment(commentID) {
+function deleteComment(mapping,commentID) {
+    console.log(mapping);
+
     console.log("commentID", commentID);
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
-        fetch(`/api/review/comment/${commentID}`, {
-            method: 'DELETE'
-        }).then(resp => {
-            if (!resp.ok) {
-                throw new Error("fail to fetch");
-            }
-            return resp.json();
+        fetch(`/api/${mapping}/comment/${commentID}?memberEmail=${loginEmail}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json', // 필요한 경우
+            },
         }).then(resp => {
             console.log(resp);
-
             alert(resp.message);
             location.reload();
         }).catch(error => {
@@ -119,11 +150,13 @@ function deleteComment(commentID) {
     }
 }
 
-function updateComments(commentId, content) {
+function updateComments(mapping,commentId, content) {
+    console.log(mapping);
+
     console.log("updateComments() : ", commentId);
     console.log("updateComments() : ", content);
 
-    fetch(`/api/review/comment/update`, {
+    fetch(`/api/${mapping}/comment/update`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -131,6 +164,7 @@ function updateComments(commentId, content) {
         body: JSON.stringify({
             id: commentId,
             content: content,
+            memberEmail: loginEmail
         })
     }).then(resp => {
         if (!resp.ok) {
@@ -150,7 +184,9 @@ function updateComments(commentId, content) {
 let lastCommentId;
 let lastCommentContent;
 
-function modifyComment(commentId, commentContent) {
+function modifyComment(mapping, commentId, commentContent) {
+    console.log(mapping);
+
     console.log("commentID : " + commentId);
     console.log("commentContent : " + commentContent);
 
@@ -181,6 +217,14 @@ function modifyComment(commentId, commentContent) {
 
     const editorAtComment = new commentEditor({
         el: document.querySelector('#commentEditor'),
+        toolbarItems: [
+            ['heading', 'bold', 'italic', 'strike'],
+            ['hr', 'quote'],
+            ['ul', 'ol', 'task', 'indent', 'outdent'],
+            ['table', 'link'],
+            ['code', 'codeblock'],
+            ['scrollSync'],
+        ],
         height: '300px',
         initialEditType: 'markdown',
         previewStyle: 'vertical'
@@ -190,6 +234,6 @@ function modifyComment(commentId, commentContent) {
 
     modifyIcon.onclick = function () {
         const newContent = editorAtComment.getHTML();
-        updateComments(commentId, newContent);
+        updateComments(mapping, commentId, newContent);
     }
 }

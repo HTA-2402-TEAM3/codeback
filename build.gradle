@@ -48,6 +48,10 @@ dependencies {
     // jackson
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
 
+    // s3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.771'
+    implementation 'com.amazonaws:aws-java-sdk-bom:1.12.529'
+
     //security
     implementation 'org.springframework.security:spring-security-core:6.3.1'
 

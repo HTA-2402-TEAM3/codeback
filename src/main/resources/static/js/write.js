@@ -84,8 +84,8 @@ function getMemberInfo() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data.email);
-            email = data.email;
+            console.log("data ::::", data);
+            const email = data.email;
             submit(email)
         })
         .catch(error => {

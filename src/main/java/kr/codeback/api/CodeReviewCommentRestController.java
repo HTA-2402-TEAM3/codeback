@@ -4,6 +4,8 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
+import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
+import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.NotificationService;
@@ -27,13 +29,12 @@ public class CodeReviewCommentRestController {
 
         //notification 생성
         notificationService.save(comment);
-
         return ResponseEntity.ok().body(comment.toDTO());
     }
   
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteComment(@PathVariable UUID id) {
-        codeReviewCommentService.deleteById(id);
+    public ResponseEntity<Object> deleteComment(@PathVariable UUID id, @RequestParam String memberEmail) {
+        codeReviewCommentService.deleteById(id, memberEmail);
         return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
   

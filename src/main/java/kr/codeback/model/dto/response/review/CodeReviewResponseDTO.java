@@ -11,7 +11,7 @@ import lombok.Getter;
 public class CodeReviewResponseDTO {
 
 	private final UUID id;
-	private final String member;
+	private final Member member;
 	private final String title;
 	private final String content;
 	private final Timestamp createDate;

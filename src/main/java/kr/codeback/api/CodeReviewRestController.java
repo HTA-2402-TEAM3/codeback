@@ -67,8 +67,8 @@ public class CodeReviewRestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Object> deleteReview(@PathVariable UUID id) {
-        codeReviewService.deleteCodeReviewById(id);
+    public ResponseEntity<Object> deleteReview(@PathVariable UUID id, @RequestParam String memberEmail) {
+        codeReviewService.deleteCodeReviewById(id, memberEmail);
         return ResponseEntity.ok().body(new MessageResponseDTO(id+SuccessMessage.DELETE.getMessage()));
     }
 
