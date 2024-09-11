@@ -14,6 +14,7 @@
             <button class="button special" id="show-login">Login</button>
             <span sec:authorize="isAuthenticated()">
                 <button class="button special" id="logout-button">Logout</button>
+                <a href="#" class="icon fa-bell"></a>
                 <script>
                                 const loginButton = document.getElementById("show-login");
                                 loginButton.style.display = "none"; // 숨기기
