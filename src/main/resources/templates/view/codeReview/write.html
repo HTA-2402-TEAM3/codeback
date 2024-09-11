@@ -20,7 +20,6 @@
 </head>
 
 <div th:replace="view/common/header.html :: header"></div>
-
 <body class="subpage">
 <section id="main" class="wrapper">
     <div class="inner">
@@ -58,9 +57,11 @@
 
         <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div class="checkbox-group" th:each="language : ${languages}" style="width: 15%; box-sizing: border-box;">
-                <input type="checkbox" th:id="${language.getLanguageName()}"
-                       th:value="${language.getId()}"
-                       onclick="selectOnlyOne(this)">
+                <label>
+                    <input type="checkbox" th:id="${language.getLanguageName()}"
+                           th:value="${language.getId()}"
+                           onclick="selectOnlyOne(this)">
+                </label>
                 <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}"></label>
             </div>
         </div>
