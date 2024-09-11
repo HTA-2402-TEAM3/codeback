@@ -12,7 +12,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Clone the Git repository. Here we dynamically specify the repository name using the variable defined earlier.
-RUN git clone -b develop https://github.com/HTA-2402-TEAM3/codeback codeback
+RUN git clone -b hotfix https://github.com/HTA-2402-TEAM3/codeback codeback
 
 # Changes the working directory to /app/${REPO_NAME}. This uses the variable to dynamically set the directory path.
 WORKDIR /app/codeback
