@@ -87,7 +87,7 @@ public class CodeReviewController {
         model.addAttribute("languages", languages);
         model.addAttribute("reviews", reviews);
 
-        return "/view/codeReview/review-list";
+        return "view/codeReview/review-list";
     }
 
     @GetMapping("/write")
@@ -95,6 +95,6 @@ public class CodeReviewController {
         List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
 
         model.addAttribute("languages", languageCategories);
-        return "/view/codeReview/write";
+        return "view/codeReview/write";
     }
 }

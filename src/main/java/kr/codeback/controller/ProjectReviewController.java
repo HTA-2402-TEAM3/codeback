@@ -37,7 +37,7 @@ public class ProjectReviewController {
 
     @GetMapping("/write")
     public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
-        return "/view/projectReview/project-write";
+        return "view/projectReview/project-write";
     }
 
     @GetMapping("/")
@@ -48,7 +48,7 @@ public class ProjectReviewController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("reviews", reviews);
 
-        return "/view/projectReview/project-list";
+        return "view/projectReview/project-list";
     }
     @GetMapping("/{id}")
     public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
@@ -70,7 +70,7 @@ public class ProjectReviewController {
 
                 .build());
 
-        return "/view/projectReview/project-view";
+        return "view/projectReview/project-view";
     }
 
 }
