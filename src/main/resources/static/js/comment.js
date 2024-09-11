@@ -10,52 +10,61 @@ document.addEventListener('DOMContentLoaded', function () {
     getMemberInComment()
 });
 
-function renderComment(mapping, data) {
-    console.log(mapping);
+// function renderComment(mapping, data) {
+//     console.log(mapping);
+//
+//
+//     const commentID = data.id;
+//     const commentContent = data.commentContent;
+//
+//     const commentElement = document.createElement('div');
+//     commentElement.innerHTML = `
+//
+//     <ul>
+//         <li>
+//             <div>
+//                 <h4>${data.nickname}</h4
+//             </div>
+//         </li>
+//         <li>
+//             <a href="#" class="icon fa-thumbs-up">
+//                 <span class="label">thumbsUp</span>
+//                 <span class="count">0</span>
+//             </a>
+//         </li>
+//     </ul>
+//     <div class="comment_box">
+//         <div>
+//             <p>${new Date(data.createDate).toLocaleDateString('ko-KR')}</p>
+//         </div>
+//
+//     </div>
+//     <div id="${data.id}">
+//         ${data.commentContent}
+//     </div>
+//
+//     <div class="comment_delete">
+//         <a class="icon fa-pencil" id="modify${data.id}"
+//            onClick="modifyComment('${mapping}','${commentID}', '${escapeHtml(commentContent)}')"></a>
+//         <a class="icon fa-trash"
+//            onclick="deleteComment('${mapping}','${commentID}')"></a>
+//     </div>
+//     <hr class="major"/>`;
+//
+//     if (commentContainer.firstChild) {
+//         commentContainer.insertBefore(commentElement, commentContainer.firstChild);
+//     } else {
+//         commentContainer.appendChild(commentElement);
+//     }
+// }
 
-
-    const commentID = data.id;
-    const commentContent = data.commentContent;
-
-    const commentElement = document.createElement('div');
-    commentElement.innerHTML = `
-           
-    <ul>
-        <li>
-            <div>
-                <h4>${data.nickname}</h4
-            </div>
-        </li>
-        <li>
-            <a href="#" class="icon fa-thumbs-up">
-                <span class="label">thumbsUp</span>
-                <span class="count">0</span>
-            </a>
-        </li>
-    </ul>
-    <div class="comment_box">
-        <div>
-            <p>${new Date(data.createDate).toLocaleDateString('ko-KR')}</p>
-        </div>
-
-    </div>
-    <div id="${data.id}">
-        ${data.commentContent}
-    </div>
-
-    <div class="comment_delete">
-        <a class="icon fa-pencil" id="modify${data.id}"
-           onClick="modifyComment('${mapping}','${commentID}', '${commentContent}')"></a>
-        <a class="icon fa-trash"
-           onclick="deleteComment('${mapping}','${commentID}')"></a>
-    </div>
-    <hr class="major"/>`;
-
-    if (commentContainer.firstChild) {
-        commentContainer.insertBefore(commentElement, commentContainer.firstChild);
-    } else {
-        commentContainer.appendChild(commentElement);
-    }
+const escapeHtml = (unsafe) => {
+    return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 function commentSubmit(mapping) {
@@ -84,7 +93,6 @@ function commentSubmit(mapping) {
             return resp.json();
         }).then(resp => {
             console.log(resp);
-            // renderComment(mapping, resp)
             editor.setHTML('');
             location.reload();
         }).catch(error => {
@@ -219,6 +227,7 @@ function modifyComment(mapping, commentId, commentContent) {
 
     const editorAtComment = new commentEditor({
         el: document.querySelector('#commentEditor'),
+
         toolbarItems: [
             ['heading', 'bold', 'italic', 'strike'],
             ['hr', 'quote'],
@@ -227,6 +236,7 @@ function modifyComment(mapping, commentId, commentContent) {
             ['code', 'codeblock'],
             ['scrollSync'],
         ],
+        autofocus: false,
         height: '300px',
         initialEditType: 'markdown',
         previewStyle: 'vertical'

@@ -107,7 +107,6 @@ public class ProjectReview {
 	}
 
 	public void deleteProjectReviewImages(List<ProjectReviewImage> deleteImages) {
-
 		deleteImages.forEach(image -> {
 			this.projectReviewImages.remove(image);
 			image.dissociateReview();
