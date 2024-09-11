@@ -22,7 +22,7 @@ import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.NotificationService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,7 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 	private final CodeReviewCommentRepository codeReviewCommentRepository;
 
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final PreferenceService preferenceService;
 	private final NotificationService notificationService;
 	private final MemberRepository memberRepository;
 	private final CodeReviewRepository codeReviewRepository;
@@ -50,11 +50,11 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(codeReviewPreferenceService::deleteByEntityID);
+			.forEach(preferenceService::deleteByEntityID);
 
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
@@ -67,11 +67,11 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(notificationService::deleteByEntityID);
+			.forEach(notificationService::deleteByEntityId);
 
 		codeReviewComments.stream()
 			.map(CodeReviewComment::getId)
-			.forEach(codeReviewPreferenceService::deleteByEntityID);
+			.forEach(preferenceService::deleteByEntityID);
 
 		codeReviewCommentRepository.deleteAll(codeReviewComments);
 	}
@@ -91,10 +91,8 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 				.build();
 		codeReviewCommentRepository.save(codeReviewComment);
 
-		CodeReviewComment savedComment = codeReviewCommentRepository.findById(codeReviewComment.getId())
-				.orElseThrow(()->new IllegalArgumentException("no comment..."+codeReviewComment.getId()));
 
-		return savedComment;
+		return codeReviewComment;
 	}
 
 	@Override
@@ -109,11 +107,10 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 			);
 		}
 
-		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(commentId);
-		codeReviewPreferenceService.deleteAll(preferences);
+		List<Preference> preferences = preferenceService.findByEntityID(commentId);
+		preferenceService.deleteAll(preferences);
 
-		List<Notification> notifications = notificationService.findByEntityID(commentId);
-		notificationService.deleteAll(notifications);
+		notificationService.deleteByEntityId(commentId);
 
 		codeReviewCommentRepository.delete(comment);
 	}

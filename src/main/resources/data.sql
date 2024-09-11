@@ -777,7 +777,7 @@ console.log(greet(user));
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, member_id)
 
 VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 0),
-        (SELECT id FROM member LIMIT 1 OFFSET 20)),
+       (SELECT id FROM member LIMIT 1 OFFSET 20)),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -879,10 +879,9 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', 
     }저도요', '2024-08-31 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 9),
         (SELECT id FROM member LIMIT 1 OFFSET 4));
 
-INSERT INTO code_review_preference (id, sender_member_id, entity_id, is_Like, create_date)
-
+INSERT preference (id, sender_member_id, entity_id, is_Like, create_date)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1,
-        '2024-08-30 10:15:32.000000'),
+    '2024-08-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1,
         '2024-07-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), (SELECT id FROM code_review LIMIT 1 OFFSET 2), 1,
@@ -917,6 +916,7 @@ VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFS
        (UUID(), 'minjicho@naver.com', (SELECT id FROM code_review LIMIT 1 OFFSET 0), 0, NOW());
 
  */
+
 
 -- 프로젝트 리뷰 더미 데이터
 INSERT INTO project_review (id, member_id, title, github_url, content, create_date)
@@ -954,5 +954,5 @@ VALUES
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 24),'머신러닝 프로젝트의 결과가 흥미롭습니다. 좋은 리뷰 감사합니다.', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
+
 

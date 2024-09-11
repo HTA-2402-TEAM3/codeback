@@ -1,26 +1,28 @@
 package kr.codeback.model.dto.response.review;
 
-import kr.codeback.model.entity.CodeReviewComment;
-import lombok.Builder;
-import lombok.Getter;
-
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Getter
-public class CodeReviewCommentResponseDTO {
-    private final UUID id;
-    private final UUID codeReviewId;
-    private final String memberNickname;
-    private final String commentContent;
-    private final Timestamp createDate;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-    @Builder
-    public CodeReviewCommentResponseDTO(UUID id,UUID codeReviewId, String memberNickname, String commentContent, Timestamp createDate){
-        this.id = id;
-        this.codeReviewId = codeReviewId;
-        this.memberNickname = memberNickname;
-        this.commentContent = commentContent;
-        this.createDate = createDate;
-    }
+@Getter
+@Setter
+public class CodeReviewCommentResponseDTO {
+	private UUID id;
+	private String nickname;
+	private String commentContent;
+	private Timestamp createDate;
+	private long preferenceCnt;
+
+	@Builder
+	public CodeReviewCommentResponseDTO(UUID id, UUID codeReviewId, String nickname, String commentContent,
+		Timestamp createDate, long preferenceCnt) {
+		this.id = id;
+		this.nickname = nickname;
+		this.commentContent = commentContent;
+		this.createDate = createDate;
+		this.preferenceCnt = preferenceCnt;
+	}
 }

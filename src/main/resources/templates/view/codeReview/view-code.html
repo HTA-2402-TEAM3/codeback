@@ -31,10 +31,15 @@
                     <h4 th:text="${codeReview.member.getNickname()}" id="codeReviewWriter" th:data-email="${codeReview.member.getEmail()}"></h4>
                     <div class="year_icon">
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
-                        <a class="icon fa-thumbs-up">
+
+                        <a th:reviewID="${codeReview.id}"
+                           th:onclick="reviewLike([[${codeReview.id}]])"
+                           class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
-                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
+                            <span class="count" th:id="'count_' + ${codeReview.id}"
+                                  th:text="${codeReview.preferenceCnt}">0</span>
                         </a>
+
                     </div>
                 </div>
             </header>
@@ -65,17 +70,22 @@
                     <ul>
                         <li>
                             <div>
-                                <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"
-                                    class="memberInfo" th:data-email="${comments.member.getEmail()}"
-                                ></h4>
+                                <h4 th:text="${comments.getNickname()}" style="margin: 0;
+                                                                                 class="memberInfo" th:data-email="${comments.getNickname()}"
+                                                                               "></h4>
                                 <!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="icon fa-thumbs-up">
+
+                            <a th:commentID="${comments.id}"
+                               th:onclick="commentLike([[${comments.id}]])"
+                               class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
-                                <span class="count" >0</span>
+                                <span class="count" th:id="'count_' + ${comments.id}"
+                                      th:text="${comments.preferenceCnt}">0</span>
                             </a>
+
                         </li>
                     </ul>
                     <div class="comment_box">
@@ -85,14 +95,19 @@
 
                     </div>
                     <div th:id="${comments.id}">
-                        <p th:utext="${comments.comment}"></p>
+                        <p th:utext="${comments.commentContent}"></p>
                     </div>
                     <div class="comment_delete" hidden="hidden">
                         <a class="icon fa-pencil"
                            th:id="'modify'+${comments.id}"
                            th:commentId="${comments.id}"
-                           th:commentContent="${comments.comment}"
-                           th:review = "review"
+
+                           <!-- th:commentContent="${comments.comment}"
+                            th:review = "review"
+                            th:onclick="modifyComment(this.getAttribute('review'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a> -->
+
+                           th:commentContent="${comments.commentContent}"
+                           th:review = "review"         
                            th:onclick="modifyComment(this.getAttribute('review'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
                         <a class="icon fa-trash"
                            th:commentId="${comments.id}"
@@ -154,9 +169,70 @@
                     }
                 }
             </script>
+
+
         </div>
     </div>
 </section>
+
+<script th:inline="javascript">
+
+
+    function changePreference(entityID, type) {
+
+        console.log(entityID);
+        console.log(type);
+
+        const likeType = {
+            type : type
+        };
+
+        fetch(`/like/${entityID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(likeType)
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    return new Error("Preference Fail")
+                }
+
+                return response.json();
+            })
+            .then((data) => {
+
+                console.log(data);
+                const countTag = document.getElementById('count_' + data.entityID);
+
+                let count = parseInt(countTag.textContent);
+
+                if (data.likeSign) {
+                    count += 1;
+                } else {
+                    count -= 1;
+                }
+
+                countTag.textContent = count;
+
+            })
+            .catch((error) => {
+                console.error(error.message);
+            })
+        ;
+    }
+
+    function reviewLike(entityID) {
+        changePreference(entityID, "codeReview");
+    }
+
+    function commentLike(entityID) {
+        changePreference(entityID, "codeReviewComment");
+    }
+
+</script>
+
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>
 <script src="/js/write.js"></script>

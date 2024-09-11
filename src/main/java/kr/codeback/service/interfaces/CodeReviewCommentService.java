@@ -18,9 +18,9 @@ public interface CodeReviewCommentService {
 
 	void deleteByCodeReview(CodeReview codeReview);
 
-    CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO);
-
 	void deleteById(UUID codeReviewCommentId, String memberEmail);
+
+  CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO);
 
 	void update(CommentModifyRequestDTO commentDTO);
 	List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth(String inputDate);

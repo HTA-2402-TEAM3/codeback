@@ -12,6 +12,10 @@ import kr.codeback.model.entity.Member;
 
 public interface MemberService {
 
+	String extractEmail();
+
+	Member extractMember();
+
 	// 멤버 생성 메서드
 	Boolean save(Member member);
 

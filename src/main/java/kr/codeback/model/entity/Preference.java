@@ -3,6 +3,7 @@ package kr.codeback.model.entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
@@ -17,10 +18,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CODE_REVIEW_PREFERENCE")
+@Table(name = "PREFERENCE")
 @NoArgsConstructor
 @Getter
-public class CodeReviewPreference {
+@ToString
+public class Preference {
 
 	@Id
 	private UUID id;
@@ -29,6 +31,7 @@ public class CodeReviewPreference {
 	@JoinColumn(name = "sender_member_id", nullable = false)
 	private Member member;
 
+//	게시글,댓글아이디가될수있다
 	@Column(name = "entity_id", nullable = false)
 	private UUID entityID;
 
@@ -39,8 +42,12 @@ public class CodeReviewPreference {
 	@CreationTimestamp
 	private Timestamp createDate;
 
+	public void changeLike() {
+		this.isLike = !isLike;
+	}
+
 	@Builder
-	public CodeReviewPreference(UUID id, Member member, UUID entityID, boolean isLike) {
+	public Preference(UUID id, Member member, UUID entityID, boolean isLike) {
 		this.id = id;
 		this.member = member;
 		this.entityID = entityID;

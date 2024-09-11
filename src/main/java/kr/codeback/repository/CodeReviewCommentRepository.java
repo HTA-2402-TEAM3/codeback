@@ -45,7 +45,7 @@ public interface CodeReviewCommentRepository extends JpaRepository<CodeReviewCom
 		GROUP BY
 		    jcrc.yearMonth
 		ORDER BY
-		    jcrc.yearMonth DESC;
+		    jcrc.yearMonth;
 		""", nativeQuery = true)
 	List<Object[]> calculateSummaryByMonth(Date searchDate);
 }

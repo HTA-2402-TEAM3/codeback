@@ -57,6 +57,13 @@ dependencies {
 
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.756')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+
+    // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.2.RELEASE'
+
+
 
 
 

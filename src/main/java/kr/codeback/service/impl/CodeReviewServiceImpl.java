@@ -17,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -29,7 +28,7 @@ import kr.codeback.repository.CodeLanguageCategoryRepository;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +38,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	private final CodeReviewRepository codeReviewRepository;
 
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final PreferenceService preferenceService;
 	private final MemberRepository memberRepository;
 	private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
@@ -60,7 +59,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 				.createDate(codeReview.getCreateDate())
 				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
 				.codeReviewComments(codeReview.getComments().size())
-				.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
 				.build()
 			);
 	}
@@ -79,7 +77,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		List<CodeReview> deleteCodeReviews = findByMember(member);
 
 		deleteCodeReviews.forEach(codeReviewCommentService::deleteByCodeReview);
-		deleteCodeReviews.forEach(codeReview -> codeReviewPreferenceService.deleteByEntityID(codeReview.getId()));
+		deleteCodeReviews.forEach(codeReview -> preferenceService.deleteByEntityID(codeReview.getId()));
 
 		codeReviewRepository.deleteAll(deleteCodeReviews);
 	}
@@ -95,6 +93,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
 			new IllegalArgumentException("no CodeReview : " + id));
 
+
 		if(!codeReview.getMember().getEmail().equals(memberEmail)) {
 			throw new ReviewNotAuthorizedException(
 					ErrorCode.NOT_EXIST_USER.getStatus(),
@@ -102,11 +101,11 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 			);
 		}
 
-		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(id);
-		codeReviewPreferenceService.deleteAll(preferences);
 
-		List<Notification> notifications = notificationService.findByEntityID(id);
-		notificationService.deleteAll(notifications);
+		List<Preference> preferences = preferenceService.findByEntityID(id);
+		preferenceService.deleteAll(preferences);
+
+		notificationService.deleteByEntityId(id);
 
 		codeReviewRepository.delete(codeReview);
 	}
@@ -170,7 +169,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 						.content(codeReview.getContent())
 						.createDate(codeReview.getCreateDate())
 						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-						.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
+						.preferenceCnt(preferenceService.countByEntityIDs(codeReview.getId()).size())
 						.codeReviewComments(codeReview.getComments().size())
 						.build());
 	}
