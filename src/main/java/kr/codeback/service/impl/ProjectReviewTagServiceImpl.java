@@ -42,30 +42,34 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
     @Override
     public ProjectReview updateTags(ProjectReview projectReview, List<String> tags) {
         Set<ProjectReviewTag> tagSet = projectReviewTagRepository.findAllByProjectReviewId(projectReview.getId());
-
-        List<ProjectReviewTag> tagsDelete = new ArrayList<>();
-        for (ProjectReviewTag tag : tagSet) {
-            if(!tags.contains(tag.getTag())) {
-                tagsDelete.add(tag);
+//        null 예외처리... -> null이면 싹 다 삭제
+        if (tags == null) {
+            projectReview.deleteProjectReviewTags((List<ProjectReviewTag>) tagSet);
+            return projectReview;
+        } else {
+            List<ProjectReviewTag> tagsDelete = new ArrayList<>();
+            for (ProjectReviewTag tag : tagSet) {
+                if (!tags.contains(tag.getTag())) {
+                    tagsDelete.add(tag);
+                }
             }
-        }
-        projectReview.deleteProjectReviewTags(tagsDelete);
+            projectReview.deleteProjectReviewTags(tagsDelete);
 //        삭제
 
-        List<ProjectReviewTag> tagsAdd = new ArrayList<>();
-        for (String tagName : tags) {
-            if(!tagSet.stream().anyMatch(tag -> tag.getTag().equals(tagName))) {
-                ProjectReviewTag addTag = ProjectReviewTag.builder()
-                        .projectReview(projectReview)
-                        .tag(tagName)
-                        .id(UUID.randomUUID())
-                        .build();
-                tagsAdd.add(addTag);
+            List<ProjectReviewTag> tagsAdd = new ArrayList<>();
+            for (String tagName : tags) {
+                if (!tagSet.stream().anyMatch(tag -> tag.getTag().equals(tagName))) {
+                    ProjectReviewTag addTag = ProjectReviewTag.builder()
+                            .projectReview(projectReview)
+                            .tag(tagName)
+                            .id(UUID.randomUUID())
+                            .build();
+                    tagsAdd.add(addTag);
+                }
             }
+            projectReview.addProjectReviewTags(tagsAdd);
+
+            return projectReview;
         }
-        projectReview.addProjectReviewTags(tagsAdd);
-
-        return projectReview;
     }
-
 }
