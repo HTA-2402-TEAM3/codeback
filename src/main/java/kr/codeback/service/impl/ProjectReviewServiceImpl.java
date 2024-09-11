@@ -14,10 +14,7 @@ import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewImageRepository;
 import kr.codeback.repository.ProjectReviewRepository;
 import kr.codeback.service.S3Service;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
-import kr.codeback.service.interfaces.ProjectReviewCommentService;
-import kr.codeback.service.interfaces.ProjectReviewImageService;
-import kr.codeback.service.interfaces.ProjectReviewTagService;
+import kr.codeback.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +24,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import kr.codeback.service.interfaces.ProjectReviewService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,7 +40,7 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
 
     private final ProjectReviewImageService projectReviewImageService;
     private final ProjectReviewTagService projectReviewTagService;
-    private final CodeReviewPreferenceService codeReviewPreferenceService;
+    private final PreferenceService preferenceService;
     private final S3Service s3Service;
 
     public Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
@@ -64,7 +60,7 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                             .title(projectReview.getTitle())
                             .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
                             .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
-                            .preferenceCnt(codeReviewPreferenceService.findByEntityID(projectReview.getId()).size())
+                            .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
                             .projectReviewComments(projectReview.getComments().size())
                             .build();
                 });

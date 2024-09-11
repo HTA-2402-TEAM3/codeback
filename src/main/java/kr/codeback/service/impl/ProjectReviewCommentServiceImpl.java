@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ProjectReviewCommentServiceImpl implements ProjectReviewCommentService {
 
 	private final ProjectReviewCommentRepository projectReviewCommentRepository;
-	private final CodeReviewPreferenceService preferenceService;
+	private final PreferenceService preferenceService;
 	private final NotificationService notificationService;
 	@Override
 	@Transactional
@@ -53,11 +53,11 @@ public class ProjectReviewCommentServiceImpl implements ProjectReviewCommentServ
 			);
 		}
 
-		List<CodeReviewPreference> preferenceList =  preferenceService.findByEntityID(id);
+		List<Preference> preferenceList =  preferenceService.findByEntityID(id);
 		preferenceService.deleteAll(preferenceList);
 
-		List<Notification> notifications = notificationService.findByEntityID(id);
-		notificationService.deleteAll(notifications);
+//		List<Notification> notifications = notificationService.findByEntityID(id);
+		notificationService.deleteByEntityId(id);
 
 		projectReviewCommentRepository.delete(comment);
 	}

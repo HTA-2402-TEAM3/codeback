@@ -5,11 +5,11 @@ import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
 import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.model.entity.CodeReviewPreference;
+import kr.codeback.model.entity.Preference;
 import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewImage;
 import kr.codeback.service.impl.ProjectReviewServiceImpl;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
+import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProjectReviewController {
     private final ProjectReviewServiceImpl projectReviewService;
-    private final CodeReviewPreferenceService preferenceService;
+    private final PreferenceService preferenceService;
     private final ProjectReviewImageService imageService;
 
     @GetMapping("/write")
@@ -54,7 +54,7 @@ public class ProjectReviewController {
     public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
         ProjectReview projectReview = projectReviewService.findById(projectID);
 
-        List<CodeReviewPreference> projectReviewPrefer = preferenceService.findByEntityID(projectID);
+        List<Preference> projectReviewPrefer = preferenceService.findByEntityID(projectID);
 
         model.addAttribute("projectReview", ProjectReviewResponseDTO.builder()
                         .id(projectReview.getId())

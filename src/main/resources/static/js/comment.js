@@ -23,7 +23,7 @@ function renderComment(mapping, data) {
     <ul>
         <li>
             <div>
-                <h4>${data.memberNickname}</h4
+                <h4>${data.nickname}</h4
             </div>
         </li>
         <li>
@@ -40,8 +40,9 @@ function renderComment(mapping, data) {
 
     </div>
     <div id="${data.id}">
-        <p>${data.commentContent}</p>
+        ${data.commentContent}
     </div>
+
     <div class="comment_delete">
         <a class="icon fa-pencil" id="modify${data.id}"
            onClick="modifyComment('${mapping}','${commentID}', '${commentContent}')"></a>
@@ -83,8 +84,9 @@ function commentSubmit(mapping) {
             return resp.json();
         }).then(resp => {
             console.log(resp);
-            renderComment(mapping, resp)
+            // renderComment(mapping, resp)
             editor.setHTML('');
+            location.reload();
         }).catch(error => {
             console.error(error);
         });
