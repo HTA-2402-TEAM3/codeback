@@ -109,7 +109,7 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
 
     @Override
     @Transactional
-    public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws IOException {
+    public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws NullPointerException {
         ProjectReview projectReview = projectReviewRepository.findById(reviewId)
                 .orElseThrow(()->new IllegalArgumentException("no projectReview..."));
 
@@ -120,8 +120,9 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
             );
         }
         ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
+        ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview, projectDTO.getTags());
 
-        updateImageProjectReview.updateProjectReview(projectDTO);
-        projectReviewRepository.save(updateImageProjectReview);
+        updateTagProjectReview.updateProjectReview(projectDTO);
+        projectReviewRepository.save(updateTagProjectReview);
     }
 }

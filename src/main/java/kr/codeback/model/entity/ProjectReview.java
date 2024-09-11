@@ -121,4 +121,18 @@ public class ProjectReview {
 			image.setProjectReview(this);
 		});
 	}
+
+	public void deleteProjectReviewTags(List<ProjectReviewTag> tagsDelete) {
+		tagsDelete.forEach(tag -> {
+			this.projectReviewTags.remove(tag);
+			tag.dissociateReview();
+		});
+	}
+
+	public void addProjectReviewTags(List<ProjectReviewTag> tagsAdd) {
+		tagsAdd.forEach(tag -> {
+			this.projectReviewTags.add(tag);
+			tag.setProjectReview(this);
+		});
+	}
 }

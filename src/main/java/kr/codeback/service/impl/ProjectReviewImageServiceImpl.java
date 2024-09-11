@@ -80,25 +80,60 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
     @Override
     public ProjectReview updateImages(ProjectReview review, List<String> fileNames, List<MultipartFile> imageFiles) {
         Set<ProjectReviewImage> imageSet = projectReviewImageRepository.findAllByProjectReviewId(review.getId());
-//        기존 저장되어 있던 images
-
         List<ProjectReviewImage> deleteImages = new ArrayList<>();
-        for (ProjectReviewImage projectReviewImage : imageSet) {
-            if (fileNames.contains(projectReviewImage.getFileName())) {
-                deleteImages.add(projectReviewImage);
-                imageSet.remove(projectReviewImage);
-                s3Service.delete(projectReviewImage.getFileName());
-            }
+        if(fileNames == null) {
+            fileNames = new ArrayList<>();
         }
-//        저장된 images 와 fileName 비교해 같은 것 s3에서 삭제 후 db 삭제 용 list 에 image 객체 추가
-
-        review.deleteProjectReviewImages(deleteImages);
-//        연관성 삭제
-        List<ProjectReviewImage> addImages = addProjectReviewImages(imageFiles);
-
-        review.addProjectReviewImages(addImages);
-        return review;
+        if(!fileNames.isEmpty()) {
+            // Iterator를 사용하여 안전하게 요소를 제거
+            Iterator<ProjectReviewImage> iterator = imageSet.iterator();
+            while (iterator.hasNext()) {
+                ProjectReviewImage projectReviewImage = iterator.next();
+                if (fileNames.contains(projectReviewImage.getFileName())) {
+                    deleteImages.add(projectReviewImage);
+                    iterator.remove(); // 안전하게 제거
+                    s3Service.delete(projectReviewImage.getFileName());
+                }
+            }
+            // 저장된 images와 fileName 비교 후 연관성 삭제
+            review.deleteProjectReviewImages(deleteImages);
+        }
+        return addProjectReviewImages(imageFiles, review);
     }
 
 
+    private ProjectReview addProjectReviewImages(List<MultipartFile> imageFiles, ProjectReview review) {
+        if(imageFiles == null) {
+            imageFiles = new ArrayList<>();
+        }
+        if(!imageFiles.isEmpty()) {
+//        s3 저장 후 projectReview 에 연관성 추가
+            List<ProjectReviewImage> imageSet = new ArrayList<>();
+            List<String> fileNames = new ArrayList<>();
+            try {
+                for (MultipartFile imageFile : imageFiles) {
+                    String fileName = UUID.randomUUID() + imageFile.getOriginalFilename();
+                    String url = s3Service.upload(imageFile, fileName);
+                    fileNames.add(fileName);
+
+                    ProjectReviewImage image = ProjectReviewImage.builder()
+                            .projectReview(review)
+                            .id(UUID.randomUUID())
+                            .fileName(fileName)
+                            .url(url)
+                            .build();
+
+                    imageSet.add(image);
+                }
+            } catch (IOException e) {
+                for (String fileName : fileNames) {
+                    s3Service.delete(fileName);
+                }
+                throw new RuntimeException("fail to upload Image...");
+            }
+            review.addProjectReviewImages(imageSet);
+//        연관성 추가
+        }
+        return review;
+    }
 }

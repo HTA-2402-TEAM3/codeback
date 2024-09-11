@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.codeback.service.interfaces.ProjectReviewTagService;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +37,35 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
     @Override
     public void deleteAllByProjectReviewId(UUID projectReviewID) {
         projectReviewTagRepository.deleteAllByProjectReviewId(projectReviewID);
+    }
+
+    @Override
+    public ProjectReview updateTags(ProjectReview projectReview, List<String> tags) {
+        Set<ProjectReviewTag> tagSet = projectReviewTagRepository.findAllByProjectReviewId(projectReview.getId());
+
+        List<ProjectReviewTag> tagsDelete = new ArrayList<>();
+        for (ProjectReviewTag tag : tagSet) {
+            if(!tags.contains(tag.getTag())) {
+                tagsDelete.add(tag);
+            }
+        }
+        projectReview.deleteProjectReviewTags(tagsDelete);
+//        삭제
+
+        List<ProjectReviewTag> tagsAdd = new ArrayList<>();
+        for (String tagName : tags) {
+            if(!tagSet.stream().anyMatch(tag -> tag.getTag().equals(tagName))) {
+                ProjectReviewTag addTag = ProjectReviewTag.builder()
+                        .projectReview(projectReview)
+                        .tag(tagName)
+                        .id(UUID.randomUUID())
+                        .build();
+                tagsAdd.add(addTag);
+            }
+        }
+        projectReview.addProjectReviewTags(tagsAdd);
+
+        return projectReview;
     }
 
 }
