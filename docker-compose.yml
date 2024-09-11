@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  springboot_3.3.2:
+    image: codeback
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sleep infinity
+    ports:
+      - "8080:8080"
+    environment:
+          SPRING_DATASOURCE_URL: jdbc:mariadb://codeback_db:3306/codeback
+          SPRING_DATASOURCE_USERNAME: codeback
+          SPRING_DATASOURCE_PASSWORD: ohboon
+    depends_on:
+      codeback_db:
+        condition: service_healthy
+
+  codeback_db:
+    image: mariadb:11.4.2
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: cocolabhub
+      MYSQL_DATABASE: codeback
+      MYSQL_USER: codeback
+      MYSQL_PASSWORD: ohboon
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
