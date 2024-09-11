@@ -22,10 +22,12 @@ import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.PreferenceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/review")
 @RequiredArgsConstructor
+@Slf4j
 public class CodeReviewController {
     private final CodeReviewService codeReviewService;
     private final CodeLanguageCategoryService codeLanguageCategoryService;
@@ -86,6 +88,10 @@ public class CodeReviewController {
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("languages", languages);
         model.addAttribute("reviews", reviews);
+
+        log.info(String.valueOf(page.getTotalPages()));
+        log.info(languages.toString());
+        log.info(String.valueOf(reviews));
 
         return "view/codeReview/review-list";
     }
