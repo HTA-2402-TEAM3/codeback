@@ -33,7 +33,7 @@
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
 
                         <a th:reviewID="${codeReview.id}"
-                           th:onclick="reviewLike([[${codeReview.id}]])"
+                           th:onclick="reviewLike(this.getAttribute('reviewID'))"
                            class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
                             <span class="count" th:id="'count_' + ${codeReview.id}"
@@ -165,72 +165,71 @@
                     }
                 }
             </script>
-
-
         </div>
     </div>
 </section>
 
-<script th:inline="javascript">
+<!--<script th:inline="javascript">-->
 
 
-    function changePreference(entityID, type) {
+<!--    function changePreference(entityID, type) {-->
 
-        console.log(entityID);
-        console.log(type);
+<!--        console.log(entityID);-->
+<!--        console.log(type);-->
 
-        const likeType = {
-            type : type
-        };
+<!--        const likeType = {-->
+<!--            type : type-->
+<!--        };-->
 
-        fetch(`/like/${entityID}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(likeType)
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    return new Error("Preference Fail")
-                }
+<!--        fetch(`/like/${entityID}`, {-->
+<!--            method: 'PUT',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json',-->
+<!--            },-->
+<!--            body: JSON.stringify(likeType)-->
+<!--        })-->
+<!--            .then((response) => {-->
+<!--                if (!response.ok) {-->
+<!--                    return new Error("Preference Fail")-->
+<!--                }-->
 
-                return response.json();
-            })
-            .then((data) => {
+<!--                return response.json();-->
+<!--            })-->
+<!--            .then((data) => {-->
 
-                console.log(data);
-                const countTag = document.getElementById('count_' + data.entityID);
+<!--                console.log(data);-->
+<!--                const countTag = document.getElementById('count_' + data.entityID);-->
 
-                let count = parseInt(countTag.textContent);
+<!--                let count = parseInt(countTag.textContent);-->
 
-                if (data.likeSign) {
-                    count += 1;
-                } else {
-                    count -= 1;
-                }
+<!--                if (data.likeSign) {-->
+<!--                    count += 1;-->
+<!--                } else {-->
+<!--                    count -= 1;-->
+<!--                }-->
 
-                countTag.textContent = count;
+<!--                countTag.textContent = count;-->
 
-            })
-            .catch((error) => {
-                console.error(error.message);
-            })
-        ;
-    }
+<!--            })-->
+<!--            .catch((error) => {-->
+<!--                console.error(error.message);-->
+<!--            })-->
+<!--        ;-->
+<!--    }-->
 
-    function reviewLike(entityID) {
-        changePreference(entityID, "codeReview");
-    }
+<!--    function reviewLike(entityID) {-->
+<!--        changePreference(entityID, "codeReview");-->
+<!--    }-->
 
-    function commentLike(entityID) {
-        changePreference(entityID, "codeReviewComment");
-    }
+<!--    function commentLike(entityID) {-->
+<!--        changePreference(entityID, "codeReviewComment");-->
+<!--    }-->
 
-</script>
+<!--</script>-->
 
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>
 <script src="/js/write.js"></script>
+<script src="/js/like.js"></script>
 </body>
 </html>
