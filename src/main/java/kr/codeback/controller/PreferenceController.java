@@ -36,9 +36,6 @@ public class PreferenceController {
         @RequestBody PreferenceRequestDTO preferenceRequestDTO,
         @CookieValue(name = "access_token") String accessToken) {
 
-        System.out.println(preferenceRequestDTO.getType());
-
-
 		String email = jwtUtil.extractEmail(accessToken);
 		Member member = memberService.findByEmail(email);
 		Preference preference = preferenceService.save(member, entityID);

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.member.MemberNotFoundException;
+import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.entity.*;
 import kr.codeback.repository.specification.CodeReviewSpecification;
 import kr.codeback.service.interfaces.NotificationService;
@@ -56,7 +59,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 				.createDate(codeReview.getCreateDate())
 				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
 				.codeReviewComments(codeReview.getComments().size())
-				.preferenceCnt(preferenceService.findByEntityID(codeReview.getId()).size())
 				.build()
 			);
 	}
@@ -87,9 +89,18 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public void deleteCodeReviewById(UUID id) {
+	public void deleteCodeReviewById(UUID id, String memberEmail) {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
 			new IllegalArgumentException("no CodeReview : " + id));
+
+
+		if(!codeReview.getMember().getEmail().equals(memberEmail)) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
+
 
 		List<Preference> preferences = preferenceService.findByEntityID(id);
 		preferenceService.deleteAll(preferences);
@@ -128,6 +139,13 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		CodeReview codeReview = codeReviewRepository.findById(reviewDTO.getId())
 				.orElseThrow(()->new IllegalArgumentException("no codeReivew"));
 
+		if(!reviewDTO.getMemberEmail().equals(codeReview.getMember().getEmail())) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
+
 		CodeLanguageCategory clCategory =
 				codeLanguageCategoryRepository.findById(reviewDTO.getCodeLanguageCategoryId())
 						.orElseThrow(()->new IllegalArgumentException("no CodeLanguageCategory"));
@@ -151,7 +169,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 						.content(codeReview.getContent())
 						.createDate(codeReview.getCreateDate())
 						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-						.preferenceCnt(preferenceService.findById(codeReview.getId()).size())
+						.preferenceCnt(preferenceService.countByEntityIDs(codeReview.getId()).size())
 						.codeReviewComments(codeReview.getComments().size())
 						.build());
 	}

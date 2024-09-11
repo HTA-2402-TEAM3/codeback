@@ -41,6 +41,14 @@
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
+                toolbarItems: [
+                    ['heading','bold','italic','strike'],
+                    ['hr','quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'link'],
+                    ['code', 'codeblock'],
+                    ['scrollSync'],
+                ],
                 height: '500px',
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'

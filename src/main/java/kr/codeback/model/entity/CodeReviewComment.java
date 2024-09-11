@@ -54,7 +54,8 @@ public class CodeReviewComment {
 	public CodeReviewCommentResponseDTO toDTO() {
 		return CodeReviewCommentResponseDTO.builder()
 				.codeReviewId(codeReview.getId())
-				.memberNickname(member.getNickname())
+				.email(member.getEmail())
+				.nickname(member.getNickname())
 				.createDate(createDate)
 				.commentContent(comment)
 				.id(id)
