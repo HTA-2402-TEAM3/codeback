@@ -41,8 +41,8 @@
             const editor = new Editor({
                 el: document.querySelector('#editor'),
                 toolbarItems: [
-                    ['heading','bold','italic','strike'],
-                    ['hr','quote'],
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
                     ['ul', 'ol', 'task', 'indent', 'outdent'],
                     ['table', 'link'],
                     ['code', 'codeblock'],
@@ -57,11 +57,9 @@
 
         <div class="button-container" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
             <div class="checkbox-group" th:each="language : ${languages}" style="width: 15%; box-sizing: border-box;">
-                <label>
-                    <input type="checkbox" th:id="${language.getLanguageName()}"
-                           th:value="${language.getId()}"
-                           onclick="selectOnlyOne(this)">
-                </label>
+                <input type="checkbox" th:id="${language.getLanguageName()}"
+                       th:value="${language.getId()}"
+                       onclick="selectOnlyOne(this)">
                 <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}"></label>
             </div>
         </div>
