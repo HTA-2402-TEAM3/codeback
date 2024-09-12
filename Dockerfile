@@ -19,7 +19,7 @@ RUN git clone --depth=1 -b hotfix https://github.com/HTA-2402-TEAM3/codeback cod
 WORKDIR /app/codeback
 RUN rm -rf .git
 
-COPY ../src/main/resources/application.properties ./src/main/resources/
+COPY ./src/main/resources/application.properties ./src/main/resources/
 
 # JAR 파일 빌드 (테스트 생략)
 WORKDIR /app/codeback

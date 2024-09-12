@@ -3,8 +3,8 @@ services:
   springboot_3.3.2:
     image: codeback
     build:
-      context: ..
-      dockerfile: ../Dockerfile
+      context: .
+      dockerfile: Dockerfile
     command: sleep infinity
     ports:
       - "8080:8080"
