@@ -55,7 +55,7 @@ public class ProjectReviewComment {
 				.id(id)
 				.projectReviewId(projectReview.getId())
 				.commentContent(content)
-				.memberNickname(member.getNickname())
+				.nickname(member.getNickname())
 				.createDate(createDate)
 				.build();
 	}

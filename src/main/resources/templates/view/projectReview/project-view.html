@@ -25,13 +25,13 @@
             <header class="align-center">
                 <h2 th:text="${projectReview.title}"></h2>
                 <div class="content">
-                    <h4 th:text="${projectReview.member.getNickname()}"
-                    id="codeReviewWriter" th:data-email="${projectReview.member.getEmail()}"
+                    <h4 th:text="${projectReview.getNickname()}"
+                    id="codeReviewWriter" th:data-email="${projectReview.getEmail()}"
                     >keyy1315</h4>
                     <div class="year_icon" style="align-items: center;">
                         <h4 style="margin: 0;" th:text="${#dates.format(projectReview.createDate, 'yyyy-MM-dd')}">
                             2024.09.03</h4>
-                        <a class="icon fa-thumbs-up" th:reviewID="${projectReview.id}" th:onclick="reviewLike(this.getAttribute('reviewID'))">
+                        <a class="icon fa-thumbs-up" th:reviewID="${projectReview.id}" th:onclick="projectReviewLike(this.getAttribute('reviewID'))">
                             <span class="label">thumbsUp</span>
                             <span class="count"
                                   th:id="'count_'+${projectReview.id}"
@@ -79,14 +79,14 @@
                             <li>
                                 <div>
                                     <h4
-                                            style="margin: 0;" th:text="${comments.member.getNickname()}"
+                                            style="margin: 0;" th:text="${comments.getNickname()}"
                                         class="memberInfo"
-                                        th:data-email="${comments.member.getEmail()}"
+                                        th:data-email="${comments.getEmail()}"
                                     >작성자1</h4>
                                 </div>
                             </li>
                             <li>
-                                <a class="icon fa-thumbs-up" th:commentID="${comments.id}" th:onclick="commentLike(this.getAttribute('commentID'))">
+                                <a class="icon fa-thumbs-up" th:commentID="${comments.id}" th:onclick="projectReviewCommentLike(this.getAttribute('commentID'))">
                                     <span class="label">thumbsUp</span>
                                     <span class="count" th:id="'count_'+${comments.id}" th:text="${comments.preferenceCnt}">0</span>
                                 </a>
@@ -98,13 +98,13 @@
                             </div>
                         </div>
                         <div th:id="${comments.id}">
-                            <p th:utext="${comments.content}">좋은데용?</p>
+                            <p th:utext="${comments.commentContent}">좋은데용?</p>
                         </div>
                         <div class="comment_delete" hidden="hidden">
                             <a class="icon fa-pencil"
                                th:id="'modify'+${comments.id}"
                                th:commentId="${comments.id}"
-                               th:commentContent="${comments.content}"
+                               th:commentContent="${comments.commentContent}"
                                th:project = "project"
                                th:onclick="modifyComment(this.getAttribute('project'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
                             <a class="icon fa-trash"
