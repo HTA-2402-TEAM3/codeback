@@ -43,10 +43,18 @@ function changePreference(entityID, type) {
     ;
 }
 
-function reviewLike(entityID) {
+function codeReviewLike(entityID) {
     changePreference(entityID, "codeReview");
 }
 
-function commentLike(entityID) {
+function codeReviewCommentLike(entityID) {
     changePreference(entityID, "codeReviewComment");
+}
+
+function projectReviewLike(entityID) {
+    changePreference(entityID, "projectReview");
+}
+
+function projectReviewCommentLike(entityID) {
+    changePreference(entityID, "projectReviewComment");
 }
