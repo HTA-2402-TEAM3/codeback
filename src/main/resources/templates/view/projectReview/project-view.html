@@ -31,9 +31,11 @@
                     <div class="year_icon" style="align-items: center;">
                         <h4 style="margin: 0;" th:text="${#dates.format(projectReview.createDate, 'yyyy-MM-dd')}">
                             2024.09.03</h4>
-                        <a class="icon fa-thumbs-up">
+                        <a class="icon fa-thumbs-up" th:reviewID="${projectReview.id}" th:onclick="reviewLike(this.getAttribute('reviewID'))">
                             <span class="label">thumbsUp</span>
-                            <span class="count" th:text="${projectReview.preferenceCnt}">4</span>
+                            <span class="count"
+                                  th:id="'count_'+${projectReview.id}"
+                                  th:text="${projectReview.preferenceCnt}">4</span>
                         </a>
                     </div>
                 </div>
@@ -84,9 +86,9 @@
                                 </div>
                             </li>
                             <li>
-                                <a class="icon fa-thumbs-up" href="#">
+                                <a class="icon fa-thumbs-up" th:commentID="${comments.id}" th:onclick="commentLike(this.getAttribute('commentID'))">
                                     <span class="label">thumbsUp</span>
-                                    <span class="count">0</span>
+                                    <span class="count" th:id="'count_'+${comments.id}" th:text="${comments.preferenceCnt}">0</span>
                                 </a>
                             </li>
                         </ul>
@@ -152,5 +154,6 @@
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>
 <script src="/js/project-delete.js"></script>
+<script src="/js/like.js"></script>
 </body>
 </html>
