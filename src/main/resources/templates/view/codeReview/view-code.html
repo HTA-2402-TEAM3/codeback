@@ -33,7 +33,7 @@
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
 
                         <a th:reviewID="${codeReview.id}"
-                           th:onclick="reviewLike(this.getAttribute('reviewID'))"
+                           th:onclick="codeReviewLike(this.getAttribute('reviewID'))"
                            class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
                             <span class="count" th:id="'count_' + ${codeReview.id}"
@@ -79,7 +79,7 @@
                         <li>
 
                             <a th:commentID="${comments.id}"
-                               th:onclick="commentLike([[${comments.id}]])"
+                               th:onclick="codeReviewCommentLike([[${comments.id}]])"
                                class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
                                 <span class="count" th:id="'count_' + ${comments.id}"
@@ -168,64 +168,6 @@
         </div>
     </div>
 </section>
-
-<!--<script th:inline="javascript">-->
-
-
-<!--    function changePreference(entityID, type) {-->
-
-<!--        console.log(entityID);-->
-<!--        console.log(type);-->
-
-<!--        const likeType = {-->
-<!--            type : type-->
-<!--        };-->
-
-<!--        fetch(`/like/${entityID}`, {-->
-<!--            method: 'PUT',-->
-<!--            headers: {-->
-<!--                'Content-Type': 'application/json',-->
-<!--            },-->
-<!--            body: JSON.stringify(likeType)-->
-<!--        })-->
-<!--            .then((response) => {-->
-<!--                if (!response.ok) {-->
-<!--                    return new Error("Preference Fail")-->
-<!--                }-->
-
-<!--                return response.json();-->
-<!--            })-->
-<!--            .then((data) => {-->
-
-<!--                console.log(data);-->
-<!--                const countTag = document.getElementById('count_' + data.entityID);-->
-
-<!--                let count = parseInt(countTag.textContent);-->
-
-<!--                if (data.likeSign) {-->
-<!--                    count += 1;-->
-<!--                } else {-->
-<!--                    count -= 1;-->
-<!--                }-->
-
-<!--                countTag.textContent = count;-->
-
-<!--            })-->
-<!--            .catch((error) => {-->
-<!--                console.error(error.message);-->
-<!--            })-->
-<!--        ;-->
-<!--    }-->
-
-<!--    function reviewLike(entityID) {-->
-<!--        changePreference(entityID, "codeReview");-->
-<!--    }-->
-
-<!--    function commentLike(entityID) {-->
-<!--        changePreference(entityID, "codeReviewComment");-->
-<!--    }-->
-
-<!--</script>-->
 
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
 <script src="/js/comment.js"></script>
