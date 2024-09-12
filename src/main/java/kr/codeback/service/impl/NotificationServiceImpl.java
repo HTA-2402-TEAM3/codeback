@@ -13,6 +13,7 @@ import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.model.entity.Preference;
+import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.NotificationRepository;
@@ -59,6 +60,19 @@ public class NotificationServiceImpl implements NotificationService {
 			.build();
 
 		notificationRepository.save(notification);
+	}
+
+	@Override
+	@Transactional
+	public void save(ProjectReviewComment projectReviewComment){
+		Notification notification = Notification.builder()
+			.id(UUID.randomUUID())
+			.member(projectReviewComment.getProjectReview().getMember())
+			.entityID(projectReviewComment.getId())
+			.isRead(false)
+			.message(projectReviewComment.getMember().getNickname()+"님이 "+projectReviewComment.getProjectReview().getTitle()+" 글에 댓글을 작성하였습니다.")
+			.build();
+
 	}
 
 	public String generateMessage(Preference preference, String type){

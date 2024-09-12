@@ -11,13 +11,14 @@ import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.model.entity.Preference;
+import kr.codeback.model.entity.ProjectReviewComment;
 
 public interface NotificationService {
 
 	void save(CodeReviewComment codeReviewComment);
 	void save(Preference preference,String type);
 
-	// void save(CodeReviewCommentRequestDTO codeReviewCommentRequestDTO){}
+	void save(ProjectReviewComment projectReviewComment);
 
 	// ID로 알림 조회
 	Notification getNotificationById(UUID id);
