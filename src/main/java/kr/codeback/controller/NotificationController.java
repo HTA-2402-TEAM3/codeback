@@ -11,7 +11,7 @@ public class NotificationController {
 
 	@GetMapping("/notice")
 	public String notification() {
-		return "/view/notification/notification"; // Thymeleaf 템플릿 이름
+		return "view/notification/notification"; // Thymeleaf 템플릿 이름
 	}
 
 }
