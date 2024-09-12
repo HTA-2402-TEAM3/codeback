@@ -26,15 +26,14 @@
         <h2>Code Review</h2>
         <div class="category_box" id="checkbox-container">
             <div class="checkbox-group" th:each="language : ${languages}" style="width:15%">
-                <label>
-                    <input
-                            type="checkbox"
-                            th:id="${language.getLanguageName()}"
-                            th:value="${language.getId()}"
-                            onclick="selectOnlyOne(this)"
-                    />
-                </label>
-                <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}" style="display: flex"></label>
+                <input
+                        type="checkbox"
+                        th:id="${language.getLanguageName()}"
+                        th:value="${language.getId()}"
+                        onclick="selectOnlyOne(this)"
+                />
+                <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}"
+                       style="display: flex"></label>
             </div>
         </div>
     </header>
