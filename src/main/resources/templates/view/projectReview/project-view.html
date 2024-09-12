@@ -88,7 +88,7 @@
                             <li>
                                 <a class="icon fa-thumbs-up" th:commentID="${comments.id}" th:onclick="commentLike(this.getAttribute('commentID'))">
                                     <span class="label">thumbsUp</span>
-                                    <span class="count" th:id="'count_'+${comments.id}" th:text="${comments.preferenceCnt}">0</span>
+                                    <span class="count" th:id="'count_'+${comments.id}">0</span>
                                 </a>
                             </li>
                         </ul>
