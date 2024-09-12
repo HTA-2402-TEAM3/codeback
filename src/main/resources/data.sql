@@ -1,3 +1,5 @@
+use codeback;
+
 INSERT INTO authority (id, name)
 VALUES (UUID(), 'ROLE_USER'),
        (UUID(), 'ROLE_ADMIN');
