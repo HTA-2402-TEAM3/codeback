@@ -35,13 +35,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectReviewServiceImpl implements ProjectReviewService {
     private final ProjectReviewRepository projectReviewRepository;
-    private final ProjectReviewImageRepository projectReviewImageRepository;
     private final ProjectReviewCommentService projectReviewCommentService;
 
     private final ProjectReviewImageService projectReviewImageService;
     private final ProjectReviewTagService projectReviewTagService;
     private final PreferenceService preferenceService;
-    private final S3Service s3Service;
 
     public Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
@@ -69,7 +67,7 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Override
     public ProjectReview findById(UUID projectID) {
         return projectReviewRepository.findById(projectID)
-                .orElseThrow(()->new IllegalArgumentException("no projectReview... :" +projectID));
+                .orElseThrow(() -> new IllegalArgumentException("no projectReview... :" + projectID));
     }
 
     @Override
@@ -84,14 +82,14 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                 .build();
         projectReviewRepository.save(reviewObj);
 
-        Set<ProjectReviewImage> imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
-        Set<ProjectReviewTag> tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
+        if (pjRequestDTO.getImageFiles() != null && pjRequestDTO.getTags() != null) {
+            Set<ProjectReviewImage> imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
+            Set<ProjectReviewTag> tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
 
-        reviewObj.addSet(imageSet, tagSet);
-
+            reviewObj.addSet(imageSet, tagSet);
+        }
         return projectReviewRepository.save(reviewObj);
     }
-
 
 
     @Override
@@ -107,18 +105,23 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Transactional
     public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws NullPointerException {
         ProjectReview projectReview = projectReviewRepository.findById(reviewId)
-                .orElseThrow(()->new IllegalArgumentException("no projectReview..."));
+                .orElseThrow(() -> new IllegalArgumentException("no projectReview..."));
 
-        if(!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
+        if (!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
             throw new ReviewNotAuthorizedException(
                     ErrorCode.NOT_EXIST_USER.getStatus(),
                     ErrorCode.NOT_EXIST_USER.getMessage()
             );
         }
-        ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
-        ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview, projectDTO.getTags());
 
-        updateTagProjectReview.updateProjectReview(projectDTO);
-        projectReviewRepository.save(updateTagProjectReview);
+        if (projectDTO.getImageFiles() != null && projectDTO.getTags() != null) {
+            ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
+            ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview, projectDTO.getTags());
+            updateTagProjectReview.updateProjectReview(projectDTO);
+            projectReviewRepository.save(updateTagProjectReview);
+        } else {
+            projectReview.updateProjectReview(projectDTO);
+            projectReviewRepository.save(projectReview);
+        }
     }
 }

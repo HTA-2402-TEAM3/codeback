@@ -37,7 +37,7 @@ function renderReviews(reviews) {
 
         reviewElement.innerHTML = `
     <div>
-        <img src="${review.projectReviewThumbnails ? review.projectReviewThumbnails : '/images/test.jpg'}" alt="Pic 01" class="project-img"/>
+        <img src="${review.projectReviewThumbnails ? review.projectReviewThumbnails : '/images/default.png'}" alt="Pic 01" class="project-img"/>
         <h4>${review.title}</h4>
         <div class="writer-info">
             <p>${review.member}</p>

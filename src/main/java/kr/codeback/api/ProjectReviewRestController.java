@@ -48,7 +48,7 @@ public class ProjectReviewRestController {
 
     @GetMapping("/")
     public ResponseEntity<Object> allPages(@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
-                                           @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
+                                           @RequestParam(required = false, defaultValue = "9", value = "pageSize") int pageSize,
                                            @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
         Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(pageNum, pageSize, sort);
 

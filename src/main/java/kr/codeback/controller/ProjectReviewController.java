@@ -4,12 +4,10 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
-import kr.codeback.model.entity.CodeLanguageCategory;
-import kr.codeback.model.entity.Preference;
-import kr.codeback.model.entity.ProjectReview;
-import kr.codeback.model.entity.ProjectReviewImage;
+import kr.codeback.model.entity.*;
 import kr.codeback.service.impl.ProjectReviewServiceImpl;
 import kr.codeback.service.interfaces.PreferenceService;
+import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +31,7 @@ import java.util.UUID;
 public class ProjectReviewController {
     private final ProjectReviewServiceImpl projectReviewService;
     private final PreferenceService preferenceService;
+    private final ProjectReviewCommentService projectReviewCommentService;
     private final ProjectReviewImageService imageService;
 
     @GetMapping("/write")
@@ -42,7 +41,7 @@ public class ProjectReviewController {
 
     @GetMapping("/")
     public String projectReview(Model model) {
-        Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0,10,"createDate");
+        Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0,9,"createDate");
         List<ProjectReviewListResponseDTO> reviews = page.getContent();
 
         model.addAttribute("totalPages", page.getTotalPages());
@@ -53,6 +52,7 @@ public class ProjectReviewController {
     @GetMapping("/{id}")
     public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
         ProjectReview projectReview = projectReviewService.findById(projectID);
+//      List<ProjectReviewComment> projectReviewComment = projectReviewCommentService.findByEntityId(projectID);
 
         List<Preference> projectReviewPrefer = preferenceService.findByEntityID(projectID);
 
@@ -72,5 +72,4 @@ public class ProjectReviewController {
 
         return "/view/projectReview/project-view";
     }
-
 }

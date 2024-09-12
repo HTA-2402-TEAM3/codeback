@@ -151,12 +151,18 @@ function deleteComment(mapping,commentID) {
                 'Content-Type': 'application/json', // 필요한 경우
             },
         }).then(resp => {
+            if (!resp.ok) {
+                throw new Error("fail to fetch");
+            }
+            return resp.json();
+        }).then(resp => {
             console.log(resp);
+
             alert(resp.message);
             location.reload();
         }).catch(error => {
             console.error(error);
-        })
+        });
     }
 }
 
