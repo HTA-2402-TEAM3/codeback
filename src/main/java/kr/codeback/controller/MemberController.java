@@ -29,19 +29,19 @@ public class MemberController {
 	@GetMapping("/submit")
 	public String submit() {
 		log.info("submit");
-		return "/view/submit";
+		return "view/submit";
 	}
 
 	@GetMapping("/registration")
 	public String registration() {
 		log.info("registration");
-		return "/view/registration";
+		return "view/registration";
 	}
 
 	@GetMapping("/form/login")
 	public String login() {
 		log.info("login");
-		return "/user";
+		return "user";
 	}
 
 	@PostMapping("/api/submit")

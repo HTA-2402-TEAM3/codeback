@@ -1,4 +1,4 @@
-version: '3.9'
+#version: '3.9'
 services:
   springboot_3.3.2:
     image: codeback
@@ -31,4 +31,5 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
 

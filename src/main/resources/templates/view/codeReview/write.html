@@ -19,8 +19,7 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 </head>
 
-<div th:replace="view/common/header :: header"></div>
-
+<div th:replace="view/common/header.html :: header"></div>
 <body class="subpage">
 <section id="main" class="wrapper">
     <div class="inner">
@@ -42,8 +41,8 @@
             const editor = new Editor({
                 el: document.querySelector('#editor'),
                 toolbarItems: [
-                    ['heading','bold','italic','strike'],
-                    ['hr','quote'],
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
                     ['ul', 'ol', 'task', 'indent', 'outdent'],
                     ['table', 'link'],
                     ['code', 'codeblock'],
