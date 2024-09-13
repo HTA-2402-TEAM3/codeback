@@ -929,11 +929,11 @@ VALUES
 -- 프로젝트 리뷰 이미지 더미 데이터
 INSERT INTO project_review_image (id, file_name, url, project_review_id)
 VALUES
-    (UUID(), 'ohboon_003.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_003.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'ohboon_002.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_002.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'ohboon_001.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_001.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'react_ui.png', 'https://example.com/images/react_ui.png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
-    (UUID(), 'ml_model.png', 'https://example.com/images/ml_model.png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
+    (UUID(), 'ohboon_003.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_002.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_001.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'react_ui.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
+    (UUID(), 'ml_model.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
 
 -- 프로젝트 리뷰 태그 더미 데이터
 INSERT INTO project_review_tag (id, project_review_id, tag)
@@ -948,11 +948,10 @@ VALUES
     (UUID(), (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'), 'AI');
 
 -- 프로젝트 리뷰 댓글 더미 데이터
-INSERT INTO project_review_comment (id, member_id,  content, project_review_id)
+INSERT INTO project_review_comment (id, member_id,  content, create_date, project_review_id)
 VALUES
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), '카카오 맵 api는 왜 쓰신거죠??', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
-
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), '카카오 맵 api는 왜 쓰신거죠??', '2024-09-01 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', '2024-09-01 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', '2024-09-02 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', '2024-09-03 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'));
 
