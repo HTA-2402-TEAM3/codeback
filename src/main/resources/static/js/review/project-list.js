@@ -1,6 +1,6 @@
 let loginEmail = '';
 let searchText = '';
-let findWithTag = ''
+let findWithTag = '';
 
 document.addEventListener('DOMContentLoaded', function () {
    console.log("dom loaded");
@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchAllProjects(page) {
-
+    if(findWithTag === null) {
+        findWithTag = '';
+    }
 
     console.log("fetchAllProjects",searchText);
     console.log("page",page);

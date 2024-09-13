@@ -82,7 +82,7 @@
             </li>
             <li class="page-item">
                 <a class="page-link"
-                   th:totalpage="${totalPages}"
+                   th:totalpage="${totalPages - 1}"
                    th:onclick="fetchAllProjects(this.getAttribute('totalPage'))">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
