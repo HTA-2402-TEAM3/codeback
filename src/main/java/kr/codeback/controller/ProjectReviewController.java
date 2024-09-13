@@ -11,19 +11,23 @@ import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import kr.codeback.service.interfaces.ProjectReviewImageService;
 import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import kr.codeback.model.dto.response.review.ProjectReviewCommentResponseDTO;
+import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
+import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
+import kr.codeback.model.entity.ProjectReview;
+import kr.codeback.model.entity.ProjectReviewComment;
+import kr.codeback.service.impl.ProjectReviewServiceImpl;
+import kr.codeback.service.interfaces.PreferenceService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/project")

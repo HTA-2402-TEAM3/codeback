@@ -1,3 +1,5 @@
+use codeback;
+
 INSERT INTO authority (id, name)
 VALUES (UUID(), 'ROLE_USER'),
        (UUID(), 'ROLE_ADMIN');
@@ -954,4 +956,5 @@ VALUES
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', '2024-09-01 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', '2024-09-02 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
     (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', '2024-09-03 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'));
+
 

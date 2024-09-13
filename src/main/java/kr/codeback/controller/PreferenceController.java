@@ -19,10 +19,12 @@ import kr.codeback.service.interfaces.NotificationService;
 import kr.codeback.service.interfaces.PreferenceService;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping()
+@Slf4j
 public class PreferenceController {
 
 	private final PreferenceService preferenceService;
@@ -39,6 +41,8 @@ public class PreferenceController {
 		String email = jwtUtil.extractEmail(accessToken);
 		Member member = memberService.findByEmail(email);
 		Preference preference = preferenceService.save(member, entityID);
+		log.info(entityID);
+		log.info(preferenceRequestDTO.getType());
 		notificationService.save(preference, preferenceRequestDTO.getType());
 
 		return ResponseEntity.ok()

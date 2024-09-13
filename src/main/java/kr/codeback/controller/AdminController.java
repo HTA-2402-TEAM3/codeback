@@ -33,7 +33,7 @@ public class AdminController {
 
 		model.addAttribute("initialMembers", new ArrayList<>());
 
-		return "/view/admin/members";
+		return "view/admin/members";
 	}
 
 	@GetMapping("/admin/summary")
@@ -54,7 +54,7 @@ public class AdminController {
 		model.addAttribute("codeReviewCommentSummaryByMonth", codeReviewCommentSummaryResponseDTOS);
 		model.addAttribute("codeReviewPreferenceSummaryByMonth", codeReviewPreferenceSummaryResponseDTOS);
 
-		return "/view/admin/summary";
+		return "view/admin/summary";
 
 	}
 

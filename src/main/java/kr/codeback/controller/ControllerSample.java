@@ -29,7 +29,7 @@ public class ControllerSample {
 
 		model.addAttribute("dtoSamples", dtoSamples);
 
-		return "/view/sample-reviews";
+		return "view/sample-reviews";
 	}
 
 }
