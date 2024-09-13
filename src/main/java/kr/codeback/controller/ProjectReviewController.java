@@ -1,16 +1,8 @@
 package kr.codeback.controller;
 
-import kr.codeback.common.MessageResponseDTO;
-import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
-import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
-import kr.codeback.model.dto.response.review.ProjectReviewResponseDTO;
-import kr.codeback.model.entity.*;
-import kr.codeback.service.impl.ProjectReviewServiceImpl;
-import kr.codeback.service.interfaces.PreferenceService;
-import kr.codeback.service.interfaces.ProjectReviewCommentService;
-import kr.codeback.service.interfaces.ProjectReviewImageService;
-import kr.codeback.service.interfaces.ProjectReviewService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -33,55 +25,81 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/project")
 @RequiredArgsConstructor
 public class ProjectReviewController {
-    private final ProjectReviewServiceImpl projectReviewService;
-    private final PreferenceService preferenceService;
-    @GetMapping("/search")
-    public String findWithTag(@RequestParam(value = "tag") String tag, Model model) {
-        Page<ProjectReviewListResponseDTO> page = projectReviewService.findWithFilters(tag, true,0,9,"createDate");
-        List<ProjectReviewListResponseDTO> reviews = page.getContent();
+	private final ProjectReviewServiceImpl projectReviewService;
+	private final PreferenceService preferenceService;
 
-        model.addAttribute("findWithTag", tag);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("reviews", reviews);
+	@GetMapping("/search")
+	public String findWithTag(@RequestParam(value = "tag") String tag, Model model) {
+		Page<ProjectReviewListResponseDTO> page = projectReviewService.findWithFilters(tag, true, 0, 9, "createDate");
+		List<ProjectReviewListResponseDTO> reviews = page.getContent();
 
-        return "view/projectReview/project-list";
-    }
-    @GetMapping("/write")
-    public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
-        return "/view/projectReview/project-write";
-    }
+		model.addAttribute("findWithTag", tag);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("reviews", reviews);
 
-    @GetMapping("/")
-    public String projectReview(Model model) {
-        Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0,9,"createDate");
-        List<ProjectReviewListResponseDTO> reviews = page.getContent();
+		return "view/projectReview/project-list";
+	}
 
-        model.addAttribute("findWithTag", null);
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("reviews", reviews);
+	@GetMapping("/write")
+	public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
+		return "/view/projectReview/project-write";
+	}
 
-        return "/view/projectReview/project-list";
-    }
-    @GetMapping("/{id}")
-    public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
-        ProjectReview projectReview = projectReviewService.findById(projectID);
+	@GetMapping("/")
+	public String projectReview(Model model) {
+		Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0, 9, "createDate");
+		List<ProjectReviewListResponseDTO> reviews = page.getContent();
 
-        List<Preference> projectReviewPrefer = preferenceService.findByEntityID(projectID);
+		Map<UUID, Long> preferenceCnt = preferenceService.countByEntityIDs(
+			reviews.stream().map(ProjectReviewListResponseDTO::getId)
+				.toList());
+		reviews.forEach(review -> review.setPreferenceCnt(preferenceCnt.getOrDefault(review.getId(), 0L)));
 
-        model.addAttribute("projectReview", ProjectReviewResponseDTO.builder()
-                        .id(projectReview.getId())
-                        .member(projectReview.getMember())
-                        .title(projectReview.getTitle())
-                        .content(projectReview.getContent())
-                        .createDate(projectReview.getCreateDate())
-                        .projectReviewTags(projectReview.getProjectReviewTags())
-                        .projectReviewComments(projectReview.getComments())
-                        .projectReviewImages(projectReview.getProjectReviewImages())
-                        .preferenceCnt(projectReviewPrefer.size())
-                        .githubURL(projectReview.getGithubURL())
+		model.addAttribute("findWithTag", null);
+		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("reviews", reviews);
 
-                .build());
+		return "/view/projectReview/project-list";
+	}
 
-        return "/view/projectReview/project-view";
-    }
+	@GetMapping("/{id}")
+	public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
+		ProjectReview projectReview = projectReviewService.findById(projectID);
+
+		int preferenceCnt = preferenceService.getCount(projectReview.getId());
+
+		List<ProjectReviewComment> projectReviewComments = projectReview.getComments();
+		Map<UUID, Long> preferenceCounts = preferenceService.countByEntityIDs(
+			projectReviewComments.stream()
+				.map(ProjectReviewComment::getId)
+				.toList());
+
+		List<ProjectReviewCommentResponseDTO> codeReviewCommentResponseDTOs = projectReviewComments.stream()
+			.map(comment -> ProjectReviewCommentResponseDTO.builder()
+				.id(comment.getId())
+				.email(comment.getMember().getEmail())
+				.nickname(comment.getMember().getNickname())
+				.commentContent(comment.getContent())
+				.createDate(comment.getCreateDate())
+				.preferenceCnt(preferenceCounts.getOrDefault(comment.getId(), 0L))
+				.build()
+			).toList();
+
+		model.addAttribute("projectReview", ProjectReviewResponseDTO.builder()
+			.id(projectReview.getId())
+			.email(projectReview.getMember().getEmail())
+			.nickname(projectReview.getMember().getNickname())
+			.title(projectReview.getTitle())
+			.content(projectReview.getContent())
+			.createDate(projectReview.getCreateDate())
+			.projectReviewTags(projectReview.getProjectReviewTags())
+			.projectReviewComments(codeReviewCommentResponseDTOs)
+			.projectReviewImages(projectReview.getProjectReviewImages())
+			.preferenceCnt(preferenceCnt)
+			.githubURL(projectReview.getGithubURL())
+
+			.build());
+
+		return "/view/projectReview/project-view";
+	}
 }
