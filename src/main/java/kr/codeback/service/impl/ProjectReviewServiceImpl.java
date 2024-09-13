@@ -81,13 +81,17 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                 .githubURL(pjRequestDTO.getGithubUrl())
                 .build();
         projectReviewRepository.save(reviewObj);
+        Set<ProjectReviewTag> tagSet = new LinkedHashSet<>();
+        Set<ProjectReviewImage> imageSet = new LinkedHashSet<>();
 
-        if (pjRequestDTO.getImageFiles() != null && pjRequestDTO.getTags() != null) {
-            Set<ProjectReviewImage> imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
-            Set<ProjectReviewTag> tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
-
-            reviewObj.addSet(imageSet, tagSet);
+        if (pjRequestDTO.getTags() != null) {
+            tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
         }
+        if (pjRequestDTO.getImageFiles() != null) {
+            imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
+        }
+
+        reviewObj.addSet(imageSet, tagSet);
         return projectReviewRepository.save(reviewObj);
     }
 
