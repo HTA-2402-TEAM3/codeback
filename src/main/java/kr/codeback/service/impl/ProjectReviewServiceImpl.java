@@ -3,6 +3,7 @@ package kr.codeback.service.impl;
 import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.ReviewNonExistentException;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
@@ -69,7 +70,10 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Override
     public ProjectReview findById(UUID projectID) {
         return projectReviewRepository.findById(projectID)
-                .orElseThrow(() -> new IllegalArgumentException("no projectReview... :" + projectID));
+                .orElseThrow(() -> new ReviewNonExistentException(
+                        ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()
+                ));
     }
 
     @Override
@@ -111,7 +115,10 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Transactional
     public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws NullPointerException {
         ProjectReview projectReview = projectReviewRepository.findById(reviewId)
-                .orElseThrow(() -> new IllegalArgumentException("no projectReview..."));
+                .orElseThrow(() -> new ReviewNonExistentException(
+                        ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()
+                ));
 
         if (!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
             throw new ReviewNotAuthorizedException(
@@ -162,29 +169,4 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                             .build();
                 });
     }
-
-//    public Page<ProjectReviewListResponseDTO> findWithTag(String tag, int pageNum, int pageSize, String sort) {
-//        Specification<ProjectReview> specification = Specification.where(ProjectReviewSpecification.hasTag(tag));
-//
-//        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
-//
-//        return projectReviewRepository.findAll(specification, pageable)
-//                .map((ProjectReview projectReview) -> {
-//                    String thumbnailUrl = projectReview.getProjectReviewImages().stream()
-//                            .findFirst()
-//                            .map(ProjectReviewImage::getUrl)
-//                            .orElse(null);
-//
-//                    return ProjectReviewListResponseDTO.builder()
-//                            .id(projectReview.getId())
-//                            .member(projectReview.getMember().getNickname())
-//                            .createDate(projectReview.getCreateDate())
-//                            .title(projectReview.getTitle())
-//                            .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
-//                            .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
-//                            .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
-//                            .projectReviewComments(projectReview.getComments().size())
-//                            .build();
-//                });
-//    }
 }

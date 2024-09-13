@@ -2,6 +2,8 @@ package kr.codeback.service.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.FailUploadedImageException;
 import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewImage;
 import kr.codeback.repository.ProjectReviewImageRepository;
@@ -47,7 +49,10 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
             for(String fileName : fileNames) {
                 s3Service.delete(fileName);
             }
-            throw new RuntimeException("fail to upload Image...");
+            throw new FailUploadedImageException(
+                    ErrorCode.FAIL_UPLOAD_IMAGE.getStatus(),
+                    ErrorCode.NOT_EXIST_USER.getMessage()
+            );
         }
         return imageSet;
     }
@@ -68,7 +73,6 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
         for (ProjectReviewImage projectReviewImage : projectReviewImages) {
             filenames.add(projectReviewImage.getFileName());
         }
-
         return filenames;
     }
 
@@ -129,7 +133,10 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
                 for (String fileName : fileNames) {
                     s3Service.delete(fileName);
                 }
-                throw new RuntimeException("fail to upload Image...");
+                throw new FailUploadedImageException(
+                        ErrorCode.FAIL_UPLOAD_IMAGE.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()
+                );
             }
             review.addProjectReviewImages(imageSet);
 //        연관성 추가
