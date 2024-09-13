@@ -13,6 +13,7 @@ import kr.codeback.model.entity.*;
 import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewImageRepository;
 import kr.codeback.repository.ProjectReviewRepository;
+import kr.codeback.repository.specification.ProjectReviewSpecification;
 import kr.codeback.service.S3Service;
 import kr.codeback.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -128,4 +130,61 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
             projectReviewRepository.save(projectReview);
         }
     }
+
+    @Override
+    public Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize, String sort) {
+
+        Specification<ProjectReview> specification;
+        if(isTag) {
+            specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
+        } else {
+            specification = Specification.where(ProjectReviewSpecification.hasTag(search));
+        }
+
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+
+        return projectReviewRepository.findAll(specification, pageable)
+                .map((ProjectReview projectReview) -> {
+                    String thumbnailUrl = projectReview.getProjectReviewImages().stream()
+                            .findFirst()
+                            .map(ProjectReviewImage::getUrl)
+                            .orElse(null);
+
+                    return ProjectReviewListResponseDTO.builder()
+                            .id(projectReview.getId())
+                            .member(projectReview.getMember().getNickname())
+                            .createDate(projectReview.getCreateDate())
+                            .title(projectReview.getTitle())
+                            .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
+                            .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
+                            .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
+                            .projectReviewComments(projectReview.getComments().size())
+                            .build();
+                });
+    }
+
+//    public Page<ProjectReviewListResponseDTO> findWithTag(String tag, int pageNum, int pageSize, String sort) {
+//        Specification<ProjectReview> specification = Specification.where(ProjectReviewSpecification.hasTag(tag));
+//
+//        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+//
+//        return projectReviewRepository.findAll(specification, pageable)
+//                .map((ProjectReview projectReview) -> {
+//                    String thumbnailUrl = projectReview.getProjectReviewImages().stream()
+//                            .findFirst()
+//                            .map(ProjectReviewImage::getUrl)
+//                            .orElse(null);
+//
+//                    return ProjectReviewListResponseDTO.builder()
+//                            .id(projectReview.getId())
+//                            .member(projectReview.getMember().getNickname())
+//                            .createDate(projectReview.getCreateDate())
+//                            .title(projectReview.getTitle())
+//                            .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
+//                            .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
+//                            .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
+//                            .projectReviewComments(projectReview.getComments().size())
+//                            .build();
+//                });
+//    }
 }

@@ -53,7 +53,10 @@
 
             <div class="inner_button_project">
                 <div class="tagButtons">
-                    <button class="button special disabled" th:each="tag: ${projectReview.projectReviewTags}"
+                    <button class="button special"
+                            th:each="tag: ${projectReview.projectReviewTags}"
+                            th:tag="${tag.getTag()}"
+                            th:onclick="findWithTag(this.getAttribute('tag'))"
                             th:text="'#' +${tag.getTag()}"></button>
                     <div class="icon_view" hidden="hidden" style="justify-content: flex-end">
                         <a class="icon fa-pencil"
@@ -141,19 +144,27 @@
 
                     document.getElementById('submit').addEventListener('click', () => {
                         const content = editor.getHTML();
+
                         console.log(content);
                         commentContent = content;
 
-                        commentSubmit("project");
+                        valiMemberComment("project");
                     })
+
+                    function findWithTag(tag) {
+                        console.log(tag);
+                        window.location.href = `/project/search?tag=${tag}`;
+                    }
                 </script>
             </div>
         </div>
     </div>
 </section>
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-<script src="/js/comment.js"></script>
-<script src="/js/project-delete.js"></script>
+<script src="/js/review/comment.js"></script>
+<script src="/js/review/project-delete.js"></script>
 <script src="/js/like.js"></script>
+<script src="/js/review/getMemberInfo.js"></script>
+<script src="js/project/reviewTags"></script>
 </body>
 </html>

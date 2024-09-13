@@ -31,9 +31,17 @@ import java.util.UUID;
 public class ProjectReviewController {
     private final ProjectReviewServiceImpl projectReviewService;
     private final PreferenceService preferenceService;
-    private final ProjectReviewCommentService projectReviewCommentService;
-    private final ProjectReviewImageService imageService;
+    @GetMapping("/search")
+    public String findWithTag(@RequestParam(value = "tag") String tag, Model model) {
+        Page<ProjectReviewListResponseDTO> page = projectReviewService.findWithFilters(tag, true,0,9,"createDate");
+        List<ProjectReviewListResponseDTO> reviews = page.getContent();
 
+        model.addAttribute("findWithTag", tag);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("reviews", reviews);
+
+        return "view/projectReview/project-list";
+    }
     @GetMapping("/write")
     public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
         return "/view/projectReview/project-write";
@@ -44,6 +52,7 @@ public class ProjectReviewController {
         Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(0,9,"createDate");
         List<ProjectReviewListResponseDTO> reviews = page.getContent();
 
+        model.addAttribute("findWithTag", null);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("reviews", reviews);
 
@@ -52,7 +61,6 @@ public class ProjectReviewController {
     @GetMapping("/{id}")
     public String viewProjectReview(@PathVariable(name = "id") UUID projectID, Model model) {
         ProjectReview projectReview = projectReviewService.findById(projectID);
-//      List<ProjectReviewComment> projectReviewComment = projectReviewCommentService.findByEntityId(projectID);
 
         List<Preference> projectReviewPrefer = preferenceService.findByEntityID(projectID);
 

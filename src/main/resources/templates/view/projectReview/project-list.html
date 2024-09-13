@@ -25,10 +25,11 @@
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center">
-            <h2>Project Review</h2>
+            <h2 th:if="${findWithTag == null}">Project Review</h2>
+            <h2 th:if="${findWithTag != null}" th:text="'#' + ${findWithTag}"></h2>
         </header>
         <div class="inner_logo" style="margin-bottom: 50px">
-            <button class="special button" onclick="window.location.href='/project/write'">글쓰기</button>
+            <button class="special button" onclick="valiMember('project')">글쓰기</button>
             <div class="search-container">
                 <div>
                     <input type="text" name="search" id="search" value="" placeholder="Search"/>
@@ -89,6 +90,7 @@
         </ul>
     </nav>
 </div>
-<script src="/js/project-list.js?ver=1"></script>
+<script src="/js/review/project-list.js?ver=1"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>
