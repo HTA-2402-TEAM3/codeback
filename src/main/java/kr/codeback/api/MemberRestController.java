@@ -62,7 +62,7 @@ public class MemberRestController {
 	// 클라이언트 이메일로 링크 발송
 	@PostMapping("/email")
 	public ResponseEntity<String> emailSender(@RequestBody TokenRequestDTO tokenRequestDTO) {
-		log.info("api/member/email");
+
 		String jwtToken = jwtUtil.generateRegistrationToken(tokenRequestDTO.getEmail());
 		emailSignUpService.sendVerificationEmail(tokenRequestDTO.getEmail(), jwtToken);
 		return ResponseEntity.ok(jwtToken);
@@ -71,7 +71,7 @@ public class MemberRestController {
 	// 자사 로그인 (클라이언트 이메일에서 링크 누르면 여기로 검증)
 	@GetMapping("/registration")
 	public ResponseEntity<UserRequestDTO> registration(@RequestParam("code") String code) {
-		log.info("api/member/registration");
+
 		//토큰 검증 및 회원가입
 		if (jwtUtil.validateToken(code)) {
 
@@ -105,7 +105,6 @@ public class MemberRestController {
 	@PostMapping("/signin")
 	public ResponseEntity<?> signIn(@RequestBody UserRequestDTO userRequestDTO, HttpServletResponse response) {
 
-		log.info("api/member/signin");
 		String accessToken = jwtUtil.generateAccessToken(userRequestDTO.getEmail(), userRequestDTO.getNickname(),userRequestDTO.getRole());
 		String refreshToken = jwtUtil.generateRefreshToken(userRequestDTO.getEmail());
 
@@ -117,7 +116,6 @@ public class MemberRestController {
 
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
-		log.info("api/member/logout");
 		CookieUtil.deleteCookie(response, "access_token");
 		CookieUtil.deleteCookie(response, "refresh_token");
 		return ResponseEntity.ok(new MessageResponseDTO("로그아웃 되었습니다."));
@@ -125,7 +123,6 @@ public class MemberRestController {
 
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> update(@PathVariable UUID id){
-		log.info("api/member/{id}");
 		memberService.update(memberService.findById(id));
 		return ResponseEntity.ok(new MessageResponseDTO("수정이 완료되었습니다."));
 	}

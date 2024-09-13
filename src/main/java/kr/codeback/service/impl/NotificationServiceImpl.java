@@ -66,7 +66,7 @@ public class NotificationServiceImpl implements NotificationService {
 			.build();
 
 
-		log.info("notification message");
+
 		notificationRepository.save(notification);
 	}
 

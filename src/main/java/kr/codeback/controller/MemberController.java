@@ -28,26 +28,22 @@ public class MemberController {
 
 	@GetMapping("/submit")
 	public String submit() {
-		log.info("submit");
 		return "view/submit";
 	}
 
 	@GetMapping("/registration")
 	public String registration() {
-		log.info("registration");
 		return "view/registration";
 	}
 
 	@GetMapping("/form/login")
 	public String login() {
-		log.info("login");
 		return "user";
 	}
 
 	@PostMapping("/api/submit")
 	public ResponseEntity<?> submit(@RequestBody UserResponseDTO userResponseDTO,
 		HttpServletResponse response) {
-		log.info("api/submit");
 
 		//token 생성
 		String token = jwtUtil.generateAccessToken(userResponseDTO.getEmail(), userResponseDTO.getNickname(),userResponseDTO.getRole());
