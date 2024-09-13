@@ -931,11 +931,11 @@ VALUES
 -- 프로젝트 리뷰 이미지 더미 데이터
 INSERT INTO project_review_image (id, file_name, url, project_review_id)
 VALUES
-    (UUID(), 'ohboon_003.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_003.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'ohboon_002.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_002.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'ohboon_001.jpg', 'https://tbf-moview-test.s3.ap-northeast-2.amazonaws.com/test/ohboon_001.jpg', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
-    (UUID(), 'react_ui.png', 'https://example.com/images/react_ui.png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
-    (UUID(), 'ml_model.png', 'https://example.com/images/ml_model.png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
+    (UUID(), 'ohboon_003.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_002.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_001.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'react_ui.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
+    (UUID(), 'ml_model.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
 
 -- 프로젝트 리뷰 태그 더미 데이터
 INSERT INTO project_review_tag (id, project_review_id, tag)

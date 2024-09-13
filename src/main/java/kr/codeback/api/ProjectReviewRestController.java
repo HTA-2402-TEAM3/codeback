@@ -28,8 +28,27 @@ import java.util.UUID;
 @RequestMapping("/api/project")
 @RequiredArgsConstructor
 public class ProjectReviewRestController {
-    private final ProjectReviewService projectReviewService;
+    private final ProjectReviewServiceImpl projectReviewService;
     private final MemberService memberService;
+    @GetMapping("/search")
+    public ResponseEntity<Object> searchProject(@RequestParam(required = false, value = "search") String search,
+                                                @RequestParam(required = false, value = "tag") String tag,
+                                                @RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
+                                                @RequestParam(required = false, defaultValue = "9", value = "pageSize") int pageSize,
+                                                @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
+        boolean isTag = tag != null;
+        search = isTag ? tag : null;
+
+        Page<ProjectReviewListResponseDTO> page = projectReviewService.findWithFilters(search, isTag, pageNum, pageSize, sort);
+
+        ProjectReviewPagingResponseDTO reviews = ProjectReviewPagingResponseDTO.builder()
+                .reviews(page.getContent())
+                .totalPage(page.getTotalPages())
+                .currentPage(pageNum)
+                .build();
+
+        return ResponseEntity.ok().body(reviews);
+    }
 
     @PostMapping("/save")
     public ResponseEntity<Object> saveProjectReview(@ModelAttribute ProjectReviewRequestDTO projectReviewRequestDTO) throws Exception {
@@ -48,7 +67,7 @@ public class ProjectReviewRestController {
 
     @GetMapping("/")
     public ResponseEntity<Object> allPages(@RequestParam(required = false, defaultValue = "0", value = "pageNum") int pageNum,
-                                           @RequestParam(required = false, defaultValue = "10", value = "pageSize") int pageSize,
+                                           @RequestParam(required = false, defaultValue = "9", value = "pageSize") int pageSize,
                                            @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
         Page<ProjectReviewListResponseDTO> page = projectReviewService.findAllWithPage(pageNum, pageSize, sort);
 

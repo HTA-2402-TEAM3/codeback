@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.CommentNonExistentException;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewCommentRequestDTO;
@@ -44,7 +45,10 @@ public class ProjectReviewCommentServiceImpl implements ProjectReviewCommentServ
 	@Override
 	public void deleteById(UUID id, String memberEmail) {
 		ProjectReviewComment comment = projectReviewCommentRepository.findById(id)
-				.orElseThrow(()-> new IllegalArgumentException("no comments..."+id));
+				.orElseThrow(()-> new CommentNonExistentException(
+						ErrorCode.NONEXISTENT_COMMENT.getStatus(),
+						ErrorCode.NONEXISTENT_REVIEW.getMessage()
+				));
 
 		if(!comment.getMember().getEmail().equals(memberEmail)) {
 			throw new ReviewNotAuthorizedException(
@@ -65,7 +69,10 @@ public class ProjectReviewCommentServiceImpl implements ProjectReviewCommentServ
 	@Override
 	public void update(CommentModifyRequestDTO commentDTO) {
 		ProjectReviewComment comment = projectReviewCommentRepository.findById(commentDTO.getId())
-				.orElseThrow(()-> new IllegalArgumentException("no comments..."));
+				.orElseThrow(()-> new CommentNonExistentException(
+						ErrorCode.NONEXISTENT_COMMENT.getStatus(),
+						ErrorCode.NONEXISTENT_REVIEW.getMessage())
+				);
 
 		if(!commentDTO.getMemberEmail().equals(comment.getMember().getEmail())) {
 			throw new ReviewNotAuthorizedException(

@@ -109,7 +109,7 @@ public class ProjectReview {
 	public void deleteProjectReviewImages(List<ProjectReviewImage> deleteImages) {
 		deleteImages.forEach(image -> {
 			this.projectReviewImages.remove(image);
-			image.dissociateReview();
+			image.setProjectReview(null);
 		});
 
 	}
@@ -124,7 +124,7 @@ public class ProjectReview {
 	public void deleteProjectReviewTags(List<ProjectReviewTag> tagsDelete) {
 		tagsDelete.forEach(tag -> {
 			this.projectReviewTags.remove(tag);
-			tag.dissociateReview();
+			tag.setProjectReview(null);
 		});
 	}
 

@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_IMAGE")
@@ -31,6 +32,7 @@ public class ProjectReviewImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_review_id")
+    @Setter
     private ProjectReview projectReview;
 
     @Builder
@@ -38,14 +40,6 @@ public class ProjectReviewImage {
         this.id = id;
         this.fileName = fileName;
         this.url = url;
-        this.projectReview = projectReview;
-    }
-
-    public void dissociateReview() {
-        this.projectReview = null;
-    }
-
-    public void setProjectReview(ProjectReview projectReview) {
         this.projectReview = projectReview;
     }
 }

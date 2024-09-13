@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 마지막 요소가 UUID
     review_uuid = pathSegments[pathSegments.length - 1];
 
-    getMemberInComment()
+    getMemberEmail();
 });
 
 // function renderComment(mapping, data) {
@@ -122,23 +122,23 @@ function hiddenIcon() {
     })
 }
 
-function getMemberInComment() {
-    fetch(`/api/member/info`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("data ::::", data);
-            loginEmail = data.email;
-            hiddenIcon();
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
-}
+// function getMemberInComment() {
+//     fetch(`/api/member/info`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log("data ::::", data);
+//             loginEmail = data.email;
+//             hiddenIcon();
+//         })
+//         .catch(error => {
+//             console.error('Fetch error:', error);
+//         });
+// }
 
 function deleteComment(mapping,commentID) {
     console.log(mapping);
@@ -151,12 +151,18 @@ function deleteComment(mapping,commentID) {
                 'Content-Type': 'application/json', // 필요한 경우
             },
         }).then(resp => {
+            if (!resp.ok) {
+                throw new Error("fail to fetch");
+            }
+            return resp.json();
+        }).then(resp => {
             console.log(resp);
+
             alert(resp.message);
             location.reload();
         }).catch(error => {
             console.error(error);
-        })
+        });
     }
 }
 

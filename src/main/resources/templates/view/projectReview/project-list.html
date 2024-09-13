@@ -25,10 +25,11 @@
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center">
-            <h2>Project Review</h2>
+            <h2 th:if="${findWithTag == null}">Project Review</h2>
+            <h2 th:if="${findWithTag != null}" th:text="'#' + ${findWithTag}"></h2>
         </header>
         <div class="inner_logo" style="margin-bottom: 50px">
-            <button class="special button" onclick="window.location.href='/project/write'">글쓰기</button>
+            <button class="special button" onclick="valiMember('project')">글쓰기</button>
             <div class="search-container">
                 <div>
                     <input type="text" name="search" id="search" value="" placeholder="Search"/>
@@ -45,7 +46,7 @@
         <div class="boxes" th:each="review: ${reviews}">
             <a class="box" th:href="@{/project/{id}(id=${review.id})}">
                 <div>
-                    <img th:src="${review.projectReviewThumbnails != null ? review.projectReviewThumbnails : '/images/test.jpg'}"
+                    <img th:src="${review.projectReviewThumbnails != null ? review.projectReviewThumbnails : '/images/default.png'}"
                          alt="Pic 01" class="project-img"/>
                     <h4 th:text="${review.title}">title2</h4>
                     <div class="writer-info">
@@ -81,7 +82,7 @@
             </li>
             <li class="page-item">
                 <a class="page-link"
-                   th:totalpage="${totalPages}"
+                   th:totalpage="${totalPages - 1}"
                    th:onclick="fetchAllProjects(this.getAttribute('totalPage'))">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
@@ -89,6 +90,7 @@
         </ul>
     </nav>
 </div>
-<script src="/js/project-list.js?ver=1"></script>
+<script src="/js/review/project-list.js?ver=1"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>

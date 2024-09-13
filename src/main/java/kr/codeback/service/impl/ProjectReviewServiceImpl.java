@@ -3,6 +3,7 @@ package kr.codeback.service.impl;
 import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.ReviewNonExistentException;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
@@ -13,6 +14,7 @@ import kr.codeback.model.entity.*;
 import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewImageRepository;
 import kr.codeback.repository.ProjectReviewRepository;
+import kr.codeback.repository.specification.ProjectReviewSpecification;
 import kr.codeback.service.S3Service;
 import kr.codeback.service.interfaces.*;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,13 +38,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectReviewServiceImpl implements ProjectReviewService {
     private final ProjectReviewRepository projectReviewRepository;
-    private final ProjectReviewImageRepository projectReviewImageRepository;
     private final ProjectReviewCommentService projectReviewCommentService;
 
     private final ProjectReviewImageService projectReviewImageService;
     private final ProjectReviewTagService projectReviewTagService;
     private final PreferenceService preferenceService;
-    private final S3Service s3Service;
 
     public Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
         Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
@@ -69,7 +70,10 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Override
     public ProjectReview findById(UUID projectID) {
         return projectReviewRepository.findById(projectID)
-                .orElseThrow(()->new IllegalArgumentException("no projectReview... :" +projectID));
+                .orElseThrow(() -> new ReviewNonExistentException(
+                        ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()
+                ));
     }
 
     @Override
@@ -83,15 +87,19 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
                 .githubURL(pjRequestDTO.getGithubUrl())
                 .build();
         projectReviewRepository.save(reviewObj);
+        Set<ProjectReviewTag> tagSet = new LinkedHashSet<>();
+        Set<ProjectReviewImage> imageSet = new LinkedHashSet<>();
 
-        Set<ProjectReviewImage> imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
-        Set<ProjectReviewTag> tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
+        if (pjRequestDTO.getTags() != null) {
+            tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
+        }
+        if (pjRequestDTO.getImageFiles() != null) {
+            imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
+        }
 
         reviewObj.addSet(imageSet, tagSet);
-
         return projectReviewRepository.save(reviewObj);
     }
-
 
 
     @Override
@@ -107,18 +115,58 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
     @Transactional
     public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws NullPointerException {
         ProjectReview projectReview = projectReviewRepository.findById(reviewId)
-                .orElseThrow(()->new IllegalArgumentException("no projectReview..."));
+                .orElseThrow(() -> new ReviewNonExistentException(
+                        ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()
+                ));
 
-        if(!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
+        if (!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
             throw new ReviewNotAuthorizedException(
                     ErrorCode.NOT_EXIST_USER.getStatus(),
                     ErrorCode.NOT_EXIST_USER.getMessage()
             );
         }
-        ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
-        ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview, projectDTO.getTags());
 
-        updateTagProjectReview.updateProjectReview(projectDTO);
-        projectReviewRepository.save(updateTagProjectReview);
+        if (projectDTO.getImageFiles() != null && projectDTO.getTags() != null) {
+            ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
+            ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview, projectDTO.getTags());
+            updateTagProjectReview.updateProjectReview(projectDTO);
+            projectReviewRepository.save(updateTagProjectReview);
+        } else {
+            projectReview.updateProjectReview(projectDTO);
+            projectReviewRepository.save(projectReview);
+        }
+    }
+
+    @Override
+    public Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize, String sort) {
+
+        Specification<ProjectReview> specification;
+        if(isTag) {
+            specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
+        } else {
+            specification = Specification.where(ProjectReviewSpecification.hasTag(search));
+        }
+
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+
+        return projectReviewRepository.findAll(specification, pageable)
+                .map((ProjectReview projectReview) -> {
+                    String thumbnailUrl = projectReview.getProjectReviewImages().stream()
+                            .findFirst()
+                            .map(ProjectReviewImage::getUrl)
+                            .orElse(null);
+
+                    return ProjectReviewListResponseDTO.builder()
+                            .id(projectReview.getId())
+                            .member(projectReview.getMember().getNickname())
+                            .createDate(projectReview.getCreateDate())
+                            .title(projectReview.getTitle())
+                            .projectReviewTags(projectReview.getProjectReviewTags().stream().map(ProjectReviewTag::getTag).collect(Collectors.toList()))
+                            .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
+                            .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
+                            .projectReviewComments(projectReview.getComments().size())
+                            .build();
+                });
     }
 }

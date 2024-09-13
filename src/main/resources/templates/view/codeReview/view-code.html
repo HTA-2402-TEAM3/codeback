@@ -141,10 +141,12 @@
 
                 document.getElementById('submit').addEventListener('click', () => {
                     const content = editor.getHTML();
+
                     console.log(content);
                     commentContent = content;
 
-                    commentSubmit("review");
+                    valiMemberComment("review");
+
                 })
 
                 function deleteCodeReview(id) {
@@ -170,8 +172,9 @@
 </section>
 
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-<script src="/js/comment.js"></script>
-<script src="/js/write.js"></script>
+<script src="/js/review/comment.js"></script>
+<script src="/js/review/write.js"></script>
 <script src="/js/like.js"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>

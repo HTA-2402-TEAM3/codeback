@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (projectReviewId !== '' && projectReviewId !== null) {
         renderProjectReview(projectReviewId);
     }
-    getMemberInProjectWrite();
+    getMemberEmail();
 });
 
 function renderProjectReview(reviewID) {
@@ -91,22 +91,22 @@ function deleteDataImage(fileName, imgId) {
     formData = tempFormData;
 }
 
-function getMemberInProjectWrite() {
-    fetch(`/api/member/info`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("data ::::", data);
-            loginEmail = data.email;
-        })
-        .catch(error => {
-            console.error('Fetch error:', error);
-        });
-}
+// function getMemberInProjectWrite() {
+//     fetch(`/api/member/info`)
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log("data ::::", data);
+//             loginEmail = data.email;
+//         })
+//         .catch(error => {
+//             console.error('Fetch error:', error);
+//         });
+// }
 
 function projectModify(formData) {
     fetch(`/api/project/update?reviewId=${projectReviewId}`, {
@@ -147,6 +147,16 @@ function saveProjectReview() {
     console.log("폼데이터: ", +formData);
     for (const [key, value] of formData.entries()) {
         console.log(`${key}: ${value}`);
+    }
+    if(title===null) {
+        alert("제목이 없습니다.");
+        document.getElementById('projectTitle').focus();
+    }else if(content===null) {
+        alert("내용이 없습니다.");
+        document.getElementById('projectEditor').focus();
+    } else if(githubUrl===null) {
+        alert("깃허브 주소를 입력해주세요.");
+        document.getElementById('github-url').focus();
     }
 
     if (projectReviewId !== null && projectReviewId !== '') {

@@ -1,9 +1,37 @@
+let loginEmail = '';
+let searchText = '';
+let findWithTag = '';
+
 document.addEventListener('DOMContentLoaded', function () {
    console.log("dom loaded");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    findWithTag = urlParams.get('tag');
+
+    getMemberEmail();
 });
 
 function fetchAllProjects(page) {
-    fetch(`/api/project/?pageNum=${page}`)
+    if(findWithTag === null) {
+        findWithTag = '';
+    }
+
+    console.log("fetchAllProjects",searchText);
+    console.log("page",page);
+    console.log("tag ", findWithTag);
+
+    let url;
+    if(searchText==='' && findWithTag==='') {
+        url = `/api/project/?pageNum=${page}`;
+    } else if(searchText===''&&findWithTag!=='') {
+        url = `/api/project/search?tag=${findWithTag}&pageNum=${page}`
+    } else {
+        url = `/api/project/search?search=${searchText}&pageNum=${page}`
+    }
+
+    console.log("fetchAllProjects: ", url);
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -37,7 +65,7 @@ function renderReviews(reviews) {
 
         reviewElement.innerHTML = `
     <div>
-        <img src="${review.projectReviewThumbnails ? review.projectReviewThumbnails : '/images/test.jpg'}" alt="Pic 01" class="project-img"/>
+        <img src="${review.projectReviewThumbnails ? review.projectReviewThumbnails : '/images/default.png'}" alt="Pic 01" class="project-img"/>
         <h4>${review.title}</h4>
         <div class="writer-info">
             <p>${review.member}</p>
@@ -70,6 +98,7 @@ function formatted(dateString) {
 }
 
 function renderPaging(totalPage) {
+    console.log("renderPaging: ", searchText);
     const ul = document.getElementById('pagingUl');
     ul.innerHTML = '';
 
@@ -98,4 +127,26 @@ function renderPaging(totalPage) {
     `;
 
     ul.innerHTML += pageElements;
+}
+
+function searchProjects() {
+    searchText = document.getElementById('search').value;
+
+    console.log("searchText: ",searchText);
+
+        fetch(`/api/project/search?search=${searchText}`)
+            .then(resp => {
+                if(!resp.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return resp.json();
+            })
+            .then(data => {
+                console.log("data :::: ", data);
+                renderReviews(data.reviews);
+                renderPaging(data.totalPage);
+            }).catch(err => {
+                console.error("Fetch error : ",err);
+        });
+
 }

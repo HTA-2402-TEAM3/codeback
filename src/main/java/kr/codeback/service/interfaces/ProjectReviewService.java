@@ -27,4 +27,6 @@ public interface ProjectReviewService {
     void deleteAllById(UUID projectID);
 
     void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectReviewRequestDTO) throws IOException;
+
+    Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize, String sort);
 }
