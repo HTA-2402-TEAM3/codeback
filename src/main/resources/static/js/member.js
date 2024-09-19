@@ -25,6 +25,7 @@ function noticeCount(){
             return response.json();
         })
         .then(data => {
+            const notificationElement = document.getElementById("notification-count");
             notificationElement.innerText = data;
         })
         .catch(error => {
