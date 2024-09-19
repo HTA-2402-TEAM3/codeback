@@ -21,9 +21,12 @@
 
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
-            <div style="display: flex;">
-                <a href="/notice" class="icon fa-bell" id="notification-button" >
-                </a>
+            <div style="display: flex; gap : 10px;">
+                <div class="notification-icon">
+                    <a href="/notice" class="icon fa-bell" id="notification-button">
+                        <span id="notification-count"></span>
+                    </a>
+                </div>
                 <button class="button special" id="logout-button" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -83,6 +86,7 @@
             <script src="/js/popup.js"></script>
             <script src="/js/submit.js"></script>
             <script src="/js/logout.js"></script>
+            <script src="/js/member.js"></script>
         </div>
     </div>
 </header>
