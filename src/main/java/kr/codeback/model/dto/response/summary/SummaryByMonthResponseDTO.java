@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class CodeReviewCommentSummaryResponseDTO {
+public class SummaryByMonthResponseDTO {
 
 	private int month;
 	private long count;
