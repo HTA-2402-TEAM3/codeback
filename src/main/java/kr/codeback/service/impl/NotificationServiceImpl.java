@@ -55,8 +55,6 @@ public class NotificationServiceImpl implements NotificationService {
 	@Transactional
 	public void save(Preference preference,String type) {
 
-		log.info(String.valueOf(preference.getEntityID()));
-
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
 			.member(preference.getMember())
@@ -88,8 +86,6 @@ public class NotificationServiceImpl implements NotificationService {
 	public String generateMessage(Preference preference, String type){
 		String message = preference.getMember().getNickname()+"님이 ";
 		if(type.equals("codeReview")){
-			log.info(Objects.requireNonNull(codeReviewRepository.findById(preference.getEntityID()).orElse(null)).toString());
-			log.info(message + codeReviewRepository.findById(UUID.fromString(String.valueOf(preference.getEntityID()))).orElse(null)+" 글에 좋아요를 눌렀습니다.");
 			return message + codeReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
 		} else if (type.equals("codeReviewComment")) {
 			return message + codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";

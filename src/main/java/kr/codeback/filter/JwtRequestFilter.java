@@ -71,10 +71,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String email = jwtUtil.extractEmail(accessToken);
         String role = jwtUtil.extractRole(accessToken);
 
-        log.info(username);
-        log.info(email);
-        log.info(role);
-
         //userDTO를 생성하여 값 set
         OAuthProfile oAuthProfile = OAuthProfile.builder()
             .username(username)
