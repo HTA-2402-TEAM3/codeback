@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,15 +13,17 @@
 
 </head>
 <body class="subpage">
-    <div th:replace="view/common/header.html :: header"></div>
-    <section id="main" class="wrapper">
-        <h1>notificationList</h1>
-        <ul id="notificationList"></ul>
+<div th:replace="view/common/header :: header"></div>
+<section id="main" class="wrapper_notice">
+    <h1 class="notice">알림</h1>
+    <hr class="major"/>
 
-    </section>
+    <ul id="notificationList"></ul>
 
-    <script src="/js/notice.js"></script>
-    <script>getNotification();</script>
+</section>
+
+<script src="/js/notice.js"></script>
+<script>getNotification();</script>
 
 </body>
 </html>

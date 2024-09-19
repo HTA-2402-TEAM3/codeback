@@ -1,9 +1,8 @@
 function getNotification() {
-
     fetch('/api/notification', {
-        method: 'GET', // GET 방식으로 변경
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/json' // 필요에 따라 Content-Type 설정
+            'Content-Type': 'application/json'
         }
     })
         .then(response => {
@@ -19,33 +18,42 @@ function getNotification() {
             data.forEach(notification => {
                 const listItem = document.createElement('li');
 
+                // 날짜 div
+                const dateDiv = document.createElement('div');
+                dateDiv.classList.add('notification-date');
+
+                // 메시지와 버튼을 묶는 div
+                const messageButtonDiv = document.createElement('div');
+                messageButtonDiv.classList.add('message-button-notice');
+
+                // 메시지 div
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('notification-message');
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container'); // 버튼을 묶는 클래스 추가
+
                 const deleteButton = document.createElement('button');
                 let notificationID = notification.id;
 
-                deleteButton.textContent = '삭제'; // 버튼 텍스트 설정
-                // 버튼 클릭 이벤트 리스너 추가
-                console.log(notificationID);
+                const fadeButton = document.createElement('button');
+
+                fadeButton.textContent = '읽음';
+                fadeButton.addEventListener('click', function () {
+                    console.log("success");
+                    readNotice(notificationID);
+                    listItem.classList.add('blurred');
+                });
+
+                deleteButton.textContent = '삭제';
                 deleteButton.addEventListener('click', function () {
-                    // 클릭한 버튼의 부모 요소인 li 삭제
                     deleteNotice(notificationID);
                     listItem.remove();
                 });
 
-                const fadeButton = document.createElement('button');
-                fadeButton.textContent = '읽음'; // 버튼 텍스트 설정
-                fadeButton.addEventListener('click', function () {
-                    console.log("success");
-                    readNotice(notificationID);
-                    listItem.classList.add('blurred')
-                });
-
-
-                //날짜 파싱
+                // 날짜 파싱
                 const isoDate = `${notification.createDate}`;
-                // Date 객체로 변환
                 const date = new Date(isoDate);
-
-// 날짜와 시간을 사용자의 로케일에 맞춰 출력
                 const options = {
                     year: 'numeric',
                     month: 'long',
@@ -53,20 +61,34 @@ function getNotification() {
                     hour: '2-digit',
                     minute: '2-digit',
                     second: '2-digit',
-                    hour12: true // 12시간 형식 사용
+                    hour12: true
                 };
 
                 const formattedDate = date.toLocaleString('ko-KR', options).replace(/GMT.*$/, '').trim();
 
-                listItem.textContent = `${formattedDate} : ${notification.message}`;
-                // li 요소에 버튼 추가
-                listItem.appendChild(deleteButton);
-                listItem.appendChild(fadeButton);
+                // 날짜와 메시지를 분리하여 각 div에 추가
+                dateDiv.textContent = formattedDate;
+                messageDiv.textContent = `${notification.message}`;
+
+                // 버튼을 묶는 div에 버튼 추가 (읽음 버튼이 먼저)
+                buttonContainer.appendChild(fadeButton);
+                buttonContainer.appendChild(deleteButton);
+
+                // 메시지와 버튼을 묶는 div에 메시지와 버튼 추가
+                messageButtonDiv.appendChild(messageDiv);
+                messageButtonDiv.appendChild(buttonContainer);
+
+                // li 요소에 날짜 div와 메시지&버튼 div 추가
+                listItem.appendChild(dateDiv);
+                listItem.appendChild(messageButtonDiv);
+
                 notificationList.appendChild(listItem);
             });
         })
         .catch(error => console.error('Error fetching notifications:', error));
 }
+
+
 
 function deleteNotice(id) {
     console.log(id);
