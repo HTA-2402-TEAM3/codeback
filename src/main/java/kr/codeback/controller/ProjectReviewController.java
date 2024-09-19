@@ -59,7 +59,7 @@ public class ProjectReviewController {
 		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("reviews", reviews);
 
-		return "/view/projectReview/project-list";
+		return "view/projectReview/project-list";
 	}
 
 	@GetMapping("/{id}")
