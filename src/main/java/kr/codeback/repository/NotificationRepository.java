@@ -15,6 +15,8 @@ public interface NotificationRepository extends JpaRepository<Notification, UUID
 
 	List<Notification> findAllByMember(@NonNull Member member);
 
+	long countByMember(Member member);
+
 	List<Notification> findByEntityID(@NonNull UUID entityID);
 
 	void deleteById(@NonNull UUID id);

@@ -36,7 +36,7 @@ public class NotificationRestController {
 		return ResponseEntity.ok(new MessageResponseDTO("읽음 처리되었습니다."));
 	}
 
-	@PatchMapping("/")
+	@PatchMapping()
 	public ResponseEntity<?> markAll() {
 		notificationService.markAll(memberService.extractMember());
 		return ResponseEntity.ok(new MessageResponseDTO("읽음 처리되었습니다."));
@@ -54,4 +54,9 @@ public class NotificationRestController {
 		return ResponseEntity.ok(new MessageResponseDTO("알림이 삭제되었습니다."));
 	}
 
+	@GetMapping("/count")
+	public ResponseEntity<?> count(){
+		int count = notificationService.countByMember(memberService.extractMember());
+		return ResponseEntity.ok(count);
+	}
 }

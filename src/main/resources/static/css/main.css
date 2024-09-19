@@ -3695,3 +3695,25 @@ img {
     }
 }
 
+#notification-icon {
+    position: relative !important;
+    display: inline-block !important;
+}
+
+#notification-count {
+    position: absolute !important;
+    top: 5px !important; /* 숫자가 종 아이콘 위쪽에 표시되도록 조정 */
+    right: -10px !important; /* 숫자가 종 아이콘 오른쪽에 표시되도록 조정 */
+    background-color: red !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    padding: 2px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* 약간의 그림자 추가 */
+}

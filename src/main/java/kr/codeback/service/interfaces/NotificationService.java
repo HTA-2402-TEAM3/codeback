@@ -19,6 +19,8 @@ public interface NotificationService {
 	// ID로 알림 조회
 	Notification getNotificationById(UUID id);
 
+	int countByMember(Member member);
+
 	void deleteByMember(Member member);
 
 	void update(Notification notification);
