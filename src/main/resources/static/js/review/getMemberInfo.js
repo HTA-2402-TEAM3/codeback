@@ -9,7 +9,6 @@ function getMemberEmail() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data);
             loginEmail = data.email;
         })
         .catch(error => {

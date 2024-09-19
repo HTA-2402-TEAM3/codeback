@@ -1,8 +1,5 @@
 function changePreference(entityID, type) {
 
-    console.log(entityID);
-    console.log(type);
-
     const likeType = {
         type : type
     };
@@ -23,7 +20,6 @@ function changePreference(entityID, type) {
         })
         .then((data) => {
 
-            console.log(data);
             const countTag = document.getElementById('count_' + data.entityID);
 
             let count = parseInt(countTag.textContent);
