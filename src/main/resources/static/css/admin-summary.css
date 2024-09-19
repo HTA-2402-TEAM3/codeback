@@ -14,7 +14,12 @@ div {
 }
 
 table {
-    width: 400px;
+    margin-top: 15px;
+    width: 220px;
+}
+
+#code-review-language-summary-table {
+    width: 660px;
 }
 
 canvas {

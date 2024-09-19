@@ -30,11 +30,23 @@
             <canvas id="member-summary" width="500" height="500"></canvas>
 
             <div>
-                <ul>
-                    <li th:text="'총 회원 수 : ' + ${memberSummary.totalCount}">totalMemberCount</li>
-                    <li th:text="'활성화 회원 수 : ' + ${memberSummary.activeCount}">activeMemberCount</li>
-                    <li th:text="'비활성화 회원 수 : ' + ${memberSummary.inactiveCount}">deletedMemberCount</li>
-                </ul>
+                <table>
+                    <caption>회원 정보</caption>
+                    <tbody>
+                    <tr>
+                        <td>총 회원 수</td>
+                        <td th:text="${memberSummary.totalCount}">totalMemberCount</td>
+                    </tr>
+                    <tr>
+                        <td>활성화 회원 수</td>
+                        <td th:text="${memberSummary.activeCount}">activeMemberCount</td>
+                    </tr>
+                    <tr>
+                        <td>비활성화 회원 수</td>
+                        <td th:text="${memberSummary.inactiveCount}">deletedMemberCount</td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </div>
         </div>
@@ -42,13 +54,20 @@
         <div>
             <canvas id="code-review-language-summary" width="500" height="500"></canvas>
 
-            <h2>언어별 코드 리뷰 게시글 수</h2>
             <div>
-                <table>
-                    <tbody th:each="codeReviews:${codeReviewSummaryByLanguage}">
-                    <tr>
-                        <td th:text="${codeReviews.languageName}">name</td>
-                        <td th:text="${codeReviews.totalCount}">count</td>
+                <table id = "code-review-language-summary-table">
+                    <caption>언어별 코드 리뷰 게시글 수</caption>
+                    <tbody>
+                    <tr th:each="row,iterStat : ${codeReviewSummaryByLanguage}" th:if="${iterStat.index % 3 == 0}">
+                        <th:block th:each="i : ${#numbers.sequence(iterStat.index, iterStat.index + 2)}"
+                                  th:if="${i < codeReviewSummaryByLanguage.size()}">
+                            <td th:with="review=${codeReviewSummaryByLanguage[i]}" th:text="${review.languageName}">
+                                name
+                            </td>
+                            <td th:with="review=${codeReviewSummaryByLanguage[i]}" th:text="${review.totalCount}">
+                                count
+                            </td>
+                        </th:block>
                     </tr>
                     </tbody>
                 </table>
@@ -102,6 +121,29 @@
                 </table>
             </div>
 
+            <div>
+                <table>
+                    <caption>프로젝트 리뷰 게시글</caption>
+                    <tbody th:each="projectReview:${projectReviewSummaryByMonth}">
+                    <tr>
+                        <td th:text="${projectReview.month} + '월'">name</td>
+                        <td th:text="${projectReview.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table>
+                    <caption>프로젝트 리뷰 댓글</caption>
+                    <tbody th:each="projectReviewComment:${projectReviewCommentSummaryByMonth}">
+                    <tr>
+                        <td th:text="${projectReviewComment.month} + '월'">name</td>
+                        <td th:text="${projectReviewComment.count}">count</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <br>
 
             <div>
@@ -223,17 +265,24 @@
         let codeReviewMonthSummary = [[${codeReviewSummaryByMonth}]];
         let codeReviewCommentMonthSummary = [[${codeReviewCommentSummaryByMonth}]];
         let preferenceMonthSummary = [[${codeReviewPreferenceSummaryByMonth}]];
+        let projectReviewSummary = [[${projectReviewSummaryByMonth}]];
+        let projectReviewCommentSummary = [[${projectReviewCommentSummaryByMonth}]];
 
         let monthLabels = [];
         let codeReviewMonthDatas = [];
         let codeReviewCommentMonthDatas = [];
         let preferenceMonthDatas = [];
+        let projectReviewMonthDatas = [];
+        let projectReviewCommentMonthDatas = [];
 
         for (let i = 0; i < codeReviewMonthSummary.length; i++) {
             monthLabels.push(codeReviewMonthSummary[i].month);
             codeReviewMonthDatas.push(codeReviewMonthSummary[i].count);
             codeReviewCommentMonthDatas.push(codeReviewCommentMonthSummary[i].count);
             preferenceMonthDatas.push(preferenceMonthSummary[i].count);
+            projectReviewMonthDatas.push(projectReviewSummary[i].count);
+            projectReviewCommentMonthDatas.push(projectReviewCommentSummary[i].count);
+
         }
 
         new Chart(monthChart, {
@@ -264,6 +313,22 @@
                         fill: false,
                         borderWidth: 2,
                         pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+                    },
+                    {
+                        label: '프로젝트 리뷰 게시글',
+                        data: projectReviewMonthDatas,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        fill: false,
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    },
+                    {
+                        label: '프로젝트 리뷰 댓글',
+                        data: projectReviewCommentMonthDatas,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        fill: false,
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(153, 102, 255, 1)',
                     }
                 ]
             },

@@ -45,12 +45,13 @@ public interface CodeReviewRepository extends JpaRepository<CodeReview, UUID>, J
 		select
 		new kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO(
 		cl.languageName,
-		count(*)
+		coalesce(count(c), 0)
 		)
 		from CodeReview c
-		join CodeLanguageCategory cl
+		right join CodeLanguageCategory cl
 		on c.codeLanguageCategory.id = cl.id
 		group by cl.languageName
+		Order by coalesce(count(c), 0) desc
 		""")
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
