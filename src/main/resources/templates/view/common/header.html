@@ -11,15 +11,15 @@
         </div>
 
         <div class="button_box">
-            <button class="button notification" onclick="location.href='/notice'" id="notification-button">
-                <span class="icon fa-bell"></span>
-            </button>
-            <button class="button special" id="show-login" sec:authorize="!isAuthenticated()">Login</button>
-            <span sec:authorize="isAuthenticated()">
+            <button class="button special" id="show-login">Login</button>
+            <div style="display: flex;">
+                <a href="/notice" class="icon fa-bell" id="notification-button" >
+                </a>
                 <button class="button special" id="logout-button" onclick="logout()">Logout</button>
-            </span>
-        </div>
+            </div>
 
+
+        </div>
     </div>
     <!-- 로그인 팝업 -->
     <div class="popup">
@@ -75,8 +75,10 @@
             </div>
         </div>
         <!--    로그인 js-->
+        <script>checkAccessToken()</script>
         <script src="/js/popup.js"></script>
         <script src="/js/submit.js"></script>
         <script src="/js/logout.js"></script>
+        <script src="/js/member.js"></script>
     </div>
 </header>

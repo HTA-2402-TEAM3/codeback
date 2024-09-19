@@ -11,7 +11,6 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String homePage(){
-		log.info("homecontroller는 거쳐갔습니다.");
 		return "index";
 	}
 }

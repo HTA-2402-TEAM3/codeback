@@ -41,8 +41,6 @@ public class PreferenceController {
 		String email = jwtUtil.extractEmail(accessToken);
 		Member member = memberService.findByEmail(email);
 		Preference preference = preferenceService.save(member, entityID);
-		log.info(entityID);
-		log.info(preferenceRequestDTO.getType());
 		notificationService.save(preference, preferenceRequestDTO.getType());
 
 		return ResponseEntity.ok()

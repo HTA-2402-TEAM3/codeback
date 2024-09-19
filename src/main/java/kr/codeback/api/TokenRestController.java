@@ -23,14 +23,8 @@ public class TokenRestController {
 
 	@PostMapping("/")
 	public String generateAccessToken(@RequestBody TokenRequestDTO tokenRequestDTO){
-		log.info("api/member/token");
 		return jwtUtil.generateAccessToken(tokenRequestDTO.getEmail(), tokenRequestDTO.getNickname(),
 			tokenRequestDTO.getRole());
 	}
-
-	// @PostMapping("/")
-	// public String generateRefreshToken(@RequestBody TokenRequestDTO tokenRequestDTO){
-	// 	return jwtUtil.generateRefreshToken(tokenRequestDTO.getEmail());
-	// }
 
 }

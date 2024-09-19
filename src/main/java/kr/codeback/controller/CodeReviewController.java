@@ -89,10 +89,6 @@ public class CodeReviewController {
 		model.addAttribute("languages", languages);
 		model.addAttribute("reviews", reviews);
 
-		log.info(String.valueOf(page.getTotalPages()));
-		log.info(languages.toString());
-		log.info(String.valueOf(reviews));
-
 		return "view/codeReview/review-list";
 	}
 
