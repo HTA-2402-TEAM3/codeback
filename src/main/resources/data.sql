@@ -1,8 +1,8 @@
 use codeback;
 
 INSERT INTO authority (id, name)
-VALUES (UUID(), 'ROLE_USER'),
-       (UUID(), 'ROLE_ADMIN');
+VALUES ('11111111-1111-1111-1111-111111111111', 'ROLE_USER'),
+       ('11111111-1111-1111-1111-111111111112', 'ROLE_ADMIN');
 
 INSERT INTO code_language_category (id, language_name)
 VALUES (UUID(), 'Java'),
@@ -49,7 +49,8 @@ VALUES (UUID(), 'jiwonpark@google.com', '박지원', (SELECT id FROM authority W
        (UUID(), 'ahn.hyeji@naver.com', '안혜지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
        (UUID(), 'kwon.yuri@daum.net', '권유리', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
        (UUID(), 'seo.inguk@yahoo.com', '서인국', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-       (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false);
+       (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'ehrud1617@gmail.com', '이도경', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false);
 
 INSERT INTO code_review (id, member_id, title, content, create_date, language_id)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 0), '자바 경로탐색 질문입니다.', '<h2>BFS 예제 1: 경로 탐색</h2>
