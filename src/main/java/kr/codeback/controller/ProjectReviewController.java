@@ -42,7 +42,7 @@ public class ProjectReviewController {
 
 	@GetMapping("/write")
 	public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
-		return "/view/projectReview/project-write";
+		return "view/projectReview/project-write";
 	}
 
 	@GetMapping("/")
@@ -97,9 +97,8 @@ public class ProjectReviewController {
 			.projectReviewImages(projectReview.getProjectReviewImages())
 			.preferenceCnt(preferenceCnt)
 			.githubURL(projectReview.getGithubURL())
-
 			.build());
 
-		return "/view/projectReview/project-view";
+		return "view/projectReview/project-view";
 	}
 }
