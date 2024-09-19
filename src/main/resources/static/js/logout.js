@@ -11,7 +11,6 @@ function changeButton() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data);
             document.getElementById('notification-button').style.display='block';
             document.getElementById('show-login').style.display = 'none';
             document.getElementById('logout-button').style.display = 'block';

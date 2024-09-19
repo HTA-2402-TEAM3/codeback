@@ -12,7 +12,6 @@ function getNotification() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            console.log(data);
             const notificationList = document.getElementById('notificationList');
 
             data.forEach(notification => {
@@ -91,7 +90,6 @@ function getNotification() {
 
 
 function deleteNotice(id) {
-    console.log(id);
 
     fetch(`/api/notification/${id}`, {
         method: 'DELETE', //

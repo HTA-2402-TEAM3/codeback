@@ -69,10 +69,6 @@ const escapeHtml = (unsafe) => {
 
 function commentSubmit(mapping) {
 
-    console.log("email", loginEmail);
-    console.log("commentContent", commentContent);
-    console.log("reviewId", review_uuid);
-
     if(loginEmail === '' || loginEmail === undefined) {
         alert("로그인 해주세요");
     } else {
@@ -103,7 +99,6 @@ function commentSubmit(mapping) {
 
 function hiddenIcon() {
     const codeReviewWriterEmail = document.getElementById("codeReviewWriter").dataset.email;
-    console.log("hiddenIcon() email val: ", codeReviewWriterEmail);
 
     if(codeReviewWriterEmail === loginEmail) {
         const codeReviewIcon = document.querySelector('.icon_view');
@@ -113,7 +108,6 @@ function hiddenIcon() {
     const comments = document.querySelectorAll('#commentElements')
     comments.forEach(comment => {
         const memberInfo = comment.querySelector('.memberInfo').dataset.email;
-        console.log("memberInfo.value: ", memberInfo);
         if(memberInfo === loginEmail) {
             const IconElement = comment.querySelector('.comment_delete');
             IconElement.removeAttribute("hidden");
@@ -141,9 +135,7 @@ function hiddenIcon() {
 // }
 
 function deleteComment(mapping,commentID) {
-    console.log(mapping);
 
-    console.log("commentID", commentID);
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
         fetch(`/api/${mapping}/comment/${commentID}?memberEmail=${loginEmail}`, {
             method: 'DELETE',
