@@ -1,3 +1,7 @@
+window.addEventListener('load', function() {
+    noticeCount();
+});
+
 function getMemberInfo() {
 
     fetch(`/api/member/info`)
