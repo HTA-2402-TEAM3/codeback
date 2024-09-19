@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import jakarta.persistence.*;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
-import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewModifyResponseDTO;
 import kr.codeback.model.dto.response.review.set.ProjectReviewImageDTO;
 import kr.codeback.model.dto.response.review.set.ProjectReviewTagDTO;
@@ -15,8 +14,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 @Entity
 @Table(name = "PROJECT_REVIEW")

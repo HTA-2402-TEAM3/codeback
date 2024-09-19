@@ -11,7 +11,6 @@ import kr.codeback.exception.review.ReviewNonExistentException;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
-import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
 import kr.codeback.model.entity.*;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;

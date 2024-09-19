@@ -4,8 +4,6 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
-import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
-import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
 import kr.codeback.service.interfaces.NotificationService;

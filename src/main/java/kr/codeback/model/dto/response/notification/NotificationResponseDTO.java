@@ -1,7 +1,6 @@
 package kr.codeback.model.dto.response.notification;
 
 import java.sql.Timestamp;
-import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;

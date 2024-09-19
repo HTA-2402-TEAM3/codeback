@@ -1,6 +1,5 @@
 package kr.codeback.model.dto.request.review;
 
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,7 +1,5 @@
 package kr.codeback.model.dto.response.review;
 
-import kr.codeback.model.entity.Member;
-import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.model.entity.ProjectReviewImage;
 import kr.codeback.model.entity.ProjectReviewTag;
 import lombok.Builder;

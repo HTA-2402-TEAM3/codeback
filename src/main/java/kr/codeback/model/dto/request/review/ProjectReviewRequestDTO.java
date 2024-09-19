@@ -2,11 +2,9 @@ package kr.codeback.model.dto.request.review;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 public class ProjectReviewRequestDTO {

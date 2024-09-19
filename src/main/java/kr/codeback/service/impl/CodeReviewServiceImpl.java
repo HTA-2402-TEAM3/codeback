@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import kr.codeback.exception.ErrorCode;
-import kr.codeback.exception.member.MemberNotFoundException;
 import kr.codeback.exception.review.ReviewNonExistentException;
 import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.entity.*;

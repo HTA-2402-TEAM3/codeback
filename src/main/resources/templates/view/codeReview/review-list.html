@@ -19,7 +19,7 @@
     <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
 </head>
 
-<div th:replace="view/common/header.html :: header"></div>
+<div th:replace="~{view/common/header.html :: header}"></div>
 <body class="subpage">
 <section id="three" class="wrapper">
     <header class="align-center">
@@ -40,7 +40,7 @@
         <button class="special button" onclick="valiMember('review')">글쓰기</button>
         <div class="search-container">
             <div>
-                <label for="search"></label><input type="text" name="search" id="search" value="" placeholder="Search"/>
+                <input type="text" name="search" id="search" value="" placeholder="Search"/>
             </div>
             <div>
                 <a onclick="searchData()" class="code-review" style="text-decoration: none">

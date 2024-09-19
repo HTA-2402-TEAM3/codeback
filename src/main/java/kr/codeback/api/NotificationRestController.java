@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.codeback.common.MessageResponseDTO;
-import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.interfaces.NotificationService;

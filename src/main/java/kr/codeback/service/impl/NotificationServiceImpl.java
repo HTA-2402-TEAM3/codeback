@@ -3,8 +3,6 @@ package kr.codeback.service.impl;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -20,9 +18,7 @@ import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.NotificationRepository;
 import kr.codeback.repository.ProjectReviewCommentRepository;
 import kr.codeback.repository.ProjectReviewRepository;
-import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.NotificationService;
-import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -117,7 +113,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public List<Notification> getNotifications(Member member) {
 		List<Notification> notifications = notificationRepository.findAllByMember(member);
-		Collections.sort(notifications, Comparator.comparing(Notification::getCreateDate).reversed());
+		notifications.sort(Comparator.comparing(Notification::getCreateDate).reversed());
 		return notifications;
 
 	}

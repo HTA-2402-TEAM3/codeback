@@ -23,7 +23,6 @@ import kr.codeback.model.dto.request.TokenRequestDTO;
 import kr.codeback.model.dto.request.UserRequestDTO;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
-import kr.codeback.repository.MemberRepository;
 import kr.codeback.service.interfaces.AuthorityService;
 import kr.codeback.service.interfaces.MemberService;
 import kr.codeback.service.member.EmailSignUpService;

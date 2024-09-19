@@ -57,25 +57,6 @@ function renderPaging(totalPage) {
     ul.innerHTML += pageElements;
 }
 
-
-// function fetchData(value) {
-//     fetch(`/api/review/search?language=${value}`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log("data ::::", data);
-//             renderReviews(data.reviews);
-//             renderPaging(data.totalPage);
-//         })
-//         .catch(error => {
-//             console.error('Fetch error:', error);
-//         });
-// }
-
 function fetchAllData(page) {
     let url;
     if (searchKeyword !== '' && checkboxValue === '') {

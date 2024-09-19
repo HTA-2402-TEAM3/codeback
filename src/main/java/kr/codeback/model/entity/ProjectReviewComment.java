@@ -16,7 +16,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.w3c.dom.Text;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_COMMENT")

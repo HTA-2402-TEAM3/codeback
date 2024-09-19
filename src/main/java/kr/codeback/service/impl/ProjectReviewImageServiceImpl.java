@@ -1,6 +1,5 @@
 package kr.codeback.service.impl;
 
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import kr.codeback.exception.ErrorCode;
 import kr.codeback.exception.review.FailUploadedImageException;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

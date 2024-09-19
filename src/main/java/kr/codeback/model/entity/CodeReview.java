@@ -7,7 +7,6 @@ import java.util.UUID;
 import jakarta.persistence.*;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewModifyResponseDTO;
-import kr.codeback.model.dto.response.review.CodeReviewResponseDTO;
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Builder;

@@ -15,7 +15,6 @@ import kr.codeback.model.constant.CustomOAuth2User;
 import kr.codeback.model.constant.OAuthProfile;
 import kr.codeback.model.dto.response.member.GithubResponseDTO;
 import kr.codeback.model.dto.response.member.GoogleResponseDTO;
-import kr.codeback.model.dto.response.member.MemberResponseDTO;
 import kr.codeback.model.dto.response.member.OAuth2ResponseDTO;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;

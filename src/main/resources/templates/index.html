@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-	templated.co @templatedco
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
 <html lang="en">
 <head>
     <title>Projection by TEMPLATED</title>
@@ -22,11 +18,13 @@
         <div class="logo_box">
             <img src="/images/codeback.png"/>
         </div>
+
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
-            <div style="display: none;">
-                <span id="user-email"></span>
-                <button class="button special" id="logout-button">Logout</button>
+            <div style="display: flex;">
+                <a href="/notice" class="icon fa-bell" id="notification-button" >
+                </a>
+                <button class="button special" id="logout-button" onclick="logout()">Logout</button>
             </div>
         </div>
         <!-- 로그인 팝업 -->
@@ -84,6 +82,7 @@
             <!--    로그인 js-->
             <script src="/js/popup.js"></script>
             <script src="/js/submit.js"></script>
+            <script src="/js/logout.js"></script>
         </div>
     </div>
 </header>
@@ -116,10 +115,5 @@
         </div>
     </div>
 </section>
-<!-- Scripts -->
-<script src="../static/js/jquery.min.js"></script>
-<script src="../static/js/skel.min.js"></script>
-<script src="../static/js/util.js"></script>
-<script src="../static/js/main.js"></script>
 </body>
 </html>

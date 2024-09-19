@@ -1,9 +1,7 @@
 package kr.codeback.exception.review;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Getter
 public class ReviewException extends RuntimeException{

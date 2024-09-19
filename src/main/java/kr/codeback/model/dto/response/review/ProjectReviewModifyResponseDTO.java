@@ -2,8 +2,6 @@ package kr.codeback.model.dto.response.review;
 
 import kr.codeback.model.dto.response.review.set.ProjectReviewImageDTO;
 import kr.codeback.model.dto.response.review.set.ProjectReviewTagDTO;
-import kr.codeback.model.entity.ProjectReviewImage;
-import kr.codeback.model.entity.ProjectReviewTag;
 import lombok.Builder;
 import lombok.Getter;
 

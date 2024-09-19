@@ -21,13 +21,11 @@ public class OauthController {
 
 	@GetMapping("/github/callback")
 	public Map<String, String> githubCallback(@RequestParam Map<String, String> codemap) {
-
 		return null;
 	}
 
 	@GetMapping("/google/callback")
 	public Map<String, String> googleCallback(@RequestParam Map<String, String> codemap) {
-
 		return null;
 	}
 

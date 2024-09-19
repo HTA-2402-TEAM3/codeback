@@ -1,12 +1,8 @@
 package kr.codeback.service.interfaces;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import org.aspectj.weaver.ast.Not;
-
-import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;

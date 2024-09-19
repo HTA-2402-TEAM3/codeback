@@ -9,7 +9,6 @@ import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewCommentRequestDTO;
 import kr.codeback.model.entity.*;
-import kr.codeback.repository.ProjectReviewRepository;
 import kr.codeback.service.interfaces.*;
 import org.springframework.stereotype.Service;
 

@@ -4,24 +4,16 @@ import kr.codeback.common.MessageResponseDTO;
 import kr.codeback.model.constant.SuccessMessage;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
-import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
-import kr.codeback.model.dto.response.review.CodeReviewPagingResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewPagingResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.ProjectReview;
-import kr.codeback.model.entity.ProjectReviewImage;
 import kr.codeback.service.impl.ProjectReviewServiceImpl;
 import kr.codeback.service.interfaces.MemberService;
-import kr.codeback.service.interfaces.ProjectReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -60,7 +52,7 @@ public class ProjectReviewRestController {
     @PutMapping("/update")
     public ResponseEntity<Object> updateProjectReview(
             @RequestParam UUID reviewId,
-            @ModelAttribute ProjectReviewModifyRequestDTO projectReviewRequestDTO) throws Exception {
+            @ModelAttribute ProjectReviewModifyRequestDTO projectReviewRequestDTO) {
         projectReviewService.updateProjectReview(reviewId, projectReviewRequestDTO);
         return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
     }
