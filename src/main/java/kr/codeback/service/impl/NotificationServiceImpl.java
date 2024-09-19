@@ -98,6 +98,10 @@ public class NotificationServiceImpl implements NotificationService {
 		return notificationRepository.findById(id).orElse(null);
 	}
 
+	@Override
+	public int countByMember(Member member) {
+		return Integer.parseInt(String.valueOf(notificationRepository.countByMember(member)));
+	}
 
 	@Override
 	@Transactional
@@ -111,6 +115,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 
 	@Override
+	@Transactional
 	public List<Notification> getNotifications(Member member) {
 		List<Notification> notifications = notificationRepository.findAllByMember(member);
 		notifications.sort(Comparator.comparing(Notification::getCreateDate).reversed());
