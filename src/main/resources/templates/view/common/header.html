@@ -11,14 +11,12 @@
         </div>
 
         <div class="button_box">
-            <button class="button special" id="show-login">Login</button>
+            <button class="button notification" onclick="location.href='/notice'" id="notification-button">
+                <span class="icon fa-bell"></span>
+            </button>
+            <button class="button special" id="show-login" sec:authorize="!isAuthenticated()">Login</button>
             <span sec:authorize="isAuthenticated()">
-                <button class="button special" id="logout-button">Logout</button>
-                <a href="#" class="icon fa-bell"></a>
-                <script>
-                                const loginButton = document.getElementById("show-login");
-                                loginButton.style.display = "none"; // 숨기기
-                </script>
+                <button class="button special" id="logout-button" onclick="logout()">Logout</button>
             </span>
         </div>
 
@@ -79,5 +77,6 @@
         <!--    로그인 js-->
         <script src="/js/popup.js"></script>
         <script src="/js/submit.js"></script>
+        <script src="/js/logout.js"></script>
     </div>
 </header>

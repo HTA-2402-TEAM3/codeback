@@ -3,6 +3,7 @@ package kr.codeback.service.impl;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.model.entity.Preference;
+import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.NotificationRepository;
@@ -22,9 +24,11 @@ import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.NotificationService;
 import kr.codeback.service.interfaces.ProjectReviewCommentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NotificationServiceImpl implements NotificationService {
 
 	private final NotificationRepository notificationRepository;
@@ -50,6 +54,9 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	@Transactional
 	public void save(Preference preference,String type) {
+
+		log.info(String.valueOf(preference.getEntityID()));
+
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
 			.member(preference.getMember())
@@ -58,18 +65,37 @@ public class NotificationServiceImpl implements NotificationService {
 			.message(generateMessage(preference,type))
 			.build();
 
+
+		log.info("notification message");
 		notificationRepository.save(notification);
+	}
+
+	@Override
+	@Transactional
+	public void save(ProjectReviewComment projectReviewComment){
+		Notification notification = Notification.builder()
+			.id(UUID.randomUUID())
+			.member(projectReviewComment.getProjectReview().getMember())
+			.entityID(projectReviewComment.getId())
+			.isRead(false)
+			.message(projectReviewComment.getMember().getNickname()+"님이 "+projectReviewComment.getProjectReview().getTitle()+" 글에 댓글을 작성하였습니다.")
+			.build();
+
+		notificationRepository.save(notification);
+
 	}
 
 	public String generateMessage(Preference preference, String type){
 		String message = preference.getMember().getNickname()+"님이 ";
 		if(type.equals("codeReview")){
+			log.info(Objects.requireNonNull(codeReviewRepository.findById(preference.getEntityID()).orElse(null)).toString());
+			log.info(message + codeReviewRepository.findById(UUID.fromString(String.valueOf(preference.getEntityID()))).orElse(null)+" 글에 좋아요를 눌렀습니다.");
 			return message + codeReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
 		} else if (type.equals("codeReviewComment")) {
 			return message + codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
-		} else if (type.equals("projectCodeReview")) {
+		} else if (type.equals("projectReview")) {
 			return message + projectReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
-		} else if (type.equals("projectCodeReviewComment")) {
+		} else if (type.equals("projectReviewComment")) {
 			return message + projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getProjectReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
 		}
 		return message;

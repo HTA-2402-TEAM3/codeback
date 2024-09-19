@@ -19,28 +19,28 @@
     <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
 </head>
 
-<div th:replace="view/common/header :: header"></div>
+<div th:replace="view/common/header.html :: header"></div>
 <body class="subpage">
 <section id="three" class="wrapper">
     <header class="align-center">
         <h2>Code Review</h2>
         <div class="category_box" id="checkbox-container">
             <div class="checkbox-group" th:each="language : ${languages}" style="width:15%">
-                <input
-                        type="checkbox"
-                        th:id="${language.getLanguageName()}"
-                        th:value="${language.getId()}"
-                        onclick="selectOnlyOne(this)"
-                />
+                    <input
+                            type="checkbox"
+                            th:id="${language.getLanguageName()}"
+                            th:value="${language.getId()}"
+                            onclick="selectOnlyOne(this)"
+                    >
                 <label th:for="${language.getLanguageName()}" th:text="${language.getLanguageName()}" style="display: flex"></label>
             </div>
         </div>
     </header>
     <div class="inner_logo">
-        <button class="special button" onclick="window.location.href='/review/write'">글쓰기</button>
+        <button class="special button" onclick="valiMember('review')">글쓰기</button>
         <div class="search-container">
             <div>
-                <input type="text" name="search" id="search" value="" placeholder="Search"/>
+                <label for="search"></label><input type="text" name="search" id="search" value="" placeholder="Search"/>
             </div>
             <div>
                 <a onclick="searchData()" class="code-review" style="text-decoration: none">
@@ -106,7 +106,8 @@
     </nav>
 </div>
 
-<script src="/js/review-list.js"></script>
+<script src="/js/review/review-list.js"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>
 

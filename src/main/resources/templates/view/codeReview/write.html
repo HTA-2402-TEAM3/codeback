@@ -19,8 +19,7 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 </head>
 
-<div th:replace="view/common/header :: header"></div>
-
+<div th:replace="view/common/header.html :: header"></div>
 <body class="subpage">
 <section id="main" class="wrapper">
     <div class="inner">
@@ -41,6 +40,14 @@
 
             const editor = new Editor({
                 el: document.querySelector('#editor'),
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'link'],
+                    ['code', 'codeblock'],
+                    ['scrollSync'],
+                ],
                 height: '500px',
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'
@@ -59,11 +66,12 @@
         <hr class="major"/>
         <div class="inner_button">
             <button class="special button" onclick="window.location.href='/review/'">취소</button>
-            <button class="button special" onclick="getMemberInfo()">쓰기/수정</button>
+            <button class="button special" onclick="getMemberEmail()">쓰기/수정</button>
         </div>
     </div>
     <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-    <script src="/js/write.js"></script>
+    <script src="/js/review/write.js"></script>
+    <script src="/js/review/getMemberInfo.js"></script>
 </section>
 </body>
 </html>

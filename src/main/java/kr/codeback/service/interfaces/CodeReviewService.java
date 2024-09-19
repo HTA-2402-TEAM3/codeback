@@ -27,7 +27,7 @@ public interface CodeReviewService {
 
     List<CodeReview> findByMember(Member member);
 
-    void deleteCodeReviewById(UUID id);
+    void deleteCodeReviewById(UUID id, String memberEmail);
 
     // 게시물 작성
     void saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);

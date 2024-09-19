@@ -16,21 +16,26 @@
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
 </head>
-<div th:replace="view/common/header :: header"></div>
+<div th:replace="view/common/header.html :: header"></div>
 
 <body class="subpage">
 <section id="main" class="wrapper">
     <div class="inner">
         <div class="inner">
             <header class="align-center">
-                <h2>TITLE...</h2>
+                <h2 th:text="${projectReview.title}"></h2>
                 <div class="content">
-                    <h4>keyy1315</h4>
+                    <h4 th:text="${projectReview.getNickname()}"
+                    id="codeReviewWriter" th:data-email="${projectReview.getEmail()}"
+                    >keyy1315</h4>
                     <div class="year_icon" style="align-items: center;">
-                        <h4 style="margin: 0;">2024.09.03</h4>
-                        <a class="icon fa-thumbs-up">
+                        <h4 style="margin: 0;" th:text="${#dates.format(projectReview.createDate, 'yyyy-MM-dd')}">
+                            2024.09.03</h4>
+                        <a class="icon fa-thumbs-up" th:reviewID="${projectReview.id}" th:onclick="projectReviewLike(this.getAttribute('reviewID'))">
                             <span class="label">thumbsUp</span>
-                            <span class="count">4</span>
+                            <span class="count"
+                                  th:id="'count_'+${projectReview.id}"
+                                  th:text="${projectReview.preferenceCnt}">4</span>
                         </a>
                     </div>
                 </div>
@@ -39,160 +44,127 @@
 
             <div class="container" style="width: 120em; margin-left: -65px;">
                 <div class="projectReview-content">
-                    <img src="/images/test.jpg" />
+                    <img th:each="img: ${projectReview.projectReviewImages}" th:src="${img.getUrl()}" alt="img"/>
                 </div>
                 <div class="projectReview-content">
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
-                    <p>test1</p>
+                    <p th:utext="${projectReview.content}"></p>
                 </div>
             </div>
 
-            <div class="inner_button" style="justify-content: flex-start; padding-left: 0;">
-                <button class="button special disabled">#자바</button>
-                <button class="button special disabled">#스프링 부트</button>
-                <button class="button special disabled">#JPA</button>
-                <div class="icon_view">
-                    <a class="icon fa-pencil"></a>
-                    <a class="icon fa-trash"></a>
+            <div class="inner_button_project">
+                <div class="tagButtons">
+                    <button class="button special"
+                            th:each="tag: ${projectReview.projectReviewTags}"
+                            th:tag="${tag.getTag()}"
+                            th:onclick="findWithTag(this.getAttribute('tag'))"
+                            th:text="'#' +${tag.getTag()}"></button>
+                    <div class="icon_view" hidden="hidden" style="justify-content: flex-end">
+                        <a class="icon fa-pencil"
+                           th:href="@{/project/write(id=${projectReview.id})}"></a>
+                        <a class="icon fa-trash"
+                           th:projectReview="${projectReview.id}"
+                           th:onclick="deleteProjectReview(this.getAttribute('projectReview'))"></a>
+                    </div>
                 </div>
-            </div>
-            <div style="display: flex; align-items: center;">
-                <a class="icon fa-github" id="github-icon" href="https://github.com/keyy1315"></a>
-                <h6 style="margin: 0;">Click to go to Github!</h6>
-            </div>
-            <hr class="major" style="margin-top: 20px;"/>
+                <div style="display: flex; align-items: center;">
+                    <a class="icon fa-github" id="github-icon" th:href="${projectReview.githubURL}"></a>
+                    <h6 style="margin: 0;">Click to go to Github!</h6>
+                </div>
+                <hr class="major" style="margin-top: 20px;"/>
 
-            <h3>
-                <icon class="fa fa-comments"></icon>
-                <span>3</span>
-            </h3>
-            <div id="comment-container">
-                <div id="commentElements1">
-                    <ul>
-                        <li>
+                <h3>
+                    <icon class="fa fa-comments"></icon>
+                    <span th:text="${projectReview.projectReviewComments.size()}">3</span>
+                </h3>
+                <div id="comment-container">
+                    <div th:each="comments: ${projectReview.projectReviewComments}" id="commentElements">
+                        <ul>
+                            <li>
+                                <div>
+                                    <h4
+                                            style="margin: 0;" th:text="${comments.getNickname()}"
+                                        class="memberInfo"
+                                        th:data-email="${comments.getEmail()}"
+                                    >작성자1</h4>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="icon fa-thumbs-up" th:commentID="${comments.id}" th:onclick="projectReviewCommentLike(this.getAttribute('commentID'))">
+                                    <span class="label">thumbsUp</span>
+                                    <span class="count" th:id="'count_'+${comments.id}" th:text="${comments.getPreferenceCnt()}">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="comment-box">
                             <div>
-                                <h4 style="margin: 0;">작성자1</h4>
+                                <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}">2024.09.04</p>
                             </div>
-                        </li>
-                        <li>
-                            <a class="icon fa-thumbs-up" href="#">
-                                <span class="label">thumbsUp</span>
-                                <span class="count">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="comment-box">
-                        <div>
-                            <p>2024.09.04</p>
                         </div>
-                    </div>
-                    <div id="2Fsdfaed-sadfasdfee1">
-                        <p>좋은데용?</p>
-                    </div>
-                    <div class="comment-delete">
-                        <a class="icon fa-pencil"></a>
-                        <a class="icon fa-trash"></a>
-                    </div>
-                    <hr class="major"/>
-                </div>
-                <div id="commentElements2">
-                    <ul>
-                        <li>
-                            <div>
-                                <h4 style="margin: 0;">작성자1</h4>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="icon fa-thumbs-up" href="#">
-                                <span class="label">thumbsUp</span>
-                                <span class="count">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="comment-box">
-                        <div>
-                            <p>2024.09.04</p>
+                        <div th:id="${comments.id}">
+                            <p th:utext="${comments.commentContent}">좋은데용?</p>
                         </div>
-                    </div>
-                    <div id="2Fsdfaed-sadfasdfee2">
-                        <p>좋은데용?</p>
-                    </div>
-                    <div class="comment-delete">
-                        <a class="icon fa-pencil"></a>
-                        <a class="icon fa-trash"></a>
-                    </div>
-                    <hr class="major"/>
-                </div>
-                <div id="commentElements">
-                    <ul>
-                        <li>
-                            <div>
-                                <h4 style="margin: 0;">작성자1</h4>
-                            </div>
-                        </li>
-                        <li>
-                            <a class="icon fa-thumbs-up" href="#">
-                                <span class="label">thumbsUp</span>
-                                <span class="count">0</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="comment-box">
-                        <div>
-                            <p>2024.09.04</p>
+                        <div class="comment_delete" hidden="hidden">
+                            <a class="icon fa-pencil"
+                               th:id="'modify'+${comments.id}"
+                               th:commentId="${comments.id}"
+                               th:commentContent="${comments.commentContent}"
+                               th:project = "project"
+                               th:onclick="modifyComment(this.getAttribute('project'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                            <a class="icon fa-trash"
+                               th:commentId="${comments.id}"
+                               th:project = "project"
+                               th:onclick="deleteComment(this.getAttribute('project'),this.getAttribute('commentId'))"></a>
                         </div>
+                        <hr class="major"/>
                     </div>
-                    <div id="2Fsdfaed-sadfasdfee">
-                        <p>좋은데용?</p>
-                    </div>
-                    <div class="comment-delete">
-                        <a class="icon fa-pencil"></a>
-                        <a class="icon fa-trash"></a>
-                    </div>
-                    <hr class="major"/>
                 </div>
+
+                <div id="commentEditor" style="margin-bottom: 20px;"></div>
+                <button class="button special" id="submit">댓글 작성</button>
+
+                <script>
+                    const Editor = toastui.Editor;
+                    let commentContent;
+
+                    const editor = new Editor({
+                        el: document.querySelector('#commentEditor'),
+                        toolbarItems: [
+                            ['heading', 'bold', 'italic', 'strike'],
+                            ['hr', 'quote'],
+                            ['ul', 'ol', 'task', 'indent', 'outdent'],
+                            ['table', 'link'],
+                            ['code', 'codeblock'],
+                            ['scrollSync'],
+                        ],
+                        autofocus: false,
+                        height: '300px',
+                        initialEditType: 'markdown',
+                        previewStyle: 'vertical'
+                    });
+
+                    document.getElementById('submit').addEventListener('click', () => {
+                        const content = editor.getHTML();
+
+                        console.log(content);
+                        commentContent = content;
+
+                        valiMemberComment("project");
+                    })
+
+                    function findWithTag(tag) {
+                        console.log(tag);
+                        window.location.href = `/project/search?tag=${tag}`;
+                    }
+                </script>
             </div>
-
-            <div id="comment_editor" style="margin-bottom: 20px;"></div>
-            <button class="button special" id="submit">댓글 작성</button>
-
-            <script>
-                const Editor = toastui.Editor;
-                let commentContent;
-
-                const editor = new Editor({
-                    el: document.querySelector('#comment_editor'),
-                    autofocus: false,
-                    height: '300px',
-                    initialEditType: 'markdown',
-                    previewStyle: 'vertical'
-                });
-
-                document.getElementById('submit').addEventListener('click', () => {
-                    const content = editor.getHTML();
-                    console.log(content);
-                    commentContent = content;
-
-                    getMemberInComment();
-                })
-            </script>
         </div>
     </div>
 </section>
+<script src="https://unpkg.com/turndown/dist/turndown.js"></script>
+<script src="/js/review/comment.js"></script>
+<script src="/js/review/project-delete.js"></script>
+<script src="/js/like.js"></script>
+<script src="/js/review/getMemberInfo.js"></script>
+<script src="js/project/reviewTags"></script>
 </body>
 </html>

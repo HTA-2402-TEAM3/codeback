@@ -84,7 +84,6 @@ public class PreferenceServiceImpl implements PreferenceService {
 		if (preferences.isEmpty()) {
 			return;
 		}
-
 		preferenceRepository.deleteAll(preferences);
 	}
 

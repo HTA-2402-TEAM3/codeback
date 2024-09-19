@@ -16,7 +16,7 @@ public class OauthController {
 
 	@GetMapping()
 	public String oauthLogin() {
-		return "/view/oauth";
+		return "view/oauth";
 	}
 
 	@GetMapping("/github/callback")

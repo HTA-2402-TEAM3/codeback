@@ -5,6 +5,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.member.MemberNotFoundException;
+import kr.codeback.exception.review.ReviewNonExistentException;
+import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
 import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
@@ -77,9 +81,16 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	@Override
 	public CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO) {
 		Member member = memberRepository.findByEmail(commentDTO.getMemberEmail())
-				.orElseThrow(()-> new IllegalArgumentException("no member..."));
-		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getCodeReviewId())
-				.orElseThrow(()-> new IllegalArgumentException("no codeReview..."));
+				.orElseThrow(()-> new MemberNotFoundException(
+						ErrorCode.NOT_EXIST_USER.getStatus(),
+						ErrorCode.NOT_EXIST_USER.getMessage()
+				));
+
+		CodeReview codeReview = codeReviewRepository.findById(commentDTO.getReviewId())
+				.orElseThrow(()-> new ReviewNonExistentException(
+						ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+						ErrorCode.NOT_EXIST_USER.getMessage()
+				));
 
 		CodeReviewComment codeReviewComment = CodeReviewComment.builder()
 				.comment(commentDTO.getContent())
@@ -89,13 +100,25 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 				.build();
 		codeReviewCommentRepository.save(codeReviewComment);
 
+
 		return codeReviewComment;
 	}
 
 	@Override
-	public void deleteById(UUID commentId) {
+	public void deleteById(UUID commentId, String memberEmail) {
 		CodeReviewComment comment = codeReviewCommentRepository.findById(commentId)
-				.orElseThrow(()->new IllegalArgumentException("no comments.."+commentId));
+				.orElseThrow(()->new ReviewNonExistentException(
+						ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+						ErrorCode.NOT_EXIST_USER.getMessage()
+				));
+
+		if(!comment.getMember().getEmail().equals(memberEmail)) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
+
 		List<Preference> preferences = preferenceService.findByEntityID(commentId);
 		preferenceService.deleteAll(preferences);
 
@@ -107,7 +130,17 @@ public class CodeReviewCommentServiceImpl implements CodeReviewCommentService {
 	@Override
 	public void update(CommentModifyRequestDTO commentDTO) {
 		CodeReviewComment comment = codeReviewCommentRepository.findById(commentDTO.getId())
-				.orElseThrow(()->new IllegalArgumentException("no Comment..."));
+				.orElseThrow(()->new ReviewNonExistentException(
+						ErrorCode.NOT_EXIST_USER.getStatus(),
+						ErrorCode.NOT_EXIST_USER.getMessage()
+				));
+
+		if(!commentDTO.getMemberEmail().equals(comment.getMember().getEmail())) {
+			throw new ReviewNotAuthorizedException(
+					ErrorCode.NOT_EXIST_USER.getStatus(),
+					ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
 
 		comment.updateCodeReviewComment(commentDTO);
 		codeReviewCommentRepository.save(comment);

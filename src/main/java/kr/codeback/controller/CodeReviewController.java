@@ -22,12 +22,13 @@ import kr.codeback.service.interfaces.CodeLanguageCategoryService;
 import kr.codeback.service.interfaces.CodeReviewService;
 import kr.codeback.service.interfaces.PreferenceService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/review")
 @RequiredArgsConstructor
+@Slf4j
 public class CodeReviewController {
-
 	private final CodeReviewService codeReviewService;
 	private final CodeLanguageCategoryService codeLanguageCategoryService;
 	private final PreferenceService preferenceService;
@@ -49,6 +50,7 @@ public class CodeReviewController {
 		List<CodeReviewCommentResponseDTO> codeReviewCommentResponseDTOs = codeReviewComments.stream()
 			.map(comment -> CodeReviewCommentResponseDTO.builder()
 				.id(comment.getId())
+				.email(comment.getMember().getEmail())
 				.nickname(comment.getMember().getNickname())
 				.commentContent(comment.getComment())
 				.createDate(comment.getCreateDate())
@@ -58,7 +60,8 @@ public class CodeReviewController {
 
 		model.addAttribute("codeReview", CodeReviewResponseDTO.builder()
 			.id(codeReview.getId())
-			.member(codeReview.getMember().getNickname())
+			.nickname(codeReview.getMember().getNickname())
+			.email(codeReview.getMember().getEmail())
 			.title(codeReview.getTitle())
 			.content(codeReview.getContent())
 			.createDate(codeReview.getCreateDate())
@@ -86,7 +89,11 @@ public class CodeReviewController {
 		model.addAttribute("languages", languages);
 		model.addAttribute("reviews", reviews);
 
-		return "/view/codeReview/review-list";
+		log.info(String.valueOf(page.getTotalPages()));
+		log.info(languages.toString());
+		log.info(String.valueOf(reviews));
+
+		return "view/codeReview/review-list";
 	}
 
 	@GetMapping("/write")
@@ -94,15 +101,6 @@ public class CodeReviewController {
 		List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
 
 		model.addAttribute("languages", languageCategories);
-		return "/view/codeReview/write";
+		return "view/codeReview/write";
 	}
-
-	@GetMapping("/projectWrite")
-	public String writeProjectReview(@RequestParam(value = "id", required = false) UUID id, Model model) {
-		List<CodeLanguageCategory> languageCategories = codeLanguageCategoryService.findAll();
-
-		model.addAttribute("languages", languageCategories);
-		return "/view/projectReview/write";
-	}
-
 }

@@ -1,5 +1,9 @@
 let checkboxValue = '';
 let searchKeyword = '';
+let loginEmail = '';
+document.addEventListener('DOMContentLoaded', function () {
+    getMemberEmail();
+});
 
 function selectOnlyOne(checkbox) {
     // 모든 체크박스를 가져옵니다.
@@ -73,7 +77,22 @@ function renderPaging(totalPage) {
 // }
 
 function fetchAllData(page) {
-    fetch(`/api/review/?pageNum=${page}`)
+    let url;
+    if (searchKeyword !== '' && checkboxValue === '') {
+        // 키워드 o 체크박스 x
+        url = `/api/review/search?search=${searchKeyword}&pageNum=${page}`
+    } else if (searchKeyword === '' && checkboxValue !== '') {
+        // 키워드 x 체크박스 o
+        url = `/api/review/search?language=${checkboxValue}&pageNum=${page}`
+    } else if(searchKeyword !== '' && checkboxValue !== ''){
+        // 키워드 o 체크박스 o
+        url = `/api/review/search?search=${searchKeyword}&language=${checkboxValue}&pageNum=${page}`
+    } else {
+        // 키워드 x 체크박스 x
+        url = `/api/review/?pageNum=${page}`
+    }
+
+    fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
