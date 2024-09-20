@@ -31,7 +31,7 @@ function noticeCount() {
             const notificationElement = document.getElementById("notification-count");
             notificationElement.innerText = data;
 
-            if (data === 0) {
+            if (data === 0 && data === null) {
                 notificationElement.style.display = "none"; // 알림이 0일 경우 숨기기
             } else {
                 notificationElement.style.display = "flex"; // 알림이 1 이상일 경우 보이게
@@ -39,5 +39,6 @@ function noticeCount() {
         })
         .catch(error => {
             console.error('Fetch error:', error);
+
         });
 }
