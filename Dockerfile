@@ -13,7 +13,7 @@ WORKDIR /app
 
 # Clone the Git repository. Here we dynamically specify the repository name using the variable defined earlier.
 # Git repository를 최신 상태로 가져오도록 변경
-RUN git clone --depth=1 -b hotfix/v1 https://github.com/HTA-2402-TEAM3/codeback codeback
+RUN git clone --depth=1 -b hotfix/v1 https://github.com/HTA-2402-TEAM3/codeback codeback || (cd codeback && git pull origin hotfix/v1)
 
 # Changes the working directory to /app/${REPO_NAME}. This uses the variable to dynamically set the directory path.
 WORKDIR /app/codeback

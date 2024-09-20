@@ -2110,6 +2110,13 @@ header h6 + p {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     width: 100%;
+    div {
+        flex: 1;                     /* 각 div가 동일한 크기를 차지하도록 설정 */
+        display: flex;
+        justify-content: center;      /* 내용 가운데 정렬 (수평) */
+        align-items: center;          /* 내용 가운데 정렬 (수직) */
+        text-align: center;           /* 텍스트 가운데 정렬 */
+    }
 }
 
 .flex.flex-2 {
@@ -3716,4 +3723,28 @@ img {
     align-items: center;
     justify-content: center;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); /* 약간의 그림자 추가 */
+}
+
+#editor_test {
+    display: flex;
+    justify-content: center;
+}
+
+#pagination-controls {
+    font-size: 30px !important;
+    display: flex;
+    align-items: center;
+}
+
+#prev-page, #next-page {
+    margin: 0 20px; /* 버튼 사이의 공간 조정 */
+}
+
+#current-page, #total-pages {
+    font-size: 30px;
+}
+
+#pagination-controls span {
+    font-size: 40px; /* 추가된 부분 */
+    margin: 0 10px; /* 숫자와 슬래시 사이의 공간 조정 */
 }

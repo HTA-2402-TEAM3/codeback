@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     command: sleep infinity
     ports:
-      - "8080:8080"
+      - "8080:443"
     environment:
           SPRING_DATASOURCE_URL: jdbc:mariadb://codeback_db:3306/codeback
           SPRING_DATASOURCE_USERNAME: codeback
@@ -31,5 +31,3 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-
-
