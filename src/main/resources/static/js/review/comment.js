@@ -1,6 +1,6 @@
 let review_uuid = '';
 const commentContainer = document.getElementById('comment-container');
-let loginEmail = '';
+// let loginEmail = '';
 
 document.addEventListener('DOMContentLoaded', function () {
     const pathSegments = window.location.pathname.split('/'); // 경로를 '/'로 나누기

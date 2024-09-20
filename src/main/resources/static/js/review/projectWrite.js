@@ -1,5 +1,5 @@
 let projectReviewId = '';
-let loginEmail = '';
+// let loginEmail = '';
 
 const renderFormData = new FormData();
 
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderProjectReview(projectReviewId);
     }
     getMemberEmail();
+    console.log("dom function");
 });
 
 function renderProjectReview(reviewID) {

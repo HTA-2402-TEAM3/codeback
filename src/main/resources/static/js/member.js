@@ -3,7 +3,6 @@ window.addEventListener('load', function() {
 });
 
 function getMemberInfo() {
-
     fetch(`/api/member/info`)
         .then(response => {
             if (!response.ok) {
