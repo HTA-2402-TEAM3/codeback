@@ -2110,6 +2110,13 @@ header h6 + p {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     width: 100%;
+    div {
+        flex: 1;                     /* 각 div가 동일한 크기를 차지하도록 설정 */
+        display: flex;
+        justify-content: center;      /* 내용 가운데 정렬 (수평) */
+        align-items: center;          /* 내용 가운데 정렬 (수직) */
+        text-align: center;           /* 텍스트 가운데 정렬 */
+    }
 }
 
 .flex.flex-2 {
