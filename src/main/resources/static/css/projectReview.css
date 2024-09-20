@@ -26,15 +26,71 @@
     font-size: 30px;
 }
 
-@media (max-width: 1200px) {
-    .box {
-        width: calc(50% - 20px);
-    }
+#projectTitle {
+    border-radius: 0;
+    border: none;
+    border-bottom: 3px solid #aa2c2c;
+    font-size: 30px;
 }
 
 @media (max-width: 768px) {
+    #project-box {
+        .project-img {
+            width: 340px;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
     .box {
-        width: calc(100% - 20px);
+        width: calc(50% - 10px); /* 작은 화면에서는 두 개씩 나열 */
+    }
+}
+
+@media (max-width: 1535px) {
+    #project-box {
+        .project-img {
+            width: 340px;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
+
+@media (min-width: 1535px) {
+    #project-box {display: flex;
+        .project-img {
+            width: 340px;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+    }
+
+    .box {
+        .project-img {
+            width: 340px;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+        width: 100%; /* 더 작은 화면에서는 한 개씩 나열 */
+    }
+}
+
+@media (min-width: 1919px) {
+    .box {
+        min-height: 420px; /* 화면이 커지면 높이를 420px로 설정 */
+    }
+    #project-box {
+        .project-img {
+            width: 475px;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+        }
     }
 }
 
@@ -44,39 +100,40 @@
     justify-content: space-between;
     margin: 0 150px;
 
-    #boxes {
+    .boxes {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        .box {
-            width: calc(33.33% - 20px);
-            min-height: 370px;
-            margin-bottom: 30px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            flex-direction: column;
+        width: calc(33.33% - 20px);
 
+        .box {
+            /*width: calc(33.33% - 20px); !* 여백을 고려한 너비 *!*/
+            min-height: 380px;
+            margin-bottom: 30px;
+            padding: 20px 20px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
             justify-content: flex-start;
             align-items: flex-start;
-            display: flex;
-
             overflow: hidden;
 
             :nth-child(3n) {
                 margin-right: 10px;
             }
 
-            h2 {
-                margin-top: 0px;
+            h4 {
+                margin-top: 5px;
             }
         }
     }
 
-    .project-img {
-        width: 100%;
-        height: 80%;
-        object-fit: fill;
-    }
+    /*.project-img {*/
+    /*    width: 340px;*/
+    /*    height: 340px;*/
+    /*    object-fit: cover; !* 이미지 비율 유지하며 크기 맞춤 *!*/
+    /*    display: block; !* 블록 요소로 설정 *!*/
+    /*}*/
 
     .writer-info {
         display: flex;
@@ -91,16 +148,33 @@
         }
     }
 
+    /*.tag-info {*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*    align-items: center;*/
+    /*    width: 100%;*/
+    /*    margin-bottom: 0px;*/
+
+    /*}*/
+
     .tag-info {
+        display: flex; /* Flexbox 사용 */
+        justify-content: space-between; /* 양쪽 끝으로 정렬 */
+        align-items: center; /* 수직 가운데 정렬 */
+    }
+
+    #tag {
+        margin-right: 10px; /* 태그와 아이콘 사이의 간격 */
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-bottom: 0px;
+        flex-wrap: wrap;
 
         p {
-            margin-bottom: 0px;
+            margin-right: 5px;
         }
+    }
+
+    .icon {
+        margin-left: 10px; /* 아이콘 간격 */
     }
 }
 
@@ -108,7 +182,7 @@
     display: block;
     width: 100%;
     height: 500px;
-    margin: 0 auto;
+    margin: 0 auto 2em;
     padding-left: 0;
 }
 
@@ -128,3 +202,27 @@
 }
 
 /* add Project box */
+.image-upload {
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    text-align: center;
+    transition: all .15s ease-in-out;
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+}
+
+.inner_button_project {
+    max-width: 75em;
+    margin: 0 auto;
+}
+
+.appendImg {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.appendImg:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px #555555;
+}
+

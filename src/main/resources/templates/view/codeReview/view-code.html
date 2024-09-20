@@ -19,7 +19,7 @@
     <script th:src="@{https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js}"></script>
 </head>
 
-<div th:replace="view/common/header :: header"></div>
+<div th:replace="~{view/common/header.html :: header}"></div>
 <body class="subpage">
 <section id="main" class="wrapper">
     <div class="inner">
@@ -28,13 +28,18 @@
                 <h2 th:text="${codeReview.title}"></h2>
 
                 <div class="content">
-                    <h4 th:text="${codeReview.member}"></h4>
+                    <h4 th:text="${codeReview.getNickname()}" id="codeReviewWriter" th:data-email="${codeReview.getEmail()}"></h4>
                     <div class="year_icon">
                         <h4 th:text="${#dates.format(codeReview.createDate, 'yyyy.MM.dd')}" style="margin: 0;"></h4>
-                        <a class="icon fa-thumbs-up">
+
+                        <a th:reviewID="${codeReview.id}"
+                           th:onclick="codeReviewLike(this.getAttribute('reviewID'))"
+                           class="icon fa-thumbs-up">
                             <span class="label">thumbsUp</span>
-                            <span class="count" th:text="${codeReview.getPreferenceCnt()}"></span>
+                            <span class="count" th:id="'count_' + ${codeReview.id}"
+                                  th:text="${codeReview.preferenceCnt}">0</span>
                         </a>
+
                     </div>
                 </div>
             </header>
@@ -46,7 +51,7 @@
             </div>
             <div class="inner_button">
                 <button class="button special disabled" th:text="'#'+${codeReview.getCodeLanguageName()}">#java</button>
-                <div class="icon_view">
+                <div class="icon_view" hidden="hidden">
                     <a class="icon fa-pencil"
                        th:href="@{/review/write(id=${codeReview.id})}"></a>
                     <a class="icon fa-trash"
@@ -65,15 +70,22 @@
                     <ul>
                         <li>
                             <div>
-                                <h4 th:text="${comments.member.getNickname()}" style="margin: 0;"></h4>
+                                <h4 th:text="${comments.getNickname()}" style="margin: 0;"
+                                    class="memberInfo"
+                                th:data-email="${comments.getEmail()}"></h4>
                                 <!--                            <p th:text="${#dates.format(comments.createDate, 'yyyy.MM.dd')}"></p>-->
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="icon fa-thumbs-up">
+
+                            <a th:commentID="${comments.id}"
+                               th:onclick="codeReviewCommentLike([[${comments.id}]])"
+                               class="icon fa-thumbs-up">
                                 <span class="label">thumbsUp</span>
-                                <span class="count">0</span>
+                                <span class="count" th:id="'count_' + ${comments.id}"
+                                      th:text="${comments.preferenceCnt}">0</span>
                             </a>
+
                         </li>
                     </ul>
                     <div class="comment_box">
@@ -83,17 +95,20 @@
 
                     </div>
                     <div th:id="${comments.id}">
-                        <p th:utext="${comments.comment}"></p>
+                        <p th:utext="${comments.commentContent}"></p>
                     </div>
-                    <div class="comment_delete">
+                    <div class="comment_delete" hidden="hidden">
                         <a class="icon fa-pencil"
                            th:id="'modify'+${comments.id}"
                            th:commentId="${comments.id}"
-                           th:commentContent="${comments.comment}"
-                           th:onclick="modifyComment(this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+                           th:commentContent="${comments.commentContent}"
+                           th:review = "review"         
+                           th:onclick="modifyComment(this.getAttribute('review'),this.getAttribute('commentId'),this.getAttribute('commentContent'))"></a>
+
                         <a class="icon fa-trash"
                            th:commentId="${comments.id}"
-                           th:onclick="deleteComment(this.getAttribute('commentId'))"></a>
+                           th:review = "review"
+                           th:onclick="deleteComment(this.getAttribute('review'),this.getAttribute('commentId'))"></a>
                     </div>
                     <hr class="major"/>
                 </div>
@@ -110,6 +125,14 @@
 
                 const editor = new Editor({
                     el: document.querySelector('#editor_box'),
+                    toolbarItems: [
+                        ['heading','bold','italic','strike'],
+                        ['hr','quote'],
+                        ['ul', 'ol', 'task', 'indent', 'outdent'],
+                        ['table', 'link'],
+                        ['code', 'codeblock'],
+                        ['scrollSync'],
+                    ],
                     autofocus: false,
                     height: '500px',
                     initialEditType: 'markdown',
@@ -118,15 +141,16 @@
 
                 document.getElementById('submit').addEventListener('click', () => {
                     const content = editor.getHTML();
-                    console.log(content);
+
                     commentContent = content;
 
-                    getMemberInComment();
+                    valiMemberComment("review");
+
                 })
 
                 function deleteCodeReview(id) {
                     if (confirm("정말 삭제하시겠습니까?")) {
-                        fetch(`/api/review/delete/${id}`, {
+                        fetch(`/api/review/delete/${id}?memberEmail=${loginEmail}`, {
                             method: 'DELETE'
                         })
                             .then(resp => {
@@ -145,8 +169,11 @@
         </div>
     </div>
 </section>
+
 <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-<script src="/js/comment.js"></script>
-<script src="/js/write.js"></script>
+<script src="/js/review/comment.js"></script>
+<script src="/js/review/write.js"></script>
+<script src="/js/like.js"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>

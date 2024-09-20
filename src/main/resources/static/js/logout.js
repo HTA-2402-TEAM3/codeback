@@ -1,3 +1,33 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+    changeButton();
+});
+function changeButton() {
+
+    fetch(`/api/member/info`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('notification-button').style.display='block';
+            document.getElementById('show-login').style.display = 'none';
+            document.getElementById('logout-button').style.display = 'block';
+        })
+        .catch(error => {
+            document.getElementById('notification-button').style.display='none';
+            document.getElementById('show-login').style.display = 'block';
+            document.getElementById('logout-button').style.display = 'none';
+            console.error('Fetch error:', error);
+        });
+}
+
+
+
+// 페이지 로드 시 access_token 확인
+
+
 function logout() {
 
     // 양식 데이터 수집
@@ -18,8 +48,7 @@ function logout() {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            console.log('Success:', data);
-            window.location.href = '/'; // 원하는 페이지로 이동
+            window.location.reload(true);
             // 성공 시 추가 작업 수행 (예: 사용자에게 알림 표시)
         })
         .catch((error) => {

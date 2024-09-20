@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
 import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
-import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.Member;
 
@@ -27,7 +27,7 @@ public interface CodeReviewService {
 
     List<CodeReview> findByMember(Member member);
 
-    void deleteCodeReviewById(UUID id);
+    void deleteCodeReviewById(UUID id, String memberEmail);
 
     // 게시물 작성
     void saveCodeReview(CodeReviewRequestDTO codeReviewRequestDTO);
@@ -37,6 +37,6 @@ public interface CodeReviewService {
     Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize, String sort);
 	List<CodeReviewSummaryByLanguageResponseDTO> calculateSummaryByLanguage();
 
-	List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
+	List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
 
 }

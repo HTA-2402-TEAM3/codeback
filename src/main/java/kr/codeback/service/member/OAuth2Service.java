@@ -15,7 +15,6 @@ import kr.codeback.model.constant.CustomOAuth2User;
 import kr.codeback.model.constant.OAuthProfile;
 import kr.codeback.model.dto.response.member.GithubResponseDTO;
 import kr.codeback.model.dto.response.member.GoogleResponseDTO;
-import kr.codeback.model.dto.response.member.MemberResponseDTO;
 import kr.codeback.model.dto.response.member.OAuth2ResponseDTO;
 import kr.codeback.model.entity.Authority;
 import kr.codeback.model.entity.Member;
@@ -38,8 +37,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-
-		System.out.println("ads");
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
 		OAuth2ResponseDTO oAuth2ResponseDTO = null;

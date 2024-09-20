@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_TAG")
@@ -24,6 +25,7 @@ public class ProjectReviewTag {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_review_id")
+	@Setter
 	private ProjectReview projectReview;
 
 	@Column(name = "tag")
@@ -35,4 +37,5 @@ public class ProjectReviewTag {
 		this.projectReview = projectReview;
 		this.tag = tag;
 	}
+
 }

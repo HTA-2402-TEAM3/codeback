@@ -1,16 +1,14 @@
 package kr.codeback.service.interfaces;
 
+import java.util.List;
+import java.util.UUID;
 
 import kr.codeback.model.dto.request.review.CodeReviewCommentRequestDTO;
 import kr.codeback.model.dto.request.review.CommentModifyRequestDTO;
-import kr.codeback.model.dto.response.review.CodeReviewCommentResponseDTO;
-import java.util.List;
-import kr.codeback.model.dto.response.summary.CodeReviewCommentSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
-
-import java.util.UUID;
 
 public interface CodeReviewCommentService {
 
@@ -18,12 +16,12 @@ public interface CodeReviewCommentService {
 
 	void deleteByCodeReview(CodeReview codeReview);
 
+	void deleteById(UUID codeReviewCommentId, String memberEmail);
 
-    CodeReviewCommentResponseDTO saveComment(CodeReviewCommentRequestDTO commentDTO);
-
-	void deleteById(UUID codeReviewCommentId);
+	CodeReviewComment saveComment(CodeReviewCommentRequestDTO commentDTO);
 
 	void update(CommentModifyRequestDTO commentDTO);
-	List<CodeReviewCommentSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
+
+	List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
 
 }

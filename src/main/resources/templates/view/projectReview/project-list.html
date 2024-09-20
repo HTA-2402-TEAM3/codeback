@@ -19,22 +19,23 @@
     />
 </head>
 
-<div th:replace="view/common/header :: header"></div>
+<div th:replace="~{view/common/header.html :: header}"></div>
 
 <body class="subpage">
 <section id="three" class="wrapper">
     <div class="inner">
         <header class="align-center">
-            <h2>Project Review</h2>
+            <h2 th:if="${findWithTag == null}">Project Review</h2>
+            <h2 th:if="${findWithTag != null}" th:text="'#' + ${findWithTag}"></h2>
         </header>
         <div class="inner_logo" style="margin-bottom: 50px">
-            <button class="special button" onclick="window.location.href='/project/write'">글쓰기</button>
+            <button class="special button" onclick="valiMember('project')">글쓰기</button>
             <div class="search-container">
                 <div>
                     <input type="text" name="search" id="search" value="" placeholder="Search"/>
                 </div>
                 <div>
-                    <a onclick="searchData()" class="code-review" style="text-decoration: none">
+                    <a onclick="searchProjects()" class="code-review" style="text-decoration: none">
                         <span class="icon fa-search"></span>
                     </a>
                 </div>
@@ -42,140 +43,54 @@
         </div>
     </div>
     <div class="box-container" id="project-box">
-        <div id="boxes">
-            <a class="box" href="/project/view">
+        <div class="boxes" th:each="review: ${reviews}">
+            <a class="box" th:href="@{/project/{id}(id=${review.id})}">
                 <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
+                    <img th:src="${review.projectReviewThumbnails != null ? review.projectReviewThumbnails : '/images/default.png'}"
+                         alt="Pic 01" class="project-img"/>
+                    <h4 th:text="${review.title}">title2</h4>
                     <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
+                        <p th:text="${review.member}">김다영</p>
+                        <p th:text="${#dates.format(review.createDate, 'yyyy-MM-dd HH:mm')}">2024.09.03</p>
                     </div>
                     <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
-                        <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
+                        <div id="tag">
+                            <p th:each="tag: ${review.projectReviewTags}" th:text="'#' + ${tag}"></p>
                         </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="box" href="/project/view">
-                <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
-                    <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
-                    </div>
-                    <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
                         <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="box" href="/project/view">
-                <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
-                    <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
-                    </div>
-                    <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
-                        <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="box" href="/project/view">
-                <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
-                    <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
-                    </div>
-                    <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
-                        <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="box" href="/project/view">
-                <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
-                    <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
-                    </div>
-                    <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
-                        <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
-                        </div>
-                    </div>
-                </div>
-            </a>
-
-            <a class="box" href="/project/view">
-                <div>
-                    <img src="/images/test.jpg" alt="Pic 01" class="project-img"/>
-                    <h2>title2</h2>
-                    <div class="writer-info">
-                        <p>김다영</p>
-                        <p>2024.09.03</p>
-                    </div>
-                    <div class="tag-info">
-                        <p>#spring_boot #java #JPA</p>
-                        <div>
-                            <icon class="icon fa-thumbs-up">1</icon>
-                            <icon class="icon fa-comment">2</icon>
+                            <icon class="icon fa-thumbs-up" th:text="${review.preferenceCnt}">1</icon>
+                            <icon class="icon fa-comment" th:text="${review.projectReviewComments}">2</icon>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-
     </div>
 </section>
-<!--<div id="pagingContainer">-->
-<!--    <nav aria-label="Page navigation">-->
-<!--        <ul class="pagination" id="pagingUl">-->
-<!--            <li class="page-item" >-->
-<!--                <a class="page-link" aria-label="Previous" onclick="fetchAllData(0); return false;">-->
-<!--                    <span aria-hidden="true">&laquo;</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--            <li class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}">-->
-<!--                <a class="page-link"-->
-<!--                   th:pageNum="${pageStat.count - 1}"-->
-<!--                   th:onclick="fetchAllData(this.getAttribute('pageNum'))" th:text="${pageStat.count}"></a>-->
-<!--            </li>-->
-<!--            <li class="page-item" >-->
-<!--                <a class="page-link"-->
-<!--                   th:totalpage="${totalPages}"-->
-<!--                   th:onclick="fetchAllData(this.getAttribute('totalPage'))" >-->
-<!--                    <span aria-hidden="true">&raquo;</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </nav>-->
-<!--</div>-->
+<div id="pagingContainer">
+    <nav aria-label="Page navigation">
+        <ul class="pagination" id="pagingUl">
+            <li class="page-item">
+                <a class="page-link" aria-label="Previous" onclick="fetchAllProjects(0); return false;">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}">
+                <a class="page-link"
+                   th:pageNum="${pageStat.count - 1}"
+                   th:onclick="fetchAllProjects(this.getAttribute('pageNum'))" th:text="${pageStat.count}"></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   th:totalpage="${totalPages - 1}"
+                   th:onclick="fetchAllProjects(this.getAttribute('totalPage'))">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script src="/js/review/project-list.js?ver=1"></script>
+<script src="/js/review/getMemberInfo.js"></script>
 </body>
 </html>

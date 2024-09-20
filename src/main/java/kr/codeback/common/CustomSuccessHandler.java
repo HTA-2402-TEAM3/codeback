@@ -10,8 +10,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.io.IOException;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.model.constant.CustomOAuth2User;
@@ -55,7 +53,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		CookieUtil.createCookie(response,"refresh_token",refreshToken,36000000);
 
 		//redirect위치
-		response.sendRedirect("http://localhost:8080/");
+		response.sendRedirect("https://codeback.shop/");
 	}
 
 }

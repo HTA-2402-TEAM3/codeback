@@ -1,5 +1,4 @@
-
-<header id="header">
+<header id="header" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="box_logo">
         <div class="logo_box">
             <img src="/images/codeback.png"/>
@@ -13,12 +12,15 @@
 
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
-            <div style="display: none;">
-                <span id="user-email"></span>
-                <button class="button special" id="logout-button">Logout</button>
+            <div style="display: flex; gap : 10px;">
+                <div class="notification-icon">
+                    <a href="/notice" class="icon fa-bell" id="notification-button" style="font-size: 20px">
+                        <span id="notification-count"></span>
+                    </a>
+                </div>
+                <button class="button special" id="logout-button" onclick="logout()">Logout</button>
             </div>
         </div>
-
     </div>
     <!-- 로그인 팝업 -->
     <div class="popup">
@@ -54,7 +56,8 @@
                 <label for="signup-email">이메일 회원가입</label>
                 <form onsubmit="submitForm(event)">
                     <label>
-                        <input type="email" id = "signup-email" name="signup-email" placeholder="Enter email"  style="width: 265px;">
+                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email"
+                               style="width: 265px;">
                     </label><br>
                     <button class="login-button">회원가입</button>
                 </form>
@@ -75,5 +78,9 @@
         <!--    로그인 js-->
         <script src="/js/popup.js"></script>
         <script src="/js/submit.js"></script>
+        <script src="/js/logout.js"></script>
+        <script src="/js/member.js"></script>
+        <script src="/js/review/review-list.js"></script>
+        <script src="/js/review/getMemberInfo.js"></script>
     </div>
 </header>

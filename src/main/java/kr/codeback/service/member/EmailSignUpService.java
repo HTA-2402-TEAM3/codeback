@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.codeback.repository.MemberRepository;
-import kr.codeback.service.interfaces.MemberService;
-import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service

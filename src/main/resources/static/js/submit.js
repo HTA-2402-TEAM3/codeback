@@ -30,7 +30,6 @@ function submitForm(event) {
             throw new Error('Network response was not ok.');
         })
         .then(data => {
-            console.log('Success:', data);
             window.location.href = '/index'; // 원하는 페이지로 이동
             // 성공 시 추가 작업 수행 (예: 사용자에게 알림 표시)
         })
