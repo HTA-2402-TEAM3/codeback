@@ -1,7 +1,10 @@
 package kr.codeback.service.impl;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,6 +23,7 @@ import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewImage;
@@ -36,9 +40,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProjectReviewServiceImpl implements ProjectReviewService {
-	private final ProjectReviewRepository projectReviewRepository;
-	private final ProjectReviewCommentService projectReviewCommentService;
 
+	private final ProjectReviewRepository projectReviewRepository;
+
+	private final ProjectReviewCommentService projectReviewCommentService;
 	private final ProjectReviewImageService projectReviewImageService;
 	private final ProjectReviewTagService projectReviewTagService;
 	private final PreferenceService preferenceService;
@@ -170,5 +175,26 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
 				.projectReviewComments(projectReview.getComments().size())
 				.build();
 		});
+	}
+
+	@Override
+	public List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
+
+		Date searchDate;
+		if (inputDate == null || inputDate.isEmpty()) {
+			searchDate = Date.valueOf(LocalDate.now());
+		} else {
+			searchDate = Date.valueOf(LocalDate.parse(inputDate));
+		}
+
+		List<Object[]> results = projectReviewRepository.calculateSummaryByMonth(searchDate);
+
+		return results.stream()
+			.map(row -> new SummaryByMonthResponseDTO(
+				Integer.parseInt(row[0].toString()),
+				((Number)row[1]).longValue()
+			))
+			.toList();
+
 	}
 }

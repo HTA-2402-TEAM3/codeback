@@ -924,10 +924,10 @@ VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFS
 -- 프로젝트 리뷰 더미 데이터
 INSERT INTO project_review (id, member_id, title, github_url, content, create_date)
 VALUES
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 10), 'JSP 프로젝트 리뷰', 'https://github.com/HTA-2402-TEAM3/OHBooN', '이 프로젝트는 JSP를 사용하여 구현되었습니다. <br>채팅이 안되요ㅠㅠ. <br>프론트도 너무 쓰레기 같습니다..', '2023-08-01 10:00:00'),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), 'Spring Boot 프로젝트 리뷰', 'https://github.com/jiwonpark/spring-boot-project', '이 프로젝트는 Spring Boot를 사용하여 구현되었습니다.', '2023-08-01 10:00:00'),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 12), 'React 프로젝트 리뷰', 'https://github.com/seungwookim/react-project', 'React와 Redux를 사용하여 프론트엔드 애플리케이션을 개발했습니다.', '2023-08-15 14:30:00'),
-    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 13), 'Machine Learning 프로젝트 리뷰', 'https://github.com/hayounglee/ml-project', '이 프로젝트는 머신러닝 모델을 구축하고 평가하는 것을 목표로 했습니다.', '2023-08-20 09:45:00');
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 10), 'JSP 프로젝트 리뷰', 'https://github.com/HTA-2402-TEAM3/OHBooN', '이 프로젝트는 JSP를 사용하여 구현되었습니다. <br>채팅이 안되요ㅠㅠ. <br>프론트도 너무 쓰레기 같습니다..', '2024-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), 'Spring Boot 프로젝트 리뷰', 'https://github.com/jiwonpark/spring-boot-project', '이 프로젝트는 Spring Boot를 사용하여 구현되었습니다.', '2024-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 12), 'React 프로젝트 리뷰', 'https://github.com/seungwookim/react-project', 'React와 Redux를 사용하여 프론트엔드 애플리케이션을 개발했습니다.', '2024-08-15 14:30:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 13), 'Machine Learning 프로젝트 리뷰', 'https://github.com/hayounglee/ml-project', '이 프로젝트는 머신러닝 모델을 구축하고 평가하는 것을 목표로 했습니다.', '2024-08-20 09:45:00');
 
 -- 프로젝트 리뷰 이미지 더미 데이터
 INSERT INTO project_review_image (id, file_name, url, project_review_id)

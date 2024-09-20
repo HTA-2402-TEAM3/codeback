@@ -23,4 +23,11 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.badRequest().body(new MessageResponseDTO(runtimeException.getMessage()));
 	}
 
+	@ExceptionHandler(ClassCastException.class)
+	public ResponseEntity<MessageResponseDTO> handleClassCastException(ClassCastException classCastException){
+
+		MessageResponseDTO errorResponse = new MessageResponseDTO(classCastException.getMessage());
+		return ResponseEntity.ok().body(errorResponse);
+	}
+
 }

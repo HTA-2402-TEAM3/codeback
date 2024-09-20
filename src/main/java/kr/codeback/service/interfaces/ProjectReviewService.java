@@ -3,11 +3,13 @@ package kr.codeback.service.interfaces;
 import kr.codeback.model.dto.request.review.ProjectReviewModifyRequestDTO;
 import kr.codeback.model.dto.request.review.ProjectReviewRequestDTO;
 import kr.codeback.model.dto.response.review.ProjectReviewListResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.ProjectReview;
 import org.springframework.data.domain.Page;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public interface ProjectReviewService {
@@ -24,4 +26,7 @@ public interface ProjectReviewService {
     void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectReviewRequestDTO) throws IOException;
 
     Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize, String sort);
+
+    List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
+
 }

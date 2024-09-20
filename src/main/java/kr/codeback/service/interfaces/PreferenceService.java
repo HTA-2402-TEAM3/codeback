@@ -1,6 +1,6 @@
 package kr.codeback.service.interfaces;
 
-import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Preference;
 
@@ -33,7 +33,7 @@ public interface PreferenceService {
 
     void deleteAll(List<Preference> preferences);
 
-    List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate);
+    List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate);
 
 	Map<UUID, Long> countByEntityIDs(List<UUID> reviewIds);
 }

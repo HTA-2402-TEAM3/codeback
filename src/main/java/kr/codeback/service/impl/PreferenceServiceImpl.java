@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codeback.model.dto.response.summary.CodeReviewPreferenceSummaryResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Preference;
 import kr.codeback.repository.PreferenceRepository;
@@ -123,7 +123,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 	}
 
 	@Override
-	public List<CodeReviewPreferenceSummaryResponseDTO> calculateSummaryByMonth(String inputDate) {
+	public List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
 
 		Date searchDate;
 		if (inputDate == null || inputDate.isEmpty()) {
@@ -135,7 +135,7 @@ public class PreferenceServiceImpl implements PreferenceService {
 		List<Object[]> results = preferenceRepository.calculateSummaryByMonth(searchDate);
 
 		return results.stream()
-			.map(row -> new CodeReviewPreferenceSummaryResponseDTO(Integer.parseInt(row[0].toString()),
+			.map(row -> new SummaryByMonthResponseDTO(Integer.parseInt(row[0].toString()),
 				((Number)row[1]).longValue()))
 			.toList();
 	}
