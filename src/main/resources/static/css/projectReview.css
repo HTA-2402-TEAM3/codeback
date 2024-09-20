@@ -48,8 +48,19 @@
     }
 }
 
-@media (min-width: 1535px) {
+@media (max-width: 1535px) {
     #project-box {
+        .project-img {
+            width: 340px;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
+
+@media (min-width: 1535px) {
+    #project-box {display: flex;
         .project-img {
             width: 340px;
             height: 340px;

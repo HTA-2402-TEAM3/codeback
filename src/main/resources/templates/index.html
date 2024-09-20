@@ -23,7 +23,7 @@
             <button class="button special" id="show-login">Login</button>
             <div style="display: flex; gap : 10px;">
                 <div class="notification-icon">
-                    <a href="/notice" class="icon fa-bell" id="notification-button">
+                    <a href="/notice" class="icon fa-bell" id="notification-button" style="font-size: 20px">
                         <span id="notification-count"></span>
                     </a>
                 </div>
@@ -101,7 +101,7 @@
     <div class="inner">
         <h1>Welcome to CodeBack</h1>
         <div class="flex">
-            <div>
+            <div style="display: flex; justify-content: end;">
                 <a href="/review/" class="code-review">
                     <span class="icon fa-bars"></span>
                     <h3>Code Review</h3>
@@ -109,7 +109,7 @@
                 </a>
             </div>
 
-            <div>
+            <div style="display: flex; justify-content: start;">
                 <a href="/project/" class="project-review">
                     <span class="icon fa-users"></span>
                     <h3>Project Review</h3>
@@ -120,13 +120,13 @@
 
         <h3>관리자 기능</h3>
         <div class="flex">
-            <div>
-                <a href="/admin/members">
+            <div style="display: flex; justify-content: end;">
+                <a href="/admin/summary">
                     <p>통계</p>
                 </a>
             </div>
-            <div>
-                <a href="/admin/summary">
+            <div style="display:flex; justify-content: start">
+                <a href="/admin/members">
                     <p>회원</p>
                 </a>
             </div>
