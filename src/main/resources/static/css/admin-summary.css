@@ -8,13 +8,16 @@
 }
 
 div {
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 30px;
+
 }
 
 table {
-    width: 400px;
+    margin-top: 15px;
+    width: 220px;
+}
+
+#code-review-language-summary-table {
+    width: 660px;
 }
 
 canvas {

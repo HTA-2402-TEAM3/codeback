@@ -8,19 +8,14 @@ import kr.codeback.model.constant.CustomOAuth2User;
 import kr.codeback.model.constant.OAuthProfile;
 import kr.codeback.model.entity.Member;
 import kr.codeback.repository.MemberRepository;
-import kr.codeback.service.member.MyUserDetailsService;
 import kr.codeback.util.CookieUtil;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -42,8 +37,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessToken = CookieUtil.getCookieValue(request,"access_token");
         String refreshToken = CookieUtil.getCookieValue(request,"refresh_token");
 
-        log.info(accessToken);
-
         //Authorization 헤더 검증
         if (accessToken == null) {
 
@@ -51,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }else{
-                Member member = memberRepository.findByEmail(jwtUtil.extractEmail(refreshToken)).get();
+                Member member = memberRepository.findByEmail(jwtUtil.extractEmail(refreshToken)).orElse(null);
                 jwtUtil.generateAccessToken(member.getEmail(),member.getNickname(),member.getAuthority().getName());
             }
         }
@@ -63,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }else{
-                Member member = memberRepository.findByEmail(jwtUtil.extractEmail(refreshToken)).get();
+                Member member = memberRepository.findByEmail(jwtUtil.extractEmail(refreshToken)).orElse(null);
                 jwtUtil.generateAccessToken(member.getEmail(),member.getNickname(),member.getAuthority().getName());
             }
         }
@@ -72,10 +65,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = jwtUtil.extractNickname(accessToken);
         String email = jwtUtil.extractEmail(accessToken);
         String role = jwtUtil.extractRole(accessToken);
-
-        log.info(username);
-        log.info(email);
-        log.info(role);
 
         //userDTO를 생성하여 값 set
         OAuthProfile oAuthProfile = OAuthProfile.builder()

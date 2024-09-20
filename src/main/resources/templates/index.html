@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-	templated.co @templatedco
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
 <html lang="en">
 <head>
     <title>Projection by TEMPLATED</title>
@@ -22,55 +18,35 @@
         <div class="logo_box">
             <img src="/images/codeback.png"/>
         </div>
+
         <div class="button_box">
             <button class="button special" id="show-login">Login</button>
-            <div style="display: none;">
-                <span id="user-email"></span>
-                    <button class="button special" id="logout-button"
-                            th:text="${}">Logout</button>
+            <div style="display: flex; gap : 10px;">
+                <div class="notification-icon">
+                    <a href="/notice" class="icon fa-bell" id="notification-button" style="font-size: 20px">
+                        <span id="notification-count"></span>
+                    </a>
+                </div>
+                <button class="button special" id="logout-button" onclick="logout()">Logout</button>
             </div>
         </div>
-    </div>
-    <!-- 로그인 팝업 -->
-    <div class="popup">
-        <div class="close-btn">&times;</div>
-        <!-- 로그인 폼 -->
-        <div class="form login-form">
-            <h2>로그인</h2>
-            <div class="form-element">
-                <label for="email">이메일 로그인</label>
-                <form onsubmit="submitForm(event)" >
-                    <label>
-                        <input type="email" name="email" id="email" placeholder="Enter email">
-                    </label>
-                    <button class="login-button">로그인</button>
-                </form>
-            </div>
-            <div class="OAuth">
-                <label>소셜 계정으로 로그인</label>
-                <a th:href="@{/oauth2/authorization/github}" class="OAuth-box">
-                    <span class="icon fa-github"></span>
-                </a>
-                <a th:href="@{/oauth2/authorization/google}" class="OAuth-box">
-                    <span class="icon fa-google"></span>
-                </a>
-            </div>
-            <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
-        </div>
-
-        <!-- 회원가입 폼 -->
-        <div class="form signup-form" style="display: none;">
-            <h2>회원가입</h2>
-            <div class="form-element">
-                <label for="signup-email">이메일 회원가입</label>
-                <form onsubmit="submitForm(event)">
-                    <label>
-                        <input type="email" id="signup-email" name="signup-email" placeholder="Enter email">
-                    </label>
-                    <button class="login-button">회원가입</button>
-                </form>
+        <!-- 로그인 팝업 -->
+        <div class="popup">
+            <div class="close-btn">&times;</div>
+            <!-- 로그인 폼 -->
+            <div class="form login-form">
+                <h2>로그인</h2>
+                <div class="form-element">
+                    <label for="email">이메일 로그인</label>
+                    <form onsubmit="submitForm(event)">
+                        <label>
+                            <input type="email" name="email" id="email" placeholder="Enter email">
+                        </label>
+                        <button class="login-button">로그인</button>
+                    </form>
+                </div>
                 <div class="OAuth">
-                    <label>소셜 계정으로 회원가입</label>
+                    <label>소셜 계정으로 로그인</label>
                     <a th:href="@{/oauth2/authorization/github}" class="OAuth-box">
                         <span class="icon fa-github"></span>
                     </a>
@@ -78,25 +54,54 @@
                         <span class="icon fa-google"></span>
                     </a>
                 </div>
-                <p>이미 계정이 있으신가요?
-                    <!--로그인 버튼 누르면 닫게 해둠-->
-                    <a href="#" id="show-login-form">로그인</a></p>
+                <p>아직 회원이 아니신가요? <a href="#" id="show-signup-form">회원가입</a></p>
             </div>
+
+            <!-- 회원가입 폼 -->
+            <div class="form signup-form" style="display: none;">
+                <h2>회원가입</h2>
+                <div class="form-element">
+                    <label for="signup-email">이메일 회원가입</label>
+                    <form onsubmit="submitForm(event)">
+                        <label>
+                            <input type="email" id="signup-email" name="signup-email" placeholder="Enter email">
+                        </label>
+                        <button class="login-button">회원가입</button>
+                    </form>
+                    <div class="OAuth">
+                        <label>소셜 계정으로 회원가입</label>
+                        <a th:href="@{/oauth2/authorization/github}" class="OAuth-box">
+                            <span class="icon fa-github"></span>
+                        </a>
+                        <a th:href="@{/oauth2/authorization/google}" class="OAuth-box">
+                            <span class="icon fa-google"></span>
+                        </a>
+                    </div>
+                    <p>이미 계정이 있으신가요?
+                        <!--로그인 버튼 누르면 닫게 해둠-->
+                        <a href="#" id="show-login-form">로그인</a></p>
+                </div>
+            </div>
+            <!--    로그인 js-->
+            <script src="/js/popup.js"></script>
+            <script src="/js/submit.js"></script>
+            <script src="/js/logout.js"></script>
+            <script src="/js/member.js"></script>
         </div>
-        <!--    로그인 js-->
-        <script src="/js/popup.js"></script>
-        <script src="/js/submit.js"></script>
     </div>
 </header>
 
+<div>
+    <button class="icon fa-bell" style="display: none;"></button>
+</div>
 
 <!-- Banner -->
 <body>
 <section id="banner">
     <div class="inner">
-        <h1>Welcome to Projection</h1>
+        <h1>Welcome to CodeBack</h1>
         <div class="flex">
-            <div>
+            <div style="display: flex; justify-content: end;">
                 <a href="/review/" class="code-review">
                     <span class="icon fa-bars"></span>
                     <h3>Code Review</h3>
@@ -104,7 +109,7 @@
                 </a>
             </div>
 
-            <div>
+            <div style="display: flex; justify-content: start;">
                 <a href="/project/" class="project-review">
                     <span class="icon fa-users"></span>
                     <h3>Project Review</h3>
@@ -112,12 +117,26 @@
                 </a>
             </div>
         </div>
+
+        <h3>관리자 기능</h3>
+        <div class="flex">
+            <div style="display: flex; justify-content: end;">
+                <a href="/admin/summary">
+                    <p>통계</p>
+                </a>
+            </div>
+            <div style="display:flex; justify-content: start">
+                <a href="/admin/members">
+                    <p>회원</p>
+                </a>
+            </div>
+        </div>
+
     </div>
+
+
+
+
 </section>
-<!-- Scripts -->
-<script src="../static/js/jquery.min.js"></script>
-<script src="../static/js/skel.min.js"></script>
-<script src="../static/js/util.js"></script>
-<script src="../static/js/main.js"></script>
 </body>
 </html>

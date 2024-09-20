@@ -2,7 +2,6 @@ package kr.codeback.model.dto.request.review;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.aspectj.apache.bcel.classfile.Code;
 
 import java.util.UUID;
 

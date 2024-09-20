@@ -6,28 +6,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import kr.codeback.model.entity.*;
-import kr.codeback.repository.specification.CodeReviewSpecification;
-import kr.codeback.service.interfaces.NotificationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.exception.ErrorCode;
+import kr.codeback.exception.review.ReviewNonExistentException;
+import kr.codeback.exception.review.ReviewNotAuthorizedException;
 import kr.codeback.model.dto.request.review.CodeReviewRequestDTO;
-import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
-import kr.codeback.model.dto.response.summary.CodeReviewSummaryByMonthResponseDTO;
 import kr.codeback.model.dto.response.review.CodeReviewListResponseDTO;
+import kr.codeback.model.dto.response.summary.CodeReviewSummaryByLanguageResponseDTO;
+import kr.codeback.model.dto.response.summary.SummaryByMonthResponseDTO;
+import kr.codeback.model.entity.CodeLanguageCategory;
+import kr.codeback.model.entity.CodeReview;
+import kr.codeback.model.entity.Member;
+import kr.codeback.model.entity.Preference;
 import kr.codeback.repository.CodeLanguageCategoryRepository;
 import kr.codeback.repository.CodeReviewRepository;
 import kr.codeback.repository.MemberRepository;
+import kr.codeback.repository.specification.CodeReviewSpecification;
 import kr.codeback.service.interfaces.CodeReviewCommentService;
-import kr.codeback.service.interfaces.CodeReviewPreferenceService;
 import kr.codeback.service.interfaces.CodeReviewService;
+import kr.codeback.service.interfaces.NotificationService;
+import kr.codeback.service.interfaces.PreferenceService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,7 +41,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	private final CodeReviewRepository codeReviewRepository;
 
-	private final CodeReviewPreferenceService codeReviewPreferenceService;
+	private final PreferenceService preferenceService;
 	private final MemberRepository memberRepository;
 	private final CodeLanguageCategoryRepository codeLanguageCategoryRepository;
 
@@ -57,7 +62,6 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 				.createDate(codeReview.getCreateDate())
 				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
 				.codeReviewComments(codeReview.getComments().size())
-				.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
 				.build()
 			);
 	}
@@ -65,9 +69,11 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	@Override
 	public CodeReview findById(UUID id) {
 		Optional<CodeReview> optionalCodeReview = codeReviewRepository.findById(id);
-		return optionalCodeReview.orElseThrow(() -> new IllegalArgumentException("No CodeReview : " + id));
+		return optionalCodeReview.orElseThrow(() -> new ReviewNonExistentException(
+			ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+			ErrorCode.NOT_EXIST_USER.getMessage()
+		));
 	}
-
 
 	@Override
 	@Transactional
@@ -76,7 +82,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		List<CodeReview> deleteCodeReviews = findByMember(member);
 
 		deleteCodeReviews.forEach(codeReviewCommentService::deleteByCodeReview);
-		deleteCodeReviews.forEach(codeReview -> codeReviewPreferenceService.deleteByEntityID(codeReview.getId()));
+		deleteCodeReviews.forEach(codeReview -> preferenceService.deleteByEntityID(codeReview.getId()));
 
 		codeReviewRepository.deleteAll(deleteCodeReviews);
 	}
@@ -88,15 +94,24 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 
 	@Override
 	@Transactional
-	public void deleteCodeReviewById(UUID id) {
+	public void deleteCodeReviewById(UUID id, String memberEmail) {
 		CodeReview codeReview = codeReviewRepository.findById(id).orElseThrow(() ->
-			new IllegalArgumentException("no CodeReview : " + id));
+			new ReviewNonExistentException(
+				ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+				ErrorCode.NOT_EXIST_USER.getMessage())
+		);
 
-		List<CodeReviewPreference> preferences = codeReviewPreferenceService.findByEntityID(id);
-		codeReviewPreferenceService.deleteAll(preferences);
+		if (!codeReview.getMember().getEmail().equals(memberEmail)) {
+			throw new ReviewNotAuthorizedException(
+				ErrorCode.NOT_EXIST_USER.getStatus(),
+				ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
 
-		List<Notification> notifications = notificationService.findByEntityID(id);
-		notificationService.deleteAll(notifications);
+		List<Preference> preferences = preferenceService.findByEntityID(id);
+		preferenceService.deleteAll(preferences);
+
+		notificationService.deleteByEntityId(id);
 
 		codeReviewRepository.delete(codeReview);
 	}
@@ -125,37 +140,48 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		codeReviewRepository.save(codeReview);
 	}
 
-    @Override
-    public void updateCodeReview(CodeReviewRequestDTO reviewDTO) {
+	@Override
+	public void updateCodeReview(CodeReviewRequestDTO reviewDTO) {
 		CodeReview codeReview = codeReviewRepository.findById(reviewDTO.getId())
-				.orElseThrow(()->new IllegalArgumentException("no codeReivew"));
+			.orElseThrow(() -> new ReviewNonExistentException(
+				ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+				ErrorCode.NOT_EXIST_USER.getMessage()
+			));
+
+		if (!reviewDTO.getMemberEmail().equals(codeReview.getMember().getEmail())) {
+			throw new ReviewNotAuthorizedException(
+				ErrorCode.NOT_EXIST_USER.getStatus(),
+				ErrorCode.NOT_EXIST_USER.getMessage()
+			);
+		}
 
 		CodeLanguageCategory clCategory =
-				codeLanguageCategoryRepository.findById(reviewDTO.getCodeLanguageCategoryId())
-						.orElseThrow(()->new IllegalArgumentException("no CodeLanguageCategory"));
+			codeLanguageCategoryRepository.findById(reviewDTO.getCodeLanguageCategoryId())
+				.orElseThrow(() -> new IllegalArgumentException("no CodeLanguageCategory"));
 
-		codeReview.updateCodeReview(reviewDTO,clCategory);
+		codeReview.updateCodeReview(reviewDTO, clCategory);
 		codeReviewRepository.save(codeReview);
-    }
+	}
 
 	@Override
-	public Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize, String sort) {
+	public Page<CodeReviewListResponseDTO> findWithFilters(String search, UUID language, int pageNum, int pageSize,
+		String sort) {
 		Specification<CodeReview> spec = Specification.where(CodeReviewSpecification.hasLanguage(language))
-				.and(CodeReviewSpecification.hasKeyword(search));
+			.and(CodeReviewSpecification.hasKeyword(search));
 
 		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
 
 		return codeReviewRepository.findAll(spec, pageable).map(
-				(CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
-						.id(codeReview.getId())
-						.member(codeReview.getMember().getNickname())
-						.title(codeReview.getTitle())
-						.content(codeReview.getContent())
-						.createDate(codeReview.getCreateDate())
-						.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
-						.preferenceCnt(codeReviewPreferenceService.findById(codeReview.getId()).size())
-						.codeReviewComments(codeReview.getComments().size())
-						.build());
+			(CodeReview codeReview) -> CodeReviewListResponseDTO.builder()
+				.id(codeReview.getId())
+				.member(codeReview.getMember().getNickname())
+				.title(codeReview.getTitle())
+				.content(codeReview.getContent())
+				.createDate(codeReview.getCreateDate())
+				.codeLanguageName(codeReview.getCodeLanguageCategory().getLanguageName())
+				.preferenceCnt(preferenceService.countByEntityIDs(codeReview.getId()).size())
+				.codeReviewComments(codeReview.getComments().size())
+				.build());
 	}
 
 	@Override
@@ -164,10 +190,9 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 	}
 
 	@Override
-	public List<CodeReviewSummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
+	public List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
 
-
-		Date searchDate = null;
+		Date searchDate;
 		if (inputDate == null || inputDate.isEmpty()) {
 			searchDate = Date.valueOf(LocalDate.now());
 		} else {
@@ -177,7 +202,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		List<Object[]> results = codeReviewRepository.calculateSummaryByMonth(searchDate);
 
 		return results.stream()
-			.map(row -> new CodeReviewSummaryByMonthResponseDTO(
+			.map(row -> new SummaryByMonthResponseDTO(
 				Integer.parseInt(row[0].toString()),
 				((Number)row[1]).longValue()
 			))

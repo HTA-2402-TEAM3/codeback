@@ -1,6 +1,8 @@
+use codeback;
+
 INSERT INTO authority (id, name)
-VALUES (UUID(), 'ROLE_USER'),
-       (UUID(), 'ROLE_ADMIN');
+VALUES ('11111111-1111-1111-1111-111111111111', 'ROLE_USER'),
+       ('11111111-1111-1111-1111-111111111112', 'ROLE_ADMIN');
 
 INSERT INTO code_language_category (id, language_name)
 VALUES (UUID(), 'Java'),
@@ -47,7 +49,8 @@ VALUES (UUID(), 'jiwonpark@google.com', '박지원', (SELECT id FROM authority W
        (UUID(), 'ahn.hyeji@naver.com', '안혜지', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
        (UUID(), 'kwon.yuri@daum.net', '권유리', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
        (UUID(), 'seo.inguk@yahoo.com', '서인국', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
-       (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false);
+       (UUID(), 'moon.gayoung@kakao.com', '문가영', (SELECT id FROM authority WHERE name = 'ROLE_USER'), false),
+       (UUID(), 'ehrud1617@gmail.com', '이도경', (SELECT id FROM authority WHERE name = 'ROLE_ADMIN'), false);
 
 INSERT INTO code_review (id, member_id, title, content, create_date, language_id)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 0), '자바 경로탐색 질문입니다.', '<h2>BFS 예제 1: 경로 탐색</h2>
@@ -777,7 +780,7 @@ console.log(greet(user));
 INSERT INTO code_review_comment (id, comment, create_date, code_review_id, member_id)
 
 VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 0),
-        (SELECT id FROM member LIMIT 1 OFFSET 20)),
+       (SELECT id FROM member LIMIT 1 OFFSET 20)),
        (UUID(), '잘하셨는데 <div data-language="text" class="toastui-editor-ww-code-block"><pre><code>
 
         boolean[] visited = new boolean[graph.size()];
@@ -879,10 +882,9 @@ VALUES (UUID(), '잘 작성해 주셨습니다!', '2024-09-01 10:15:32.000000', 
     }저도요', '2024-08-31 10:15:32.000000', (SELECT id FROM code_review LIMIT 1 OFFSET 9),
         (SELECT id FROM member LIMIT 1 OFFSET 4));
 
-INSERT INTO code_review_preference (id, sender_member_id, entity_id, is_Like, create_date)
-
+INSERT preference (id, sender_member_id, entity_id, is_Like, create_date)
 VALUES (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), (SELECT id FROM code_review LIMIT 1 OFFSET 0), 1,
-        '2024-08-30 10:15:32.000000'),
+    '2024-08-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 2), (SELECT id FROM code_review LIMIT 1 OFFSET 1), 1,
         '2024-07-30 10:15:32.000000'),
        (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), (SELECT id FROM code_review LIMIT 1 OFFSET 2), 1,
@@ -918,5 +920,42 @@ VALUES (UUID(), 'jiwonpark@google.com', (SELECT id FROM code_review LIMIT 1 OFFS
 
  */
 
+
+-- 프로젝트 리뷰 더미 데이터
+INSERT INTO project_review (id, member_id, title, github_url, content, create_date)
+VALUES
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 10), 'JSP 프로젝트 리뷰', 'https://github.com/HTA-2402-TEAM3/OHBooN', '이 프로젝트는 JSP를 사용하여 구현되었습니다. <br>채팅이 안되요ㅠㅠ. <br>프론트도 너무 쓰레기 같습니다..', '2024-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 11), 'Spring Boot 프로젝트 리뷰', 'https://github.com/jiwonpark/spring-boot-project', '이 프로젝트는 Spring Boot를 사용하여 구현되었습니다.', '2024-08-01 10:00:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 12), 'React 프로젝트 리뷰', 'https://github.com/seungwookim/react-project', 'React와 Redux를 사용하여 프론트엔드 애플리케이션을 개발했습니다.', '2024-08-15 14:30:00'),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 13), 'Machine Learning 프로젝트 리뷰', 'https://github.com/hayounglee/ml-project', '이 프로젝트는 머신러닝 모델을 구축하고 평가하는 것을 목표로 했습니다.', '2024-08-20 09:45:00');
+
+-- 프로젝트 리뷰 이미지 더미 데이터
+INSERT INTO project_review_image (id, file_name, url, project_review_id)
+VALUES
+    (UUID(), 'ohboon_003.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_002.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'ohboon_001.jpg', 'https://codeback-img.s3.us-east-2.amazonaws.com/ce43076f-03d8-42f4-8095-ae0c5e89f04capple.png', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), 'react_ui.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰')),
+    (UUID(), 'ml_model.png', 'https://codeback-img.s3.us-east-2.amazonaws.com/44969a31-a4f0-4e1b-ad3a-fc385f8f84a9101cpen+(1).png', (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'));
+
+-- 프로젝트 리뷰 태그 더미 데이터
+INSERT INTO project_review_tag (id, project_review_id, tag)
+VALUES
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'JSP'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'Backend'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'MariaDB'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰'), 'JAVA'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'), 'React'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'), 'Frontend'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'), 'Machine Learning'),
+    (UUID(), (SELECT id FROM project_review WHERE title = 'Machine Learning 프로젝트 리뷰'), 'AI');
+
+-- 프로젝트 리뷰 댓글 더미 데이터
+INSERT INTO project_review_comment (id, member_id,  content, create_date, project_review_id)
+VALUES
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 20), '카카오 맵 api는 왜 쓰신거죠??', '2024-09-01 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 21), '아.. 백엔드 분이시죠?? 프론트로 전향할 생각은 버리시길..', '2024-09-01 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'JSP 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 22), '정말 유익한 프로젝트 리뷰입니다. 많은 도움이 되었습니다!', '2024-09-02 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'Spring Boot 프로젝트 리뷰')),
+    (UUID(), (SELECT id FROM member LIMIT 1 OFFSET 23),'이 프로젝트에서 사용한 패턴이 인상적이네요.', '2024-09-03 10:15:32.000000', (SELECT id FROM project_review WHERE title = 'React 프로젝트 리뷰'));
 
 

@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="/css/main.css"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+    <link rel="stylesheet" href="/css/notice.css"/>
+
+
+</head>
+<body class="subpage">
+<div th:replace="~{view/common/header.html :: header}"></div>
+<section id="main" class="wrapper_notice">
+    <h1 class="notice">알림</h1>
+    <hr class="major"/>
+
+    <ul id="notificationList"></ul>
+
+</section>
+
+<script src="/js/notice.js"></script>
+<script>getNotification();</script>
+
+</body>
+</html>

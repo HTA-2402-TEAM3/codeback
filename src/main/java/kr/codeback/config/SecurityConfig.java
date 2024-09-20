@@ -1,25 +1,20 @@
 package kr.codeback.config;
 
-import jakarta.servlet.http.HttpServletResponse;
 import kr.codeback.common.CustomSuccessHandler;
 import kr.codeback.filter.JwtRequestFilter;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import kr.codeback.repository.MemberRepository;
-import kr.codeback.service.member.MyUserDetailsService;
 import kr.codeback.service.member.OAuth2Service;
 import kr.codeback.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -49,13 +44,19 @@ public class SecurityConfig {
 
 		http
 			.httpBasic(AbstractHttpConfigurer::disable);
-		//
 
 		http
 			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 				.requestMatchers(
-					"/","/review/{id}","/submit","/api/**","/registration",
-						"/api/submit","/view/common/header","/project/","/project/write").permitAll()
+					"/",
+					"/review/{id}",
+					"/submit",
+					"/api/**",
+					"/registration",
+					"/api/submit",
+					"/view/common/header",
+					"/project/",
+					"/project/write").permitAll()
 				.anyRequest().permitAll()
 				// authenticated()
 			);

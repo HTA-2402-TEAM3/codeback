@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "PROJECT_REVIEW_IMAGE")
@@ -19,24 +20,25 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ProjectReviewImage {
 
-	@Id
-	private UUID id;
+    @Id
+    private UUID id;
 
-	@Column(name = "file_name", nullable = false)
-	private String fileName;
+    @Column(name = "file_name", nullable = false)
+    private String fileName;
 
-	@Column(name = "url", nullable = false)
-	private String url;
+    @Column(name = "url", nullable = false)
+    private String url;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_review_id")
-	private ProjectReview projectReview;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_review_id")
+    @Setter
+    private ProjectReview projectReview;
 
-	@Builder
-	public ProjectReviewImage(UUID id, String fileName, String url, ProjectReview projectReview) {
-		this.id = id;
-		this.fileName = fileName;
-		this.url = url;
-		this.projectReview = projectReview;
-	}
+    @Builder
+    public ProjectReviewImage(UUID id, String fileName, String url, ProjectReview projectReview) {
+        this.id = id;
+        this.fileName = fileName;
+        this.url = url;
+        this.projectReview = projectReview;
+    }
 }
