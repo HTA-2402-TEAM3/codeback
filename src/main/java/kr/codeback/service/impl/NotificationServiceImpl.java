@@ -8,10 +8,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.model.entity.Preference;
+import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.repository.CodeReviewRepository;
@@ -80,17 +82,22 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	public String generateMessage(Preference preference, String type){
-		String message = preference.getMember().getNickname()+"님이 ";
+
 		if(type.equals("codeReview")){
-			return message + codeReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+			CodeReview codeReview = codeReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReview.getMember().getNickname()+"님이" + codeReview.getTitle()+" 글에 좋아요를 눌렀습니다.";
 		} else if (type.equals("codeReviewComment")) {
-			return message + codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+			CodeReviewComment codeReviewComment = codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReviewComment.getMember().getNickname() +"님이" + codeReviewComment.getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
 		} else if (type.equals("projectReview")) {
-			return message + projectReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+			ProjectReview projectReview =  projectReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReview.getMember().getNickname() + projectReview.getTitle()+" 글에 좋아요를 눌렀습니다.";
 		} else if (type.equals("projectReviewComment")) {
-			return message + projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getProjectReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+			ProjectReviewComment projectReviewComment = projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReviewComment.getMember().getNickname() + projectReviewComment.getProjectReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+		} else{
+			return null;
 		}
-		return message;
 	}
 
 	@Override
