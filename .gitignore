@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 **/main/resources/application.properties
+**/main/resources/keystore.p12
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/

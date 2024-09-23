@@ -27,9 +27,9 @@
 
     <div class="doughnut-chart">
         <div>
-            <canvas id="member-summary" width="500" height="500"></canvas>
+            <canvas id="member-summary" width="500" height="500" style="margin-bottom: 50px"></canvas>
 
-            <div style="display: flex;">
+            <div style="display: flex; justify-content: start; margin-left: 30px">
                 <table>
                     <caption>회원 정보</caption>
                     <tbody>
@@ -52,7 +52,7 @@
         </div>
 
         <div>
-            <canvas id="code-review-language-summary" width="500" height="500"></canvas>
+            <canvas id="code-review-language-summary" width="500" height="500" style="margin-bottom: 65px"></canvas>
 
             <div>
                 <table id = "code-review-language-summary-table">
@@ -79,7 +79,7 @@
     <br>
 
     <div>
-        <div>
+        <div class="year">
             <label>
                 <input type="month" id="search-input">
                 <button type="button" onclick="search()">검색</button>
@@ -87,7 +87,7 @@
         </div>
         <br>
 
-        <div>
+        <div style="display: flex; justify-content: center;">
             <canvas id="month-summary" width="1370" height="500" style="margin-bottom: 50px"></canvas>
         </div>
 
