@@ -145,7 +145,7 @@ public class CodeReviewServiceImpl implements CodeReviewService {
 		CodeReview codeReview = codeReviewRepository.findById(reviewDTO.getId())
 			.orElseThrow(() -> new ReviewNonExistentException(
 				ErrorCode.NONEXISTENT_REVIEW.getStatus(),
-				ErrorCode.NOT_EXIST_USER.getMessage()
+				ErrorCode.NONEXISTENT_REVIEW.getMessage()
 			));
 
 		if (!reviewDTO.getMemberEmail().equals(codeReview.getMember().getEmail())) {

@@ -10,54 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     getMemberEmail();
 });
 
-// function renderComment(mapping, data) {
-//     console.log(mapping);
-//
-//
-//     const commentID = data.id;
-//     const commentContent = data.commentContent;
-//
-//     const commentElement = document.createElement('div');
-//     commentElement.innerHTML = `
-//
-//     <ul>
-//         <li>
-//             <div>
-//                 <h4>${data.nickname}</h4
-//             </div>
-//         </li>
-//         <li>
-//             <a href="#" class="icon fa-thumbs-up">
-//                 <span class="label">thumbsUp</span>
-//                 <span class="count">0</span>
-//             </a>
-//         </li>
-//     </ul>
-//     <div class="comment_box">
-//         <div>
-//             <p>${new Date(data.createDate).toLocaleDateString('ko-KR')}</p>
-//         </div>
-//
-//     </div>
-//     <div id="${data.id}">
-//         ${data.commentContent}
-//     </div>
-//
-//     <div class="comment_delete">
-//         <a class="icon fa-pencil" id="modify${data.id}"
-//            onClick="modifyComment('${mapping}','${commentID}', '${escapeHtml(commentContent)}')"></a>
-//         <a class="icon fa-trash"
-//            onclick="deleteComment('${mapping}','${commentID}')"></a>
-//     </div>
-//     <hr class="major"/>`;
-//
-//     if (commentContainer.firstChild) {
-//         commentContainer.insertBefore(commentElement, commentContainer.firstChild);
-//     } else {
-//         commentContainer.appendChild(commentElement);
-//     }
-// }
-
 const escapeHtml = (unsafe) => {
     return unsafe
         .replace(/&/g, "&amp;")
@@ -88,7 +40,6 @@ function commentSubmit(mapping) {
             }
             return resp.json();
         }).then(resp => {
-            console.log(resp);
             editor.setHTML('');
             location.reload();
         }).catch(error => {
@@ -116,24 +67,6 @@ function hiddenIcon() {
     })
 }
 
-// function getMemberInComment() {
-//     fetch(`/api/member/info`)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log("data ::::", data);
-//             loginEmail = data.email;
-//             hiddenIcon();
-//         })
-//         .catch(error => {
-//             console.error('Fetch error:', error);
-//         });
-// }
-
 function deleteComment(mapping,commentID) {
 
     if (confirm("댓글을 정말 삭제하시겠습니까?")) {
@@ -148,8 +81,6 @@ function deleteComment(mapping,commentID) {
             }
             return resp.json();
         }).then(resp => {
-            console.log(resp);
-
             alert(resp.message);
             location.reload();
         }).catch(error => {
@@ -159,11 +90,6 @@ function deleteComment(mapping,commentID) {
 }
 
 function updateComments(mapping,commentId, content) {
-    console.log(mapping);
-
-    console.log("updateComments() : ", commentId);
-    console.log("updateComments() : ", content);
-
     fetch(`/api/${mapping}/comment/update`, {
         method: 'PUT',
         headers: {
@@ -180,8 +106,6 @@ function updateComments(mapping,commentId, content) {
         }
         return resp.json();
     }).then(resp => {
-        console.log(resp);
-
         alert(resp.message);
         location.reload();
     }).catch(error => {
@@ -193,11 +117,6 @@ let lastCommentId;
 let lastCommentContent;
 
 function modifyComment(mapping, commentId, commentContent) {
-    console.log(mapping);
-
-    console.log("commentID : " + commentId);
-    console.log("commentContent : " + commentContent);
-
     if (lastCommentId === null) {
         lastCommentId = commentId;
         lastCommentContent = commentContent;

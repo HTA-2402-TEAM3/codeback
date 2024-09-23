@@ -3,6 +3,7 @@ let reviewId = '';
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     reviewId = urlParams.get('id');
+    getMemberEmail();
 
     if (reviewId !== null && reviewId !== '') {
         renderCodeReview(reviewId);
@@ -28,49 +29,49 @@ function modify(email,title,content) {
         }
         return resp.json();
     }).then(resp => {
-            window.location.href = '/review/';
+        window.location.href = '/review/';
     }).catch(error => {
         console.error(error);
     });
 }
 
-function submit(email) {
-    const title = document.getElementById('titleInput').value;
-    const content = editor.getHTML();
+function submit() {
+    if(checkLoginForWrite()) {
+        const title = document.getElementById('titleInput').value;
+        const content = editor.getHTML();
 
-    if (languageValue === '' || title === '' || content === '<p><br></p>') {
-        alert('모든 내용을 입력해주세요');
-        return;
-    }
+        if (languageValue === '' || title === '' || content === '<p><br></p>') {
+            alert('모든 내용을 입력해주세요');
+            return;
+        }
 
-    console.log(`제목: ${title}`);
-    console.log(`내용: ${content}`);
-    console.log(`언어: ${languageValue}`);
-
-    if (reviewId !== null && reviewId !== '') {
-        modify(email,title,content);
-    } else {
-        fetch(`/api/review/save`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                memberEmail: email,
-                title: title,
-                content: content,
-                codeLanguageCategoryId: languageValue
-            })
-        }).then(resp => {
-            if (!resp.ok) {
-                throw new Error("fail to fetch");
-            }
-            return resp.json();
-        }).then(resp => {
+        if (reviewId !== null && reviewId !== '') {
+            modify(loginEmail, title, content);
+        } else {
+            fetch(`/api/review/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    memberEmail: loginEmail,
+                    title: title,
+                    content: content,
+                    codeLanguageCategoryId: languageValue
+                })
+            }).then(resp => {
+                if (!resp.ok) {
+                    throw new Error("fail to fetch");
+                }
+                return resp.json();
+            }).then(resp => {
                 window.location.href = '/review/';
-        }).catch(error => {
-            console.error(error);
-        });
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }else {
+        window.location.href = '/review/';
     }
 }
 
@@ -92,12 +93,9 @@ function selectOnlyOne(checkbox) {
     } else {
         languageValue = '';
     }
-    console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
 }
 
 function renderCodeReview(reviewId) {
-    console.log("renderCodeReview() : "+reviewId);
-
     fetch(`/api/review/get/${reviewId}`,{
         method: 'GET',
         headers: {
@@ -111,7 +109,6 @@ function renderCodeReview(reviewId) {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             renderData(data);
         })
         .catch(error => {
@@ -121,7 +118,6 @@ function renderCodeReview(reviewId) {
 
 function renderData(data) {
     // title과 content를 설정
-    console.log("renderData() : "+data);
 
     document.getElementById('titleInput').value = data.title;
 
@@ -139,4 +135,3 @@ function renderData(data) {
     });
     languageValue = data.codeLanguageCategory.id;
 }
-
