@@ -1,6 +1,5 @@
 function deleteProjectReview(id){
     if(confirm("게시글을 삭제하시겠습니까?")) {
-        console.log(id);
         fetch(`/api/project/${id}`, {
             method: 'DELETE',
         })
@@ -11,7 +10,6 @@ function deleteProjectReview(id){
                 return response.json(); // 응답을 JSON으로 처리 (필요시)
             })
             .then(data => {
-                console.log('성공적으로 삭제되었습니다:', data);
                 alert(data.message);
                 window.location.href = '/project/';
             })

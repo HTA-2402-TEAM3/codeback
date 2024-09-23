@@ -28,20 +28,21 @@
             <h2 th:if="${findWithTag == null}">Project Review</h2>
             <h2 th:if="${findWithTag != null}" th:text="'#' + ${findWithTag}"></h2>
         </header>
-        <div class="inner_logo" style="margin-bottom: 50px">
-            <button class="special button" onclick="valiMember('project')">글쓰기</button>
-            <div class="search-container">
-                <div>
-                    <input type="text" name="search" id="search" value="" placeholder="Search"/>
-                </div>
-                <div>
-                    <a onclick="searchProjects()" class="code-review" style="text-decoration: none">
-                        <span class="icon fa-search"></span>
-                    </a>
-                </div>
+    </div>
+    <div class="team_inner_logo" style="margin-bottom: 50px">
+        <button class="special button" onclick="valiMember('project')">글쓰기</button>
+        <div class="search-container">
+            <div>
+                <input type="text" name="search" id="search" value="" placeholder="Search"/>
+            </div>
+            <div>
+                <a onclick="searchProjects()" class="code-review" style="text-decoration: none">
+                    <span class="icon fa-search"></span>
+                </a>
             </div>
         </div>
     </div>
+
     <div class="box-container" id="project-box">
         <div class="boxes" th:each="review: ${reviews}">
             <a class="box" th:href="@{/project/{id}(id=${review.id})}">
