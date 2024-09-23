@@ -20,6 +20,7 @@ WORKDIR /app/codeback
 RUN rm -rf .git
 
 COPY ./src/main/resources/application.properties ./src/main/resources/
+COPY ./src/main/resources/keystore.p12 ./src/main/resources/
 
 # JAR 파일 빌드 (테스트 생략)
 WORKDIR /app/codeback
