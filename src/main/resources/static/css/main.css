@@ -3729,7 +3729,12 @@ img {
     display: flex;
     justify-content: center;
 }
-
+.team_inner_logo {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 150px;
+    margin-left: 150px;
+}
 #pagination-controls {
     font-size: 30px !important;
     display: flex;
