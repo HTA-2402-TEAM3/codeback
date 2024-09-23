@@ -35,8 +35,9 @@ function modify(email,title,content) {
     });
 }
 
-function submit() {
-    if(checkLoginForWrite()) {
+async function submit() {
+    if (await checkLoginForWrite()) {
+        const loginEmail = await getMemberEmail();
         const title = document.getElementById('titleInput').value;
         const content = editor.getHTML();
 
@@ -70,7 +71,7 @@ function submit() {
                 console.error(error);
             });
         }
-    }else {
+    } else {
         window.location.href = '/review/';
     }
 }

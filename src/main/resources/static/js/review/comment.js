@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 마지막 요소가 UUID
     review_uuid = pathSegments[pathSegments.length - 1];
 
-    getMemberEmail();
+    // getMemberEmail();
 });
 
 const escapeHtml = (unsafe) => {
@@ -19,9 +19,11 @@ const escapeHtml = (unsafe) => {
         .replace(/'/g, "&#039;");
 }
 
-function commentSubmit(mapping) {
 
-    if(loginEmail === '' || loginEmail === undefined) {
+async function commentSubmit(mapping) {
+    const loginEmail = await getMemberEmail();
+
+    if (loginEmail === '' || loginEmail === undefined || loginEmail === null) {
         alert("로그인 해주세요");
     } else {
         fetch(`/api/${mapping}/comment/save`, {
@@ -51,7 +53,7 @@ function commentSubmit(mapping) {
 function hiddenIcon() {
     const codeReviewWriterEmail = document.getElementById("codeReviewWriter").dataset.email;
 
-    if(codeReviewWriterEmail === loginEmail) {
+    if (codeReviewWriterEmail === loginEmail) {
         const codeReviewIcon = document.querySelector('.icon_view');
         codeReviewIcon.removeAttribute("hidden");
     }
@@ -59,7 +61,7 @@ function hiddenIcon() {
     const comments = document.querySelectorAll('#commentElements')
     comments.forEach(comment => {
         const memberInfo = comment.querySelector('.memberInfo').dataset.email;
-        if(memberInfo === loginEmail) {
+        if (memberInfo === loginEmail) {
             const IconElement = comment.querySelector('.comment_delete');
             IconElement.removeAttribute("hidden");
 
@@ -67,14 +69,46 @@ function hiddenIcon() {
     })
 }
 
-function deleteComment(mapping,commentID) {
+async function deleteComment(mapping, commentID) {
+    const loginEmail = await getMemberEmail();
+    if (loginEmail === '' || loginEmail === undefined || loginEmail === null) {
+        alert("로그인 해주세요");
+    } else {
+        if (confirm("댓글을 정말 삭제하시겠습니까?")) {
+            fetch(`/api/${mapping}/comment/${commentID}?memberEmail=${loginEmail}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json', // 필요한 경우
+                },
+            }).then(resp => {
+                if (!resp.ok) {
+                    throw new Error("fail to fetch");
+                }
+                return resp.json();
+            }).then(resp => {
+                alert(resp.message);
+                location.reload();
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }
+}
 
-    if (confirm("댓글을 정말 삭제하시겠습니까?")) {
-        fetch(`/api/${mapping}/comment/${commentID}?memberEmail=${loginEmail}`, {
-            method: 'DELETE',
+function updateComments(mapping, commentId, content) {
+    if (loginEmail === '' || loginEmail === undefined || loginEmail === null) {
+        alert("로그인 해주세요");
+    } else {
+        fetch(`/api/${mapping}/comment/update`, {
+            method: 'PUT',
             headers: {
-                'Content-Type': 'application/json', // 필요한 경우
+                'Content-Type': 'application/json'
             },
+            body: JSON.stringify({
+                id: commentId,
+                content: content,
+                memberEmail: loginEmail
+            })
         }).then(resp => {
             if (!resp.ok) {
                 throw new Error("fail to fetch");
@@ -87,30 +121,6 @@ function deleteComment(mapping,commentID) {
             console.error(error);
         });
     }
-}
-
-function updateComments(mapping,commentId, content) {
-    fetch(`/api/${mapping}/comment/update`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: commentId,
-            content: content,
-            memberEmail: loginEmail
-        })
-    }).then(resp => {
-        if (!resp.ok) {
-            throw new Error("fail to fetch");
-        }
-        return resp.json();
-    }).then(resp => {
-        alert(resp.message);
-        location.reload();
-    }).catch(error => {
-        console.error(error);
-    });
 }
 
 let lastCommentId;
