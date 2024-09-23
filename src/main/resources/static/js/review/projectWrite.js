@@ -11,12 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
         renderProjectReview(projectReviewId);
     }
     getMemberEmail();
-    console.log("dom function");
 });
 
 function renderProjectReview(reviewID) {
-    console.log("renderProjectReview() : ", reviewID);
-
     fetch(`/api/project/get/${reviewID}`, {
         method: 'GET',
         headers: {
@@ -28,7 +25,6 @@ function renderProjectReview(reviewID) {
         }
         return resp.json();
     }).then(data => {
-        console.log(data);
         renderProjectData(data);
     })
         .catch(error => {
@@ -38,7 +34,6 @@ function renderProjectReview(reviewID) {
 
 function renderProjectData(data) {
     // title과 content를 설정
-    console.log("renderData() : " + data);
 
     document.getElementById('projectTitle').value = data.title;
 
@@ -75,7 +70,7 @@ function renderProjectData(data) {
 }
 let deleteFileNames = [];
 function deleteDataImage(fileName, imgId) {
-    console.log("deleteDataImage(imgId) : " + fileName);
+
     deleteFileNames.push(fileName);
 
     const imgElement = document.getElementById(imgId);
@@ -126,55 +121,48 @@ function projectModify(formData) {
 }
 
 function saveProjectReview() {
-    const title = document.getElementById('projectTitle').value;
-    const content = ProjectEditor.getHTML();
-    const tags = tagify.value.map(tag => tag.value);
-    const githubUrl = document.getElementById('github-url').value;
+    if(checkLoginForWrite()) {
+        const title = document.getElementById('projectTitle').value;
+        const content = ProjectEditor.getHTML();
+        const tags = tagify.value.map(tag => tag.value);
+        const githubUrl = document.getElementById('github-url').value;
 
-    console.log(`제목: ${title}`);
-    console.log(`내용: ${content}`);
-    console.log("이메일: " + loginEmail);
-    console.log("태그들 : " + tags);
-    console.log("깃헙 주소 : ", githubUrl);
-    console.log("삭제 이미지들 이름: ",deleteFileNames);
+        formData.append('memberEmail', loginEmail);
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('githubUrl', githubUrl);
+        tags.forEach(tag => formData.append('tags', tag));
+        deleteFileNames.forEach(fileName => formData.append('fileNames', fileName));
 
-    formData.append('memberEmail', loginEmail);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('githubUrl', githubUrl);
-    tags.forEach(tag => formData.append('tags', tag));
-    deleteFileNames.forEach(fileName => formData.append('fileNames',fileName));
+        if (title === null) {
+            alert("제목이 없습니다.");
+            document.getElementById('projectTitle').focus();
+        } else if (content === null) {
+            alert("내용이 없습니다.");
+            document.getElementById('projectEditor').focus();
+        } else if (githubUrl === null) {
+            alert("깃허브 주소를 입력해주세요.");
+            document.getElementById('github-url').focus();
+        }
 
-    console.log("폼데이터: ", +formData);
-    for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-    if(title===null) {
-        alert("제목이 없습니다.");
-        document.getElementById('projectTitle').focus();
-    }else if(content===null) {
-        alert("내용이 없습니다.");
-        document.getElementById('projectEditor').focus();
-    } else if(githubUrl===null) {
-        alert("깃허브 주소를 입력해주세요.");
-        document.getElementById('github-url').focus();
-    }
-
-    if (projectReviewId !== null && projectReviewId !== '') {
-        projectModify(formData);
+        if (projectReviewId !== null && projectReviewId !== '') {
+            projectModify(formData);
+        } else {
+            fetch(`/api/project/save`, {
+                method: 'POST',
+                body: formData,
+            }).then(resp => {
+                if (!resp.ok) {
+                    throw new Error("fail to fetch");
+                }
+                return resp.json();
+            }).then(resp => {
+                window.location.href = '/project/';
+            }).catch(error => {
+                console.error(error);
+            });
+        }
     } else {
-        fetch(`/api/project/save`, {
-            method: 'POST',
-            body: formData,
-        }).then(resp => {
-            if (!resp.ok) {
-                throw new Error("fail to fetch");
-            }
-            return resp.json();
-        }).then(resp => {
-            window.location.href = '/project/';
-        }).catch(error => {
-            console.error(error);
-        });
+        window.location.href = '/project/';
     }
 }

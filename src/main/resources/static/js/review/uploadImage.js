@@ -61,26 +61,23 @@ function handleFiles(event) {
                 imageContainer.appendChild(img);
 
                 formData.append('imageFiles',files[i]);
-                console.log(img.id);
             } else {
                 alert('이미지가 아닙니다.');
                 return;
             }
         }
     }
-    console.log("formData in uploadImages.js : ");
-    for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value.name || value}`);
-    }
-    console.log(fileNames);
 }
 function deleteImg(index) {
-    console.log(index);
     const fileName = files[index].name;
 
-    if(projectReviewId !== null && projectReviewId !== ''){
-        console.log('delete:'+fileName);
-    }else {
+    // if(projectReviewId !== null && projectReviewId !== ''){
+    //     console.log('delete:'+fileName);
+    // }else {
+    //     formData.delete('imageFiles', fileName);
+    // }
+    //
+    if(projectReviewId === null && projectReviewId === '') {
         formData.delete('imageFiles', fileName);
     }
 

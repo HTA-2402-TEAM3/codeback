@@ -1,9 +1,9 @@
-let checkboxValue = '';
-let searchKeyword = '';
-let loginEmail = '';
-document.addEventListener('DOMContentLoaded', function () {
-    getMemberEmail();
-});
+// let checkboxValue = '';
+// let searchKeyword = '';
+// let loginEmail = '';
+// document.addEventListener('DOMContentLoaded', function () {
+//     getMemberEmail();
+// });
 
 function selectOnlyOne(checkbox) {
     // 모든 체크박스를 가져옵니다.
@@ -22,8 +22,7 @@ function selectOnlyOne(checkbox) {
         checkboxValue = '';
         fetchAllData(0);
     }
-    console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
-    // checkboxValue = checkbox.checked ? checkbox.value : '';
+
 }
 
 function renderPaging(totalPage) {
@@ -81,7 +80,6 @@ function fetchAllData(page) {
             return response.json();
         })
         .then(data => {
-            console.log("allData: ", data);
             renderReviews(data.reviews);
             renderPaging(data.totalPage);
         })
@@ -103,8 +101,6 @@ function formatDate(dateString) {
 }
 
 function renderReviews(reviews) {
-    console.log("renderReviews : ", reviews);
-
     const container = document.getElementById('reviewsContainer');
     container.innerHTML = '';
 
@@ -156,9 +152,6 @@ function renderReviews(reviews) {
 function searchData() {
     searchKeyword = document.getElementById('search').value;
 
-    console.log("searchData() : searchKeyword :: " + searchKeyword);
-    console.log("searchData() : checkboxValue :: " + checkboxValue);
-
     let url;
     if (searchKeyword !== '' && checkboxValue === '') {
         url = `/api/review/search?search=${searchKeyword}`
@@ -167,9 +160,6 @@ function searchData() {
     } else {
         url = `/api/review/search?search=${searchKeyword}&language=${checkboxValue}`
     }
-
-    console.log("url : " + url);
-
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -178,7 +168,6 @@ function searchData() {
             return response.json();
         })
         .then(data => {
-            console.log("data ::::", data);
             renderReviews(data.reviews);
             renderPaging(data.totalPage);
         })

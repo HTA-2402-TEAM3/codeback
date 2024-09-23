@@ -3,22 +3,14 @@ let searchText = '';
 let findWithTag = '';
 
 document.addEventListener('DOMContentLoaded', function () {
-   console.log("dom loaded");
-
     const urlParams = new URLSearchParams(window.location.search);
     findWithTag = urlParams.get('tag');
-
-    getMemberEmail();
 });
 
 function fetchAllProjects(page) {
     if(findWithTag === null) {
         findWithTag = '';
     }
-
-    console.log("fetchAllProjects",searchText);
-    console.log("page",page);
-    console.log("tag ", findWithTag);
 
     let url;
     if(searchText==='' && findWithTag==='') {
@@ -29,8 +21,6 @@ function fetchAllProjects(page) {
         url = `/api/project/search?search=${searchText}&pageNum=${page}`
     }
 
-    console.log("fetchAllProjects: ", url);
-
     fetch(url)
         .then(response => {
             if (!response.ok) {
@@ -39,7 +29,6 @@ function fetchAllProjects(page) {
             return response.json();
         })
         .then(data => {
-            console.log("allData: ", data);
             renderReviews(data.reviews);
             renderPaging(data.totalPage);
         })
@@ -49,8 +38,6 @@ function fetchAllProjects(page) {
 }
 
 function renderReviews(reviews) {
-    console.log("renderReviews: ", reviews);
-
     const container = document.getElementById('project-box');
     container.innerHTML = '';
 
@@ -98,7 +85,6 @@ function formatted(dateString) {
 }
 
 function renderPaging(totalPage) {
-    console.log("renderPaging: ", searchText);
     const ul = document.getElementById('pagingUl');
     ul.innerHTML = '';
 
@@ -132,8 +118,6 @@ function renderPaging(totalPage) {
 function searchProjects() {
     searchText = document.getElementById('search').value;
 
-    console.log("searchText: ",searchText);
-
         fetch(`/api/project/search?search=${searchText}`)
             .then(resp => {
                 if(!resp.ok) {
@@ -142,7 +126,6 @@ function searchProjects() {
                 return resp.json();
             })
             .then(data => {
-                console.log("data :::: ", data);
                 renderReviews(data.reviews);
                 renderPaging(data.totalPage);
             }).catch(err => {
