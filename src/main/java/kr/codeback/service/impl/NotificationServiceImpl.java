@@ -79,6 +79,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	}
 
+	@Override
 	public Member validateType(Preference preference, String type){
 		if(type.equals("codeReview")){
 			CodeReview codeReview = codeReviewRepository.findById(preference.getEntityID()).orElse(null);
