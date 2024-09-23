@@ -35,3 +35,12 @@ function valiMemberComment(type) {
         commentSubmit(type);
     }
 }
+
+function checkLoginForWrite() {
+    if(loginEmail === null || loginEmail === '' || loginEmail === undefined) {
+        alert("로그인 해주세요.");
+        return false;
+    } else {
+        return true;
+    }
+}
