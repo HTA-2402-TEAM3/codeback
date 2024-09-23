@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (projectReviewId !== '' && projectReviewId !== null) {
         renderProjectReview(projectReviewId);
     }
-    getMemberEmail();
+    // getMemberEmail();
 });
 
 function renderProjectReview(reviewID) {
@@ -120,47 +120,50 @@ function projectModify(formData) {
     });
 }
 
-function saveProjectReview() {
-    if(checkLoginForWrite()) {
+async function saveProjectReview() {
+    if (await checkLoginForWrite()) {
+        const loginEmail = await getMemberEmail();
         const title = document.getElementById('projectTitle').value;
         const content = ProjectEditor.getHTML();
         const tags = tagify.value.map(tag => tag.value);
         const githubUrl = document.getElementById('github-url').value;
 
-        formData.append('memberEmail', loginEmail);
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('githubUrl', githubUrl);
-        tags.forEach(tag => formData.append('tags', tag));
-        deleteFileNames.forEach(fileName => formData.append('fileNames', fileName));
-
-        if (title === null) {
+        if (title === null || title === '') {
             alert("제목이 없습니다.");
             document.getElementById('projectTitle').focus();
-        } else if (content === null) {
+        } else if (content === null || content === '<p><br></p>' || content === '') {
             alert("내용이 없습니다.");
             document.getElementById('projectEditor').focus();
-        } else if (githubUrl === null) {
+        } else if (githubUrl === null || githubUrl === '') {
             alert("깃허브 주소를 입력해주세요.");
             document.getElementById('github-url').focus();
-        }
-
-        if (projectReviewId !== null && projectReviewId !== '') {
-            projectModify(formData);
         } else {
-            fetch(`/api/project/save`, {
-                method: 'POST',
-                body: formData,
-            }).then(resp => {
-                if (!resp.ok) {
-                    throw new Error("fail to fetch");
-                }
-                return resp.json();
-            }).then(resp => {
-                window.location.href = '/project/';
-            }).catch(error => {
-                console.error(error);
-            });
+
+            formData.append('memberEmail', loginEmail);
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('githubUrl', githubUrl);
+            tags.forEach(tag => formData.append('tags', tag));
+            deleteFileNames.forEach(fileName => formData.append('fileNames', fileName));
+
+
+            if (projectReviewId !== null && projectReviewId !== '') {
+                projectModify(formData);
+            } else {
+                fetch(`/api/project/save`, {
+                    method: 'POST',
+                    body: formData,
+                }).then(resp => {
+                    if (!resp.ok) {
+                        throw new Error("fail to fetch");
+                    }
+                    return resp.json();
+                }).then(resp => {
+                    window.location.href = '/project/';
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
         }
     } else {
         window.location.href = '/project/';
