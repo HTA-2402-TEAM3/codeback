@@ -11,12 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
         renderProjectReview(projectReviewId);
     }
     getMemberEmail();
-    console.log("dom function");
 });
 
 function renderProjectReview(reviewID) {
-    console.log("renderProjectReview() : ", reviewID);
-
     fetch(`/api/project/get/${reviewID}`, {
         method: 'GET',
         headers: {
@@ -28,7 +25,6 @@ function renderProjectReview(reviewID) {
         }
         return resp.json();
     }).then(data => {
-        console.log(data);
         renderProjectData(data);
     })
         .catch(error => {
@@ -38,7 +34,6 @@ function renderProjectReview(reviewID) {
 
 function renderProjectData(data) {
     // title과 content를 설정
-    console.log("renderData() : " + data);
 
     document.getElementById('projectTitle').value = data.title;
 
@@ -75,7 +70,7 @@ function renderProjectData(data) {
 }
 let deleteFileNames = [];
 function deleteDataImage(fileName, imgId) {
-    console.log("deleteDataImage(imgId) : " + fileName);
+
     deleteFileNames.push(fileName);
 
     const imgElement = document.getElementById(imgId);
@@ -139,10 +134,6 @@ function saveProjectReview() {
         tags.forEach(tag => formData.append('tags', tag));
         deleteFileNames.forEach(fileName => formData.append('fileNames', fileName));
 
-        console.log("폼데이터: ", +formData);
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
         if (title === null) {
             alert("제목이 없습니다.");
             document.getElementById('projectTitle').focus();

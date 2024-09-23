@@ -93,12 +93,9 @@ function selectOnlyOne(checkbox) {
     } else {
         languageValue = '';
     }
-    console.log(`선택된 체크박스의 값: ${checkbox.checked ? checkbox.value : '없음'}`);
 }
 
 function renderCodeReview(reviewId) {
-    console.log("renderCodeReview() : "+reviewId);
-
     fetch(`/api/review/get/${reviewId}`,{
         method: 'GET',
         headers: {
@@ -112,7 +109,6 @@ function renderCodeReview(reviewId) {
             return response.json();
         })
         .then(data => {
-            console.log(data);
             renderData(data);
         })
         .catch(error => {
@@ -122,7 +118,6 @@ function renderCodeReview(reviewId) {
 
 function renderData(data) {
     // title과 content를 설정
-    console.log("renderData() : "+data);
 
     document.getElementById('titleInput').value = data.title;
 
