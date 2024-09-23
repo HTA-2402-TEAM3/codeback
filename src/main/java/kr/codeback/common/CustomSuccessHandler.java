@@ -53,7 +53,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		CookieUtil.createCookie(response,"refresh_token",refreshToken,36000000);
 
 		//redirect위치
-		response.sendRedirect("http://localhost:8080/");
+		response.sendRedirect("https://codeback.shop/");
 	}
 
 }
