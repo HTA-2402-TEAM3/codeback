@@ -17,6 +17,10 @@ function getNotification() {
             data.forEach(notification => {
                 const listItem = document.createElement('li');
 
+                if (notification.isRead === true) {
+                    listItem.classList.add('blurred');
+                }
+
                 // 날짜 div
                 const dateDiv = document.createElement('div');
                 dateDiv.classList.add('notification-date');

@@ -9,14 +9,14 @@ services:
     ports:
       - "443:443"
     environment:
-          SPRING_DATASOURCE_URL: jdbc:mariadb://codeback_db:3306/codeback
+          SPRING_DATASOURCE_URL: jdbc:mariadb://codeback:3306/codeback
           SPRING_DATASOURCE_USERNAME: codeback
           SPRING_DATASOURCE_PASSWORD: ohboon
     depends_on:
-      codeback_db:
+      codeback:
         condition: service_healthy
 
-  codeback_db:
+  codeback:
     image: mariadb:11.4.2
     ports:
       - "3306:3306"
