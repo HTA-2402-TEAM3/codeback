@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pathSegments = window.location.pathname.split('/'); // 경로를 '/'로 나누기
     // 마지막 요소가 UUID
     review_uuid = pathSegments[pathSegments.length - 1];
-
-    // getMemberEmail();
+    hiddenIcon();
 });
 
 const escapeHtml = (unsafe) => {
@@ -50,7 +49,8 @@ async function commentSubmit(mapping) {
     }
 }
 
-function hiddenIcon() {
+async function hiddenIcon() {
+    const loginEmail = await getMemberEmail();
     const codeReviewWriterEmail = document.getElementById("codeReviewWriter").dataset.email;
 
     if (codeReviewWriterEmail === loginEmail) {
