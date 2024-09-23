@@ -55,13 +55,11 @@ public class NotificationServiceImpl implements NotificationService {
 
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
-			.member(preference.getMember())
+			.member(validateType(preference, type))
 			.entityID(preference.getId())
 			.isRead(false)
 			.message(generateMessage(preference,type))
 			.build();
-
-
 
 		notificationRepository.save(notification);
 	}
@@ -79,6 +77,24 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationRepository.save(notification);
 
+	}
+
+	public Member validateType(Preference preference, String type){
+		if(type.equals("codeReview")){
+			CodeReview codeReview = codeReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReview.getMember();
+		} else if (type.equals("codeReviewComment")) {
+			CodeReviewComment codeReviewComment = codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReviewComment.getMember();
+		} else if (type.equals("projectReview")) {
+			ProjectReview projectReview =  projectReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReview.getMember();
+		} else if (type.equals("projectReviewComment")) {
+			ProjectReviewComment projectReviewComment = projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReviewComment.getMember();
+		} else{
+			return null;
+		}
 	}
 
 	public String generateMessage(Preference preference, String type){
