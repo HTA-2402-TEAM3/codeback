@@ -3736,7 +3736,7 @@ img {
     margin-left: 150px;
 }
 #pagination-controls {
-    font-size: 30px !important;
+    font-size: 15px !important;
     display: flex;
     align-items: center;
 }
