@@ -1,6 +1,8 @@
 
 .doughnut-chart {
     display: flex;
+    justify-content: center;
+    gap: 100px;
 }
 
 .month-summary-table {
@@ -22,4 +24,21 @@ table {
 
 canvas {
     padding-left: 20px;
+}
+#search-input {
+    font-size: 27px;
+}
+.year {
+    display: flex;
+    justify-content: end;
+    margin-right: 100px;
+}
+
+#month-summary {
+    display: flex;
+    justify-content: center;
+}
+.month-summary-table {
+    display: flex;
+    justify-content: center;
 }
