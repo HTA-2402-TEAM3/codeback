@@ -7,7 +7,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-2022222222
 # 작업 디렉토리 설정
 WORKDIR /app
 
