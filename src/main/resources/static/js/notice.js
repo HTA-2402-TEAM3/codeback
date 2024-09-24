@@ -13,11 +13,10 @@ function getNotification() {
         })
         .then(data => {
             const notificationList = document.getElementById('notificationList');
-
             data.forEach(notification => {
                 const listItem = document.createElement('li');
 
-                if (notification.isRead === true) {
+                if (notification.read === true) {
                     listItem.classList.add('blurred');
                 }
 

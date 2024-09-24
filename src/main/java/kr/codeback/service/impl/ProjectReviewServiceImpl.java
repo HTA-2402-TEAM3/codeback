@@ -41,160 +41,153 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProjectReviewServiceImpl implements ProjectReviewService {
 
-	private final ProjectReviewRepository projectReviewRepository;
+    private final ProjectReviewRepository projectReviewRepository;
 
-	private final ProjectReviewCommentService projectReviewCommentService;
-	private final ProjectReviewImageService projectReviewImageService;
-	private final ProjectReviewTagService projectReviewTagService;
-	private final PreferenceService preferenceService;
+    private final ProjectReviewCommentService projectReviewCommentService;
+    private final ProjectReviewImageService projectReviewImageService;
+    private final ProjectReviewTagService projectReviewTagService;
+    private final PreferenceService preferenceService;
 
-	public Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
-		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+    public Page<ProjectReviewListResponseDTO> findAllWithPage(int pageNum, int pageSize, String sort) {
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
 
-		return projectReviewRepository.findAll(pageable).map((ProjectReview projectReview) -> {
-			String thumbnailUrl = projectReview.getProjectReviewImages()
-				.stream()
-				.findFirst()
-				.map(ProjectReviewImage::getUrl)
-				.orElse(null);
+        return projectReviewRepository.findAll(pageable).map((ProjectReview projectReview) -> {
+            String thumbnailUrl = projectReview.getProjectReviewImages()
+                    .stream()
+                    .findFirst()
+                    .map(ProjectReviewImage::getUrl)
+                    .orElse(null);
 
-			return ProjectReviewListResponseDTO.builder()
-				.id(projectReview.getId())
-				.member(projectReview.getMember().getNickname())
-				.createDate(projectReview.getCreateDate())
-				.title(projectReview.getTitle())
-				.projectReviewTags(projectReview.getProjectReviewTags()
-					.stream()
-					.map(ProjectReviewTag::getTag)
-					.collect(Collectors.toList()))
-				.projectReviewThumbnails(thumbnailUrl) // null일 수 있음
-				.preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
-				.projectReviewComments(projectReview.getComments().size())
-				.build();
-		});
-	}
+            return ProjectReviewListResponseDTO.builder()
+                    .id(projectReview.getId())
+                    .member(projectReview.getMember().getNickname())
+                    .createDate(projectReview.getCreateDate())
+                    .title(projectReview.getTitle())
+                    .projectReviewTags(projectReview.getProjectReviewTags()
+                            .stream()
+                            .map(ProjectReviewTag::getTag)
+                            .collect(Collectors.toList()))
+                    .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
+                    .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
+                    .projectReviewComments(projectReview.getComments().size())
+                    .build();
+        });
+    }
 
-	@Override
-	public ProjectReview findById(UUID projectID) {
-		return projectReviewRepository.findById(projectID)
-			.orElseThrow(() -> new ReviewNonExistentException(ErrorCode.NONEXISTENT_REVIEW.getStatus(),
-				ErrorCode.NOT_EXIST_USER.getMessage()));
-	}
+    @Override
+    public ProjectReview findById(UUID projectID) {
+        return projectReviewRepository.findById(projectID)
+                .orElseThrow(() -> new ReviewNonExistentException(ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()));
+    }
 
-	@Override
-	@Transactional
-	public ProjectReview save(Member member, ProjectReviewRequestDTO pjRequestDTO) throws IOException {
-		ProjectReview reviewObj = ProjectReview.builder()
-			.id(UUID.randomUUID())
-			.member(member)
-			.title(pjRequestDTO.getTitle())
-			.content(pjRequestDTO.getContent())
-			.githubURL(pjRequestDTO.getGithubUrl())
-			.build();
-		projectReviewRepository.save(reviewObj);
-		Set<ProjectReviewTag> tagSet = new LinkedHashSet<>();
-		Set<ProjectReviewImage> imageSet = new LinkedHashSet<>();
+    @Override
+    @Transactional
+    public ProjectReview save(Member member, ProjectReviewRequestDTO pjRequestDTO) throws IOException {
+        ProjectReview reviewObj = ProjectReview.builder()
+                .id(UUID.randomUUID())
+                .member(member)
+                .title(pjRequestDTO.getTitle())
+                .content(pjRequestDTO.getContent())
+                .githubURL(pjRequestDTO.getGithubUrl())
+                .build();
+        projectReviewRepository.save(reviewObj);
+        Set<ProjectReviewTag> tagSet = new LinkedHashSet<>();
+        Set<ProjectReviewImage> imageSet = new LinkedHashSet<>();
 
-		if (pjRequestDTO.getTags() != null) {
-			tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
-		}
-		if (pjRequestDTO.getImageFiles() != null) {
-			imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
-		}
+        if (pjRequestDTO.getTags() != null) {
+            tagSet = projectReviewTagService.save(pjRequestDTO.getTags(), reviewObj);
+        }
+        if (pjRequestDTO.getImageFiles() != null) {
+            imageSet = projectReviewImageService.save(pjRequestDTO.getImageFiles(), reviewObj);
+        }
 
-		reviewObj.addSet(imageSet, tagSet);
-		return projectReviewRepository.save(reviewObj);
-	}
+        reviewObj.addSet(imageSet, tagSet);
+        return projectReviewRepository.save(reviewObj);
+    }
 
-	@Override
-	@Transactional
-	public void deleteAllById(UUID projectID) {
-		projectReviewImageService.deleteAllByProjectReviewId(projectID);
-		projectReviewTagService.deleteAllByProjectReviewId(projectID);
-		projectReviewCommentService.deleteAllByProjectReviewId(projectID);
-		projectReviewRepository.deleteById(projectID);
-	}
+    @Override
+    @Transactional
+    public void deleteAllById(UUID projectID) {
+        projectReviewImageService.deleteAllByProjectReviewId(projectID);
+        projectReviewTagService.deleteAllByProjectReviewId(projectID);
+        projectReviewCommentService.deleteAllByProjectReviewId(projectID);
+        projectReviewRepository.deleteById(projectID);
+    }
 
-	@Override
-	@Transactional
-	public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws
-		NullPointerException {
-		ProjectReview projectReview = projectReviewRepository.findById(reviewId)
-			.orElseThrow(() -> new ReviewNonExistentException(ErrorCode.NONEXISTENT_REVIEW.getStatus(),
-				ErrorCode.NOT_EXIST_USER.getMessage()));
+    @Override
+    @Transactional
+    public void updateProjectReview(UUID reviewId, ProjectReviewModifyRequestDTO projectDTO) throws
+            NullPointerException {
+        ProjectReview projectReview = projectReviewRepository.findById(reviewId)
+                .orElseThrow(() -> new ReviewNonExistentException(ErrorCode.NONEXISTENT_REVIEW.getStatus(),
+                        ErrorCode.NOT_EXIST_USER.getMessage()));
 
-		if (!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
-			throw new ReviewNotAuthorizedException(ErrorCode.NOT_EXIST_USER.getStatus(),
-				ErrorCode.NOT_EXIST_USER.getMessage());
-		}
+        if (!projectDTO.getMemberEmail().equals(projectReview.getMember().getEmail())) {
+            throw new ReviewNotAuthorizedException(ErrorCode.NOT_EXIST_USER.getStatus(),
+                    ErrorCode.NOT_EXIST_USER.getMessage());
+        }
 
-		if (projectDTO.getImageFiles() != null && projectDTO.getTags() != null) {
-			ProjectReview updateImageProjectReview = projectReviewImageService.updateImages(projectReview,
-				projectDTO.getFileNames(), projectDTO.getImageFiles());
-			ProjectReview updateTagProjectReview = projectReviewTagService.updateTags(updateImageProjectReview,
-				projectDTO.getTags());
-			updateTagProjectReview.updateProjectReview(projectDTO);
-			projectReviewRepository.save(updateTagProjectReview);
-		} else {
-			projectReview.updateProjectReview(projectDTO);
-			projectReviewRepository.save(projectReview);
-		}
-	}
+        ProjectReview updateProjectReview = projectReviewImageService.updateImages(projectReview, projectDTO.getFileNames(), projectDTO.getImageFiles());
+        updateProjectReview = projectReviewTagService.updateTags(updateProjectReview, projectDTO.getTags());
+        updateProjectReview.updateProjectReview(projectDTO);
+        projectReviewRepository.save(updateProjectReview);
+    }
 
-	@Override
-	public Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize,
-		String sort) {
+    @Override
+    public Page<ProjectReviewListResponseDTO> findWithFilters(String search, boolean isTag, int pageNum, int pageSize,
+                                                              String sort) {
 
-		Specification<ProjectReview> specification;
-		if (isTag) {
-			specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
-		} else {
-			specification = Specification.where(ProjectReviewSpecification.hasTag(search));
-		}
+        Specification<ProjectReview> specification;
+        if (isTag) {
+            specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
+        } else {
+            specification = Specification.where(ProjectReviewSpecification.hasTag(search));
+        }
 
-		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
+        Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));
 
-		return projectReviewRepository.findAll(specification, pageable).map((ProjectReview projectReview) -> {
-			String thumbnailUrl = projectReview.getProjectReviewImages()
-				.stream()
-				.findFirst()
-				.map(ProjectReviewImage::getUrl)
-				.orElse(null);
+        return projectReviewRepository.findAll(specification, pageable).map((ProjectReview projectReview) -> {
+            String thumbnailUrl = projectReview.getProjectReviewImages()
+                    .stream()
+                    .findFirst()
+                    .map(ProjectReviewImage::getUrl)
+                    .orElse(null);
 
-			return ProjectReviewListResponseDTO.builder()
-				.id(projectReview.getId())
-				.member(projectReview.getMember().getNickname())
-				.createDate(projectReview.getCreateDate())
-				.title(projectReview.getTitle())
-				.projectReviewTags(projectReview.getProjectReviewTags()
-					.stream()
-					.map(ProjectReviewTag::getTag)
-					.collect(Collectors.toList()))
-				.projectReviewThumbnails(thumbnailUrl) // null일 수 있음
-				.preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
-				.projectReviewComments(projectReview.getComments().size())
-				.build();
-		});
-	}
+            return ProjectReviewListResponseDTO.builder()
+                    .id(projectReview.getId())
+                    .member(projectReview.getMember().getNickname())
+                    .createDate(projectReview.getCreateDate())
+                    .title(projectReview.getTitle())
+                    .projectReviewTags(projectReview.getProjectReviewTags()
+                            .stream()
+                            .map(ProjectReviewTag::getTag)
+                            .collect(Collectors.toList()))
+                    .projectReviewThumbnails(thumbnailUrl) // null일 수 있음
+                    .preferenceCnt(preferenceService.findByEntityID(projectReview.getId()).size())
+                    .projectReviewComments(projectReview.getComments().size())
+                    .build();
+        });
+    }
 
-	@Override
-	public List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
+    @Override
+    public List<SummaryByMonthResponseDTO> calculateSummaryByMonth(String inputDate) {
 
-		Date searchDate;
-		if (inputDate == null || inputDate.isEmpty()) {
-			searchDate = Date.valueOf(LocalDate.now());
-		} else {
-			searchDate = Date.valueOf(LocalDate.parse(inputDate));
-		}
+        Date searchDate;
+        if (inputDate == null || inputDate.isEmpty()) {
+            searchDate = Date.valueOf(LocalDate.now());
+        } else {
+            searchDate = Date.valueOf(LocalDate.parse(inputDate));
+        }
 
-		List<Object[]> results = projectReviewRepository.calculateSummaryByMonth(searchDate);
+        List<Object[]> results = projectReviewRepository.calculateSummaryByMonth(searchDate);
 
-		return results.stream()
-			.map(row -> new SummaryByMonthResponseDTO(
-				Integer.parseInt(row[0].toString()),
-				((Number)row[1]).longValue()
-			))
-			.toList();
+        return results.stream()
+                .map(row -> new SummaryByMonthResponseDTO(
+                        Integer.parseInt(row[0].toString()),
+                        ((Number) row[1]).longValue()
+                ))
+                .toList();
 
-	}
+    }
 }
