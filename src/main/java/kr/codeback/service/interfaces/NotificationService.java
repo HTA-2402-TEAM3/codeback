@@ -26,7 +26,7 @@ public interface NotificationService {
 	void update(Notification notification);
 
 	List<Notification> getNotifications(Member member);
-
+	int countNotifications(List<Notification> notifications);
 	List<Notification> findByEntityID(UUID entityID);
 
     void deleteAll(Member member);
