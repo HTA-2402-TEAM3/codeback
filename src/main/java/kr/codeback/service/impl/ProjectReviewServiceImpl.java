@@ -147,9 +147,9 @@ public class ProjectReviewServiceImpl implements ProjectReviewService {
 
 		Specification<ProjectReview> specification;
 		if (isTag) {
-			specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
-		} else {
 			specification = Specification.where(ProjectReviewSpecification.hasTag(search));
+		} else {
+			specification = Specification.where(ProjectReviewSpecification.hasKeyword(search));
 		}
 
 		Pageable pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.DESC, sort));

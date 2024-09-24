@@ -1,4 +1,3 @@
-// let loginEmail = '';
 let searchText = '';
 let findWithTag = '';
 

@@ -29,7 +29,7 @@ public class ProjectReviewRestController {
                                                 @RequestParam(required = false, defaultValue = "9", value = "pageSize") int pageSize,
                                                 @RequestParam(required = false, defaultValue = "createDate", value = "sort") String sort) {
         boolean isTag = tag != null;
-        search = isTag ? tag : null;
+        search = isTag ? tag : search;
 
         Page<ProjectReviewListResponseDTO> page = projectReviewService.findWithFilters(search, isTag, pageNum, pageSize, sort);
 

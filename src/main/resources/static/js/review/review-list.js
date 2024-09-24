@@ -1,9 +1,6 @@
-// let checkboxValue = '';
-// let searchKeyword = '';
-// let loginEmail = '';
-// document.addEventListener('DOMContentLoaded', function () {
-//     getMemberEmail();
-// });
+let checkboxValue = '';
+let searchKeyword = '';
+
 
 function selectOnlyOne(checkbox) {
     // 모든 체크박스를 가져옵니다.
