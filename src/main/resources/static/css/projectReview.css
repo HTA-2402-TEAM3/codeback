@@ -178,14 +178,6 @@
     }
 }
 
-.projectReview-content img {
-    display: block;
-    width: 88%;
-    height: 488px;
-    margin: 0 auto 2em;
-    padding-left: 0;
-}
-
 .container {
     padding: 0;
     width: 100%;
@@ -193,12 +185,19 @@
     display: flex;
     justify-content: space-between;
 }
+.projectReview-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 2em;
+    padding-left: 0;
+}
 
 .projectReview-content {
     width: 50%; /* 두 열의 너비 설정 */
-    height: 550px;
+    height: 650px;
     overflow-y: auto;
-    padding: 15px;
+    padding: 9px;
 }
 
 /* add Project box */

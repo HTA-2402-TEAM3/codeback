@@ -1,6 +1,5 @@
 package kr.codeback.service.impl;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -8,10 +7,12 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import kr.codeback.model.entity.CodeReview;
 import kr.codeback.model.entity.CodeReviewComment;
 import kr.codeback.model.entity.Member;
 import kr.codeback.model.entity.Notification;
 import kr.codeback.model.entity.Preference;
+import kr.codeback.model.entity.ProjectReview;
 import kr.codeback.model.entity.ProjectReviewComment;
 import kr.codeback.repository.CodeReviewCommentRepository;
 import kr.codeback.repository.CodeReviewRepository;
@@ -41,7 +42,8 @@ public class NotificationServiceImpl implements NotificationService {
 			.member(codeReviewComment.getCodeReview().getMember())
 			.entityID(codeReviewComment.getId())
 			.isRead(false)
-			.message(codeReviewComment.getMember().getNickname()+"님이 "+codeReviewComment.getCodeReview().getTitle()+" 글에 댓글을 작성하였습니다.")
+			.message(codeReviewComment.getMember().getNickname() + "님이 " + codeReviewComment.getCodeReview().getTitle()
+				+ " 글에 댓글을 작성하였습니다.")
 			.build();
 
 		notificationRepository.save(notification);
@@ -49,48 +51,78 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public void save(Preference preference,String type) {
+	public void save(Preference preference, String type) {
 
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
-			.member(preference.getMember())
+			.member(validateType(preference, type))
 			.entityID(preference.getId())
 			.isRead(false)
-			.message(generateMessage(preference,type))
+			.message(generateMessage(preference, type))
 			.build();
-
-
 
 		notificationRepository.save(notification);
 	}
 
 	@Override
 	@Transactional
-	public void save(ProjectReviewComment projectReviewComment){
+	public void save(ProjectReviewComment projectReviewComment) {
 		Notification notification = Notification.builder()
 			.id(UUID.randomUUID())
 			.member(projectReviewComment.getProjectReview().getMember())
 			.entityID(projectReviewComment.getId())
 			.isRead(false)
-			.message(projectReviewComment.getMember().getNickname()+"님이 "+projectReviewComment.getProjectReview().getTitle()+" 글에 댓글을 작성하였습니다.")
+			.message(projectReviewComment.getMember().getNickname() + "님이 " + projectReviewComment.getProjectReview()
+				.getTitle() + " 글에 댓글을 작성하였습니다.")
 			.build();
 
 		notificationRepository.save(notification);
 
 	}
 
-	public String generateMessage(Preference preference, String type){
-		String message = preference.getMember().getNickname()+"님이 ";
-		if(type.equals("codeReview")){
-			return message + codeReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+	@Override
+	public Member validateType(Preference preference, String type) {
+		if (type.equals("codeReview")) {
+			CodeReview codeReview = codeReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReview.getMember();
 		} else if (type.equals("codeReviewComment")) {
-			return message + codeReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getCodeReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+			CodeReviewComment codeReviewComment = codeReviewCommentRepository.findById(preference.getEntityID())
+				.orElse(null);
+			return codeReviewComment.getMember();
 		} else if (type.equals("projectReview")) {
-			return message + projectReviewRepository.findById(preference.getEntityID()).orElse(null).getTitle()+" 글에 좋아요를 눌렀습니다.";
+			ProjectReview projectReview = projectReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReview.getMember();
 		} else if (type.equals("projectReviewComment")) {
-			return message + projectReviewCommentRepository.findById(preference.getEntityID()).orElse(null).getProjectReview().getTitle()+"에 달린 댓글에 좋아요를 눌렀습니다.";
+			ProjectReviewComment projectReviewComment = projectReviewCommentRepository.findById(
+				preference.getEntityID()).orElse(null);
+			return projectReviewComment.getMember();
+		} else {
+			return null;
 		}
-		return message;
+	}
+
+	@Override
+	public String generateMessage(Preference preference, String type) {
+
+		if (type.equals("codeReview")) {
+			CodeReview codeReview = codeReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return codeReview.getMember().getNickname() + "님이" + codeReview.getTitle() + " 글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("codeReviewComment")) {
+			CodeReviewComment codeReviewComment = codeReviewCommentRepository.findById(preference.getEntityID())
+				.orElse(null);
+			return codeReviewComment.getMember().getNickname() + "님이" + codeReviewComment.getCodeReview().getTitle()
+				+ "에 달린 댓글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("projectReview")) {
+			ProjectReview projectReview = projectReviewRepository.findById(preference.getEntityID()).orElse(null);
+			return projectReview.getMember().getNickname() + projectReview.getTitle() + " 글에 좋아요를 눌렀습니다.";
+		} else if (type.equals("projectReviewComment")) {
+			ProjectReviewComment projectReviewComment = projectReviewCommentRepository.findById(
+				preference.getEntityID()).orElse(null);
+			return projectReviewComment.getMember().getNickname() + projectReviewComment.getProjectReview().getTitle()
+				+ "에 달린 댓글에 좋아요를 눌렀습니다.";
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -112,7 +144,6 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 		notificationRepository.deleteAll(notifications);
 	}
-
 
 	@Override
 	@Transactional
@@ -140,7 +171,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public void deleteByEntityId(UUID entityId){
+	public void deleteByEntityId(UUID entityId) {
 
 		List<Notification> notifications = notificationRepository.findByEntityID(entityId);
 		notifications.forEach(notification -> delete(notification.getId()));
@@ -167,11 +198,20 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public void markAll(Member member){
+	public void markAll(Member member) {
 
 		List<Notification> notifications = notificationRepository.findAllByMember(member);
 		notifications.forEach(this::markAsRead);
 
+	}
+
+	@Override
+	@Transactional
+	public int countNotifications(List<Notification> notifications) {
+		List<Notification> readNotifications = notifications.stream()
+			.filter(notification -> !notification.isRead())
+			.toList();
+		return readNotifications.size();
 	}
 
 }

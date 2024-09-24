@@ -74,7 +74,7 @@ public class ProjectReviewRestController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteProjectReview(@PathVariable UUID id){
         projectReviewService.deleteAllById(id);
-        return ResponseEntity.ok(new MessageResponseDTO(id+SuccessMessage.DELETE.getMessage()));
+        return ResponseEntity.ok(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
     @GetMapping("/get/{id}")
     public ResponseEntity<Object> viewProjectReview(@PathVariable UUID id) {

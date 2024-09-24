@@ -12,7 +12,8 @@ import kr.codeback.model.entity.ProjectReviewComment;
 public interface NotificationService {
 
 	void save(CodeReviewComment codeReviewComment);
-	void save(Preference preference,String type);
+
+	void save(Preference preference, String type);
 
 	void save(ProjectReviewComment projectReviewComment);
 
@@ -26,15 +27,20 @@ public interface NotificationService {
 	void update(Notification notification);
 
 	List<Notification> getNotifications(Member member);
-
+	int countNotifications(List<Notification> notifications);
 	List<Notification> findByEntityID(UUID entityID);
 
-    void deleteAll(Member member);
+	void deleteAll(Member member);
 
 	void deleteByEntityId(UUID entityId);
 
 	void markAsRead(Notification notification);
 
 	void delete(UUID id);
+
 	void markAll(Member member);
+
+	Member validateType(Preference preference, String type);
+
+	String generateMessage(Preference preference, String type);
 }

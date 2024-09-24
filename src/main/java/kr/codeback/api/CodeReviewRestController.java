@@ -63,13 +63,13 @@ public class CodeReviewRestController {
     @PostMapping("/save")
     public ResponseEntity<Object> writeReview(@RequestBody CodeReviewRequestDTO codeReview) {
         codeReviewService.saveCodeReview(codeReview);
-        return ResponseEntity.ok().body(new MessageResponseDTO(codeReview+SuccessMessage.CREATE.getMessage()));
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.CREATE.getMessage()));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Object> deleteReview(@PathVariable UUID id, @RequestParam String memberEmail) {
         codeReviewService.deleteCodeReviewById(id, memberEmail);
-        return ResponseEntity.ok().body(new MessageResponseDTO(id+SuccessMessage.DELETE.getMessage()));
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
 
     @PutMapping("/update")

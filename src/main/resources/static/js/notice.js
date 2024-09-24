@@ -13,9 +13,12 @@ function getNotification() {
         })
         .then(data => {
             const notificationList = document.getElementById('notificationList');
-
             data.forEach(notification => {
                 const listItem = document.createElement('li');
+
+                if (notification.read === true) {
+                    listItem.classList.add('blurred');
+                }
 
                 // 날짜 div
                 const dateDiv = document.createElement('div');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Generic - Projection by TEMPLATED</title>
+    <title>CodeBack</title>
     <meta charset="utf-8"/>
     <meta
             name="robots"
@@ -141,11 +141,8 @@
 
                 document.getElementById('submit').addEventListener('click', () => {
                     const content = editor.getHTML();
-
                     commentContent = content;
-
                     valiMemberComment("review");
-
                 })
 
                 function deleteCodeReview(id) {

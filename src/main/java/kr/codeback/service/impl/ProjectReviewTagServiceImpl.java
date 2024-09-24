@@ -43,9 +43,9 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
     public ProjectReview updateTags(ProjectReview projectReview, List<String> tags) {
         Set<ProjectReviewTag> tagSet = projectReviewTagRepository.findAllByProjectReviewId(projectReview.getId());
 //        null 예외처리... -> null이면 싹 다 삭제
-        if (tags == null) {
-            projectReview.deleteProjectReviewTags((List<ProjectReviewTag>) tagSet);
-            return projectReview;
+        if (tags == null || tags.isEmpty()) {
+            List<ProjectReviewTag> allTags = new ArrayList<>(tagSet);
+            projectReview.deleteProjectReviewTags(allTags);
         } else {
             List<ProjectReviewTag> tagsDelete = new ArrayList<>();
             for (ProjectReviewTag tag : tagSet) {
@@ -69,7 +69,7 @@ public class ProjectReviewTagServiceImpl implements ProjectReviewTagService {
             }
             projectReview.addProjectReviewTags(tagsAdd);
 
-            return projectReview;
         }
+        return projectReview;
     }
 }
