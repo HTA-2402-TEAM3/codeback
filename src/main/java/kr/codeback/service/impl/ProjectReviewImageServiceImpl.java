@@ -59,8 +59,10 @@ public class ProjectReviewImageServiceImpl implements ProjectReviewImageService 
     @Transactional
     public void deleteAllByProjectReviewId(UUID projectReviewId) {
         Set<ProjectReviewImage> images = findAllByProjectReviewId(projectReviewId);
-        List<String> filenames = getFilenames(images);
-        s3Service.deleteS3Files(filenames);
+        if(!images.isEmpty()) {
+            List<String> filenames = getFilenames(images);
+            s3Service.deleteS3Files(filenames);
+        }
     }
 
     @Override
