@@ -41,4 +41,6 @@ public interface NotificationService {
 	void markAll(Member member);
 
 	Member validateType(Preference preference, String type);
+
+	String generateMessage(Preference preference, String type);
 }
