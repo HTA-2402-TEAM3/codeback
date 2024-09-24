@@ -57,7 +57,7 @@ public class NotificationRestController {
 
 	@GetMapping("/count")
 	public ResponseEntity<?> count(){
-		int count = notificationService.countByMember(memberService.extractMember());
+		int count = notificationService.countNotifications(notificationService.getNotifications(memberService.extractMember()));
 		return ResponseEntity.ok(count);
 	}
 }
