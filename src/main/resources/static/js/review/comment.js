@@ -95,7 +95,8 @@ async function deleteComment(mapping, commentID) {
     }
 }
 
-function updateComments(mapping, commentId, content) {
+async function updateComments(mapping, commentId, content) {
+    const loginEmail = await getMemberEmail();
     if (loginEmail === '' || loginEmail === undefined || loginEmail === null) {
         alert("로그인 해주세요");
     } else {
