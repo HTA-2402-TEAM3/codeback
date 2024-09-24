@@ -38,12 +38,12 @@ public class ProjectReviewCommentRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteReviewComment(@PathVariable UUID id, @RequestParam String memberEmail) {
         projectReviewCommentService.deleteById(id, memberEmail);
-        return ResponseEntity.ok().body(new MessageResponseDTO(id + SuccessMessage.DELETE.getMessage()));
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.DELETE.getMessage()));
     }
 
     @PutMapping("/update")
     public ResponseEntity<Object> updateReviewComment(@RequestBody CommentModifyRequestDTO commentDTO) {
         projectReviewCommentService.update(commentDTO);
-        return ResponseEntity.ok().body(new MessageResponseDTO(commentDTO.getId() + SuccessMessage.UPDATE.getMessage()));
+        return ResponseEntity.ok().body(new MessageResponseDTO(SuccessMessage.UPDATE.getMessage()));
     }
 }
