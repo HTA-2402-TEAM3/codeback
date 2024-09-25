@@ -7,8 +7,16 @@
 
 시니어 개발자와 주니어 개발자 간의 상호 작용을 촉진하여 코드 품질을 향상시키고, 주니어 개발자의 성장과 학습을 지원하는 코드리뷰 플랫폼 제공
 
-## 팀원 구성
+### 팀원 구성
+* 이석원   [@Frod90](https://github.com/Frod90)
+* 이도경   [@leedokyong](https://github.com/leedokyong)
+* 김성호   [@ksngh](https://github.com/ksngh)
+* 김다영   [@keyy1315](https://github.com/keyy1315)
 
+### 개발 기간
+* 2024.08.08 ~ 2024.09.25
+
+  
 <br>
 
 
@@ -18,7 +26,7 @@
   * JavaScript
 * Back
   * Java 21
-  * Spring boot
+  * Spring boot 3.3.2
   * Spring Data Jpa
   * MariaDB 11.4.2
 * Collaboration
@@ -35,79 +43,89 @@
 
 ## 📌 구현 기능
 
-### 코드, 프로젝트 게시판 관리
-1. 게시글 작성
-  * 코드 리뷰  
-    * 마크다운 문법으로 코드를 코드블럭으로 구분하여 게시글을 작성할 수 있습니다.
-    * 작성된 코드의 언어를 선택할 수 있습니다.
-![image](https://github.com/user-attachments/assets/799d50cb-13be-44b1-ad3e-7ec637e2493e)
-  * 프로젝트 리뷰
-    * 프로젝트의 실행 화면 이미지와 관련된 태그, github url을 함께 작성합니다. 
-![image](https://github.com/user-attachments/assets/1c4cd64c-94e6-45bf-8e14-64ed9d802e1c)
+<details><summary>회원 관리</summary>
 
-2. 게시글 목록 조회
-  * 코드 리뷰
-    * 작성된 언어와 검색어를 통해 게시글 조회가 가능합니다.
-    * 페이지네이션 기능으로 페이지 이동으로 게시글 조회가 가능합니다.
-![image](https://github.com/user-attachments/assets/4d59e0b5-c867-4666-b6a7-57df2411c21d)
-  * 프로젝트 리뷰
-    * 검색어를 통해 게시글 조회가 가능합니다.
-![image](https://github.com/user-attachments/assets/752a5d52-8558-488b-ba7f-ebb1005e0091)
-    * 게시글의 해시태그로 관련 게시글 조회가 가능합니다.
-![image](https://github.com/user-attachments/assets/4d490e28-465c-44ad-9bfd-210c59cf8327)
 
-3. 게시글 조회
-* 코드 리뷰
-  * 코드 블럭으로 작성된 코드와 질문 내용을 구분하여 게시글을 조회할 수 있습니다.
-  * 게시글에 달린 댓글과 좋아요 개수도 조회가 가능합니다.
-![image](https://github.com/user-attachments/assets/47da5b84-db4b-4593-84a8-83d6f6a3da4b)
-* 프로젝트 리뷰
-  * 태그 버튼을 누르면 태그별 게시글 목록 조회 페이지로 이동할 수 있습니다.
-  * 깃허브 아이콘을 누르면 작성자가 입력한 github url로 이동할 수 있습니다.
-![image](https://github.com/user-attachments/assets/12651e3b-c525-489d-ae85-a96e412cfa2d)
+ * [API](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/MemberRestController.java)
+ * 로그인
+   * oAuth 로그인
+   * 자사 이메일 로그인
+ * 회원가입
+   * oAuth 회원가입
+   * 자사 이메일 회원가입
+ * 로그아웃
+ * 유저 정보수정
+ * 유저 삭제
+ * 유저 정보 불러오기
+   * [토큰 받아오기](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/util/JwtUtil.java)
+   * 토큰 유저 정보 추출
+</details>
 
-4. 댓글 작성 및 수정
-* 마크다운 문법으로 코드블럭으로 구분하여 댓글을 작성할 수 있습니다.
-  ![image](https://github.com/user-attachments/assets/b8158a21-8bbb-46d3-a503-312fa8bf5ae3)
-* 본인이 작성한 댓글만 수정 혹은 삭제가 가능합니다.
-* 연필모양 아이콘을 누르면 마크다운 에디터가 생기고 작성되었던 댓글이 랜더링 됩니다.
-* 연필모양 아이콘을 누르면 수정 내용이 적용되고, 쓰레기통 아이콘을 누르면 작성했던 댓글이 삭제됩니다.
-![image](https://github.com/user-attachments/assets/09e22c65-2fa4-49d6-b90c-7770b42d75a2)
+<details><summary>게시판 관리
+</summary>
 
-6. 게시글 수정 및 삭제
-* 본인이 작성한 게시글만 수정 혹은 삭제가 가능합니다.
+ * [API(코드 리뷰 게시판)](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/CodeReviewRestController.java)
+ * [API(프로젝트 리뷰 게시판)](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/ProjectReviewRestController.java)
+ * 게시판 생성
+   * 마크다운 에디터 사용
+   * aws s3 이미지 업로드
+ * 게시판 삭제
+ * 게시판 수정
+ * 게시판 조회
+   * 게시판 검색 조건별 게시글 목록 조회
+</details>
 
-### 회원관리 (로그인 및 회원가입)
+<details><summary>댓글 관리</summary>
 
-- Spring Security를 이용한 인가 관리
-    - JWT Request Filter 구현하여 토큰으로 필터 기능 수행
-    ![로그인](https://github.com/user-attachments/assets/aac838eb-d0fa-49b7-8f60-d37fb65caf51)
+* [API(코드 리뷰 댓글)](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/CodeReviewCommentRestController.java)
+* [API(프로젝트 리뷰 댓글)](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/ProjectReviewCommentRestController.java)
+ * 댓글 생성
+ * 댓글 삭제
+ * 댓글 수정
+</details>
+<details><summary>관리자 페이지</summary>
 
-- JWT Token (access token, refresh token) 생성 및 관리
-    - 쿠키에 token을 달아서 로그인 정보 관리
-    - access token 만료 시 refresh 토큰 검증 후 재발급
-    - 로그아웃 시 쿠키 시간을 0으로 바꾸어 삭제
-![토큰관리](https://github.com/user-attachments/assets/ce455515-bcd0-43db-ab36-d732122217e3)
+* [API](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/controller/AdminRestController.java)
+* 회원 목록 조회
+* 회원 권한 변경
+* 회원 삭제
+* [통계](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/controller/AdminController.java)
+  * 언어별 작성된 게시글 개수
+  * 비활성화된 회원 수
+  * 날짜 별 게시글, 댓글, 좋아요 수
+</details>
 
-- OAuth 2.0, Email sender 활용하여 로그인 기능 구현
-    - 구글 , 깃허브 회원가입 및 로그인
-    - 사용자가 입력한 이메일로 가입 및 로그인 링크 전송
-    - oauth 이메일이 겹칠 시 동일한 회원으로 취급
- ![구글 로그인](https://github.com/user-attachments/assets/dcd5cee2-3ddd-45fe-a293-1ea91737c91b)
-![깃헙](https://github.com/user-attachments/assets/4c91a712-fed8-4e98-85b1-3b8f4853e880)
-![이메일센더](https://github.com/user-attachments/assets/ba1ad42e-d059-4661-8b42-4b41093ee204)
+<details><summary>알림 관리</summary>
 
-  
+* [API](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/api/NotificationRestController.java)
+ * 알림 보기
+ * 알림 삭제
+ * 알림 읽음 처리
+   * 전체 읽음 처리
+   * 개별 읽음 처리
+ * 알림 생성
+</details>
 
-### 알림관리
+<details><summary>좋아요 관리</summary>
 
-- 사용자 트리거로 알림 불러오기
-    - 사용자가 페이지를 동기화 할 때마다 읽지 않은 알림의 갯수를 불러와서 매핑
+* [Service](https://github.com/HTA-2402-TEAM3/codeback/blob/master/src/main/java/kr/codeback/service/impl/PreferenceServiceImpl.java)
+* 게시글 좋아요 생성
+* 댓글 좋아요 생성
+</details>
+<br />
 
-- 알림 생성, 수정, 삭제
-    - 게시판의 종류 , 좋아요나 댓글 등 타입에 따라 분기하여 메세지 생성 후 DB에 저장
-    - 사용자가 읽음, 삭제 버튼을 누르면 DB에서 읽음으로 수정 또는  삭제
-![알림관리](https://github.com/user-attachments/assets/24003bf0-9df9-405c-a5b2-273731690a41)
+### 🎨구현 화면
+<br />
+
+![image](https://github.com/user-attachments/assets/a785964e-098d-4d64-aebb-f717555c5349)
+![image](https://github.com/user-attachments/assets/0f853114-d244-4dfe-a9d4-5ad0cb270f63)
+![image](https://github.com/user-attachments/assets/8faaca51-79d2-4ddb-8e9c-97882b7b99f9)
+![image](https://github.com/user-attachments/assets/bf822e5a-7264-4dd2-8f54-2e43045439f9)
+![image](https://github.com/user-attachments/assets/7fb6cd56-87c7-436f-bccb-42dcd0df7c2a)
+![image](https://github.com/user-attachments/assets/4e1cb91a-c889-42fd-81be-092253cc44af)
+
+
+
 
 
 
