@@ -77,6 +77,38 @@
 6. 게시글 수정 및 삭제
 * 본인이 작성한 게시글만 수정 혹은 삭제가 가능합니다.
 
+### 회원관리 (로그인 및 회원가입)
+
+- Spring Security를 이용한 인가 관리
+    - JWT Request Filter 구현하여 토큰으로 필터 기능 수행
+    ![로그인](https://github.com/user-attachments/assets/aac838eb-d0fa-49b7-8f60-d37fb65caf51)
+
+- JWT Token (access token, refresh token) 생성 및 관리
+    - 쿠키에 token을 달아서 로그인 정보 관리
+    - access token 만료 시 refresh 토큰 검증 후 재발급
+    - 로그아웃 시 쿠키 시간을 0으로 바꾸어 삭제
+![토큰관리](https://github.com/user-attachments/assets/ce455515-bcd0-43db-ab36-d732122217e3)
+
+- OAuth 2.0, Email sender 활용하여 로그인 기능 구현
+    - 구글 , 깃허브 회원가입 및 로그인
+    - 사용자가 입력한 이메일로 가입 및 로그인 링크 전송
+    - oauth 이메일이 겹칠 시 동일한 회원으로 취급
+ ![구글 로그인](https://github.com/user-attachments/assets/dcd5cee2-3ddd-45fe-a293-1ea91737c91b)
+![깃헙](https://github.com/user-attachments/assets/4c91a712-fed8-4e98-85b1-3b8f4853e880)
+![이메일센더](https://github.com/user-attachments/assets/ba1ad42e-d059-4661-8b42-4b41093ee204)
+
+  
+
+### 알림관리
+
+- 사용자 트리거로 알림 불러오기
+    - 사용자가 페이지를 동기화 할 때마다 읽지 않은 알림의 갯수를 불러와서 매핑
+
+- 알림 생성, 수정, 삭제
+    - 게시판의 종류 , 좋아요나 댓글 등 타입에 따라 분기하여 메세지 생성 후 DB에 저장
+    - 사용자가 읽음, 삭제 버튼을 누르면 DB에서 읽음으로 수정 또는  삭제
+![알림관리](https://github.com/user-attachments/assets/24003bf0-9df9-405c-a5b2-273731690a41)
+
 
 
 
